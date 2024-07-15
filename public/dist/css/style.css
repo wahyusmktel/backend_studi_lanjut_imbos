@@ -4046,7 +4046,7 @@ a#toggle_mobile_nav {
   padding: 0 9px; }
 
 footer {
-  position: absolute;
+  /* position: absolute; */
   bottom: 0;
   width: 100%;
   height: 60px;

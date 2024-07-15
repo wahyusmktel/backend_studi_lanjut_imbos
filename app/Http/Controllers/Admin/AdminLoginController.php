@@ -10,6 +10,9 @@ class AdminLoginController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
         return view('admin.login');
     }
 
@@ -17,7 +20,9 @@ class AdminLoginController extends Controller
     {
         $credentials = $request->only('username', 'password');
 
-        if (Auth::guard('admin')->attempt($credentials, $request->remember)) {
+        $remember = $request->has('remember') ? true : false;
+
+        if (Auth::guard('admin')->attempt($credentials, $remember)) {
             return redirect()->intended(route('admin.dashboard'));
         }
 

@@ -15,11 +15,18 @@
 
     <!-- Data table CSS -->
     <link href="{{ asset('vendors/bower_components/datatables/media/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
+
+    <!-- SweetAlert CSS -->
+    <link href="{{ asset('vendors/bower_components/sweetalert/dist/sweetalert.css') }}" rel="stylesheet" type="text/css"/>
     
     <!-- Custom CSS -->
     <link href="{{ asset('dist/css/style.css') }}" rel="stylesheet" type="text/css">
 
     <link href="{{ asset('vendors/bower_components/dropify/dist/css/dropify.min.css') }}" rel="stylesheet" type="text/css"/>
+    <!-- jQuery -->
+    <script src="{{ asset('vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <!-- SweetAlert JavaScript -->
+    <script src="{{ asset('vendors/bower_components/sweetalert/dist/sweetalert.min.js') }}"></script>
 </head>
 
 <body>
@@ -46,8 +53,7 @@
     
     <!-- JavaScript -->
     
-    <!-- jQuery -->
-    <script src="{{ asset('vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ asset('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -55,6 +61,8 @@
     <!-- Data table JavaScript -->
     <script src="{{ asset('vendors/bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('dist/js/dataTables-data.js') }}"></script>
+
+    
     
     <!-- Slimscroll JavaScript -->
     <script src="{{ asset('dist/js/jquery.slimscroll.js') }}"></script>

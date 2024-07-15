@@ -11,6 +11,7 @@
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
         <ol class="breadcrumb">
             <li><a href="{{ url('admin/dashboard') }}">Dashboard</a></li>
+            <li><a href="#">Guru</a></li>
             <li class="active"><span>Data Guru</span></li>
         </ol>
     </div>
