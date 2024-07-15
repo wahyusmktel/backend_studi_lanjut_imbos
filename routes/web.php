@@ -18,7 +18,7 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-        Route::get('/guru/data_guru', [AdminGuruController::class, 'index'])->name('admin.guru.data_guru');
+        // Route::get('/guru/data_guru', [AdminGuruController::class, 'index'])->name('admin.guru.data_guru');
 
         //Mata Pelajaran
         Route::get('/mata_pelajaran', [MataPelajaranController::class, 'index'])->name('admin.mata_pelajaran.index');
@@ -26,5 +26,11 @@ Route::prefix('admin')->group(function () {
         Route::post('/mata_pelajaran/{id}', [MataPelajaranController::class, 'update'])->name('admin.mata_pelajaran.update');
         Route::delete('/mata_pelajaran/{id}', [MataPelajaranController::class, 'destroy'])->name('admin.mata_pelajaran.destroy');
         // Route::get('/mata_pelajaran', [MataPelajaranController::class, 'index'])->name('admin.mata_pelajaran.index');
+
+        // Guru
+        Route::get('/guru', [AdminGuruController::class, 'index'])->name('admin.guru.data_guru');
+        Route::post('/guru', [AdminGuruController::class, 'store'])->name('admin.guru.store');
+        Route::post('/guru/{id}', [AdminGuruController::class, 'update'])->name('admin.guru.update');
+        Route::delete('/guru/{id}', [AdminGuruController::class, 'destroy'])->name('admin.guru.destroy');
     });
 });

@@ -19,7 +19,6 @@
 <!-- /Title -->
 
 <!-- Row -->
-
 <div class="row">
     <div class="col-sm-12">
         <div class="panel panel-default border-panel card-view">
@@ -42,12 +41,12 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-xs-6 text-right">
-                        <form>
+                        <form method="GET" action="{{ route('admin.guru.data_guru') }}">
                             <div class="form-group">
                                 <div class="input-group mb-15">
-                                    <input type="email" id="example-input2-group2" name="example-input2-group2" class="form-control" placeholder="Cari Data...">
+                                    <input type="text" id="search" name="search" class="form-control" placeholder="Cari Data..." value="{{ request('search') }}">
                                     <span class="input-group-btn">
-                                    <button type="button" class="btn btn-orange btn-anim"><i class="icon-magnifier"></i><span class="btn-text">Cari</span></button>
+                                    <button type="submit" class="btn btn-orange btn-anim"><i class="icon-magnifier"></i><span class="btn-text">Cari</span></button>
                                     </span> 
                                 </div>
                             </div>
@@ -70,34 +69,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Contoh Data Guru -->
+                                    @foreach($gurus as $index => $guru)
                                     <tr>
-                                        <td>1</td>
-                                        <td>Guru 1</td>
-                                        <td>Matematika</td>
+                                        <td>{{ $gurus->firstItem() + $index }}</td>
+                                        <td>{{ $guru->nama }}</td>
+                                        <td>{{ $guru->mataPelajaran->namaMataPelajaran }}</td>
                                         <td class="text-nowrap">
-                                            <a href="#" class="mr-25" data-toggle="tooltip" data-original-title="Edit"> 
+                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $guru->id }}" data-nama="{{ $guru->nama }}" data-nip="{{ $guru->nip }}" data-mata-pelajaran-id="{{ $guru->mata_pelajaran_id }}" data-tempat-lahir="{{ $guru->tempat_lahir }}" data-tanggal-lahir="{{ $guru->tanggal_lahir }}"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
                                             </a> 
-                                            <a href="#" data-toggle="tooltip" data-original-title="Close"> 
+                                            <a href="#" class="delete-button" data-id="{{ $guru->id }}" data-toggle="tooltip" data-original-title="Delete"> 
                                                 <i class="fa fa-close text-danger"></i> 
                                             </a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Guru 2</td>
-                                        <td>Fisika</td>
-                                        <td class="text-nowrap">
-                                            <a href="#" class="mr-25" data-toggle="tooltip" data-original-title="Edit"> 
-                                                <i class="fa fa-pencil text-inverse m-r-10"></i> 
-                                            </a> 
-                                            <a href="#" data-toggle="tooltip" data-original-title="Close"> 
-                                                <i class="fa fa-close text-danger"></i> 
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <!-- Tambahkan data contoh lainnya di sini -->
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -107,15 +93,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <nav class="pagination-wrap d-inline-block" aria-label="Page navigation example">
-                                <ul class="pagination custom-pagination">
-                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">15</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                </ul>
+                                {{ $gurus->appends(['search' => request('search')])->links('vendor.pagination.custom') }}
                             </nav>
                         </div>
                     </div>
@@ -130,47 +108,97 @@
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h5 class="modal-title" id="addModalLabel">Tambah Data Guru</h5>
-            </div>
-            <div class="modal-body">
-                <form>
+            <form action="{{ route('admin.guru.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="addModalLabel">Tambah Data Guru</h5>
+                </div>
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="namaGuru">Nama Guru</label>
-                        <input type="text" class="form-control" id="namaGuru" placeholder="Nama Guru">
+                        <label for="nama">Nama Guru</label>
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Guru" required>
                     </div>
                     <div class="form-group">
-                        <label for="nipGuru">NIP Guru</label>
-                        <input type="text" class="form-control" id="nipGuru" placeholder="NIP Guru">
+                        <label for="nip">NIP Guru</label>
+                        <input type="text" class="form-control" id="nip" name="nip" placeholder="NIP Guru" required>
                     </div>
                     <div class="form-group">
-                        <label for="mataPelajaran">Mata Pelajaran</label>
-                        <select class="form-control" id="mataPelajaran">
-                            <option>Matematika</option>
-                            <option>Fisika</option>
-                            <option>Kimia</option>
-                            <option>Biologi</option>
+                        <label for="mata_pelajaran_id">Mata Pelajaran</label>
+                        <select class="form-control" id="mata_pelajaran_id" name="mata_pelajaran_id" required>
+                            @foreach($mataPelajarans as $mataPelajaran)
+                                <option value="{{ $mataPelajaran->id }}">{{ $mataPelajaran->namaMataPelajaran }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="tempatLahir">Tempat Lahir</label>
-                        <input type="text" class="form-control" id="tempatLahir" placeholder="Tempat Lahir">
+                        <label for="tempat_lahir">Tempat Lahir</label>
+                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir" required>
                     </div>
                     <div class="form-group">
-                        <label for="tanggalLahir">Tanggal Lahir</label>
-                        <input type="date" class="form-control" id="tanggalLahir">
+                        <label for="tanggal_lahir">Tanggal Lahir</label>
+                        <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
                     </div>
                     <div class="form-group">
-                        <label for="uploadFoto">Upload Foto</label>
-                        <input type="file" class="dropify" id="uploadFoto" />
+                        <label for="foto">Upload Foto</label>
+                        <input type="file" class="dropify" id="foto" name="foto" />
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-orange">Simpan</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-orange">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Data -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('POST')
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="editModalLabel">Edit Data Guru</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editNama">Nama Guru</label>
+                        <input type="text" class="form-control" id="editNama" name="nama" placeholder="Nama Guru" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editNip">NIP Guru</label>
+                        <input type="text" class="form-control" id="editNip" name="nip" placeholder="NIP Guru" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editMataPelajaranId">Mata Pelajaran</label>
+                        <select class="form-control" id="editMataPelajaranId" name="mata_pelajaran_id" required>
+                            @foreach($mataPelajarans as $mataPelajaran)
+                                <option value="{{ $mataPelajaran->id }}">{{ $mataPelajaran->namaMataPelajaran }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTempatLahir">Tempat Lahir</label>
+                        <input type="text" class="form-control" id="editTempatLahir" name="tempat_lahir" placeholder="Tempat Lahir" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTanggalLahir">Tanggal Lahir</label>
+                        <input type="date" class="form-control" id="editTanggalLahir" name="tanggal_lahir" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editFoto">Upload Foto</label>
+                        <input type="file" class="dropify" id="editFoto" name="foto" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-orange">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -199,4 +227,84 @@
         </div>
     </div>
 </div>
+
+@if(session('success'))
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            swal({
+                title: "Success!",
+                text: "{{ session('success') }}",
+                type: "success",
+                confirmButtonText: "OK"
+            });
+        }, 1000);
+    });
+</script>
+@endif
+
+<script>
+    $(document).ready(function() {
+
+        $('.edit-button').on('click', function() {
+            var id = $(this).data('id');
+            var nama = $(this).data('nama');
+            var nip = $(this).data('nip');
+            var mataPelajaranId = $(this).data('mata-pelajaran-id');
+            var tempatLahir = $(this).data('tempat-lahir');
+            var tanggalLahir = $(this).data('tanggal-lahir');
+
+            $('#editForm').attr('action', '/admin/guru/' + id);
+            $('#editNama').val(nama);
+            $('#editNip').val(nip);
+            $('#editMataPelajaranId').val(mataPelajaranId);
+            $('#editTempatLahir').val(tempatLahir);
+            $('#editTanggalLahir').val(tanggalLahir);
+            $('#editModal').modal('show');
+        });
+
+        // SweetAlert for Delete
+        $('.delete-button').on('click', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this data!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#f83f37",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        url: '/admin/guru/' + id,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(result) {
+                            swal({
+                                title: "Deleted!",
+                                text: result.success,
+                                type: "success",
+                                confirmButtonText: "OK"
+                            }, function() {
+                                location.reload();
+                            });
+                        },
+                        error: function() {
+                            swal("Error!", "There was an error deleting the data.", "error");
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Your data is safe :)", "error");
+                }
+            });
+        });
+    });
+</script>
+
 @endsection
