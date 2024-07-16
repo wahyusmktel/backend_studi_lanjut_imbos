@@ -29,10 +29,10 @@ class AdminGuruController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'nip' => 'required|string|max:255',
+            // 'nip' => 'required|string|max:255',
             'mata_pelajaran_id' => 'required|uuid',
-            'tempat_lahir' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
+            // 'tempat_lahir' => 'required|string|max:255',
+            // 'tanggal_lahir' => 'required|date',
             'foto' => 'nullable|image|max:2048',
         ]);
 
@@ -52,10 +52,10 @@ class AdminGuruController extends Controller
 
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'nip' => 'required|string|max:255',
+            // 'nip' => 'required|string|max:255',
             'mata_pelajaran_id' => 'required|uuid',
-            'tempat_lahir' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
+            // 'tempat_lahir' => 'required|string|max:255',
+            // 'tanggal_lahir' => 'required|date',
             'foto' => 'nullable|image|max:2048',
         ]);
 

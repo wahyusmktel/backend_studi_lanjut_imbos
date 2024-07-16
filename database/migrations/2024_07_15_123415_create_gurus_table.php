@@ -1,38 +1,39 @@
 <?php
 
-namespace Database\Seeders;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Carbon\Carbon;
-
-class GuruSeeder extends Seeder
+class CreateGurusTable extends Migration
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
-        $mataPelajaranIds = DB::table('mata_pelajarans')->pluck('id')->toArray();
-        $gurus = [];
+        Schema::create('gurus', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('nama');
+            $table->string('nip');
+            $table->uuid('mata_pelajaran_id');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->string('foto')->nullable();
+            $table->timestamps();
+            
+            $table->foreign('mata_pelajaran_id')->references('id')->on('mata_pelajarans')->onDelete('cascade');
+        });
+    }
 
-        for ($i = 1; $i <= 20; $i++) {
-            $gurus[] = [
-                'id' => Str::uuid(),
-                'nama' => "Guru $i",
-                'nip' => "1234567890$i",
-                'mata_pelajaran_id' => $mataPelajaranIds[array_rand($mataPelajaranIds)],
-                'tempat_lahir' => "Kota $i",
-                'tanggal_lahir' => Carbon::now()->subYears(rand(25, 40))->format('Y-m-d'),
-                'foto' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
-
-        DB::table('gurus')->insert($gurus);
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('gurus');
     }
 }
