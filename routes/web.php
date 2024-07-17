@@ -76,5 +76,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/nilai', [AdminNilaiController::class, 'store'])->name('admin.nilai.store');
         Route::post('/nilai/{id}', [AdminNilaiController::class, 'update'])->name('admin.nilai.update');
         Route::delete('/nilai/{id}', [AdminNilaiController::class, 'destroy'])->name('admin.nilai.destroy');
+
+
     });
 });

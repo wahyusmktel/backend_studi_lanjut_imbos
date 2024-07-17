@@ -154,11 +154,19 @@
 
         $('#kelas_filter').on('change', function() {
             var kelasId = $(this).val();
+            var tryoutId = $('#tryout_filter').val();
+            if (tryoutId) {
+                loadSiswas(kelasId, tryoutId);
+            }
+        });
+
+        function loadSiswas(kelasId, tryoutId) {
             $.ajax({
                 url: '{{ route("admin.nilai.getSiswas") }}',
                 type: 'GET',
                 data: {
-                    kelas_id: kelasId
+                    kelas_id: kelasId,
+                    tryout_id: tryoutId
                 },
                 success: function(data) {
                     var tableBody = $('#siswa_nilai_body');
@@ -168,14 +176,16 @@
                             '<td>' + (index + 1) + '</td>' +
                             '<td>' + siswa.nama_siswa + '</td>';
                         @foreach($mataPelajarans as $mataPelajaran)
-                            row += '<td><input type="number" class="form-control" name="nilai[' + siswa.id + '][{{ $mataPelajaran->id }}]" min="10" max="100"></td>';
+                            var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id === '{{ $mataPelajaran->id }}');
+                            var nilai = nilaiObj ? nilaiObj.nilai : '';
+                            row += '<td><input type="number" class="form-control" name="nilai[' + siswa.id + '][{{ $mataPelajaran->id }}]" value="' + nilai + '" min="10" max="100"></td>';
                         @endforeach
                         row += '</tr>';
                         tableBody.append(row);
                     });
                 }
             });
-        });
+        }
 
         $('.delete-button').on('click', function(e) {
             e.preventDefault();
@@ -204,5 +214,6 @@
         });
     });
 </script>
+
 
 @endsection

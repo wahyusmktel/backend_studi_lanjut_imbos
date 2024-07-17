@@ -21,4 +21,9 @@ class Siswa extends Model
     {
         return $this->belongsTo(ProgramBimbel::class);
     }
+
+    public function nilais()
+    {
+        return $this->hasMany(Nilai::class, 'siswa_id', 'id');
+    }
 }
