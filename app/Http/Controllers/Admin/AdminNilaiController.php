@@ -59,25 +59,34 @@ class AdminNilaiController extends Controller
         return response()->json($tryouts);
     }
 
+    // public function getTryouts(Request $request)
+    // {
+    //     $tahunPelajaranId = $request->input('tahun_pelajaran_id');
+    //     \Log::info('Fetching tryouts for tahun_pelajaran_id: ' . $tahunPelajaranId);
+    //     $tryouts = Tryout::where('tahun_pelajaran_id', $tahunPelajaranId)->pluck('nama_tryout', 'id');
+    //     \Log::info('Fetched tryouts: ' . $tryouts->toJson());
+
+    //     return response()->json($tryouts);
+    // }
+
+
     public function getSiswas(Request $request)
-{
-    try {
-        \Log::info('Fetching siswas for kelas_id: ' . $request->kelas_id . ' and tryout_id: ' . $request->tryout_id);
-        
-        // Mengambil siswa dengan nilai yang sesuai dengan tryout yang dipilih
-        $siswas = Siswa::with(['nilais' => function($query) use ($request) {
-            $query->where('tryout_id', $request->tryout_id);
-        }])->where('kelas_id', $request->kelas_id)->get();
+    {
+        try {
+            \Log::info('Fetching siswas for kelas_id: ' . $request->kelas_id . ' and tryout_id: ' . $request->tryout_id);
+            
+            // Mengambil siswa dengan nilai yang sesuai dengan tryout yang dipilih
+            $siswas = Siswa::with(['nilais' => function($query) use ($request) {
+                $query->where('tryout_id', $request->tryout_id);
+            }])->where('kelas_id', $request->kelas_id)->get();
 
-        \Log::info('Fetched siswas: ' . $siswas->toJson());
-        return response()->json($siswas);
-    } catch (\Exception $e) {
-        \Log::error('Error fetching siswas: ' . $e->getMessage());
-        return response()->json(['error' => 'Error fetching siswas'], 500);
+            \Log::info('Fetched siswas: ' . $siswas->toJson());
+            return response()->json($siswas);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching siswas: ' . $e->getMessage());
+            return response()->json(['error' => 'Error fetching siswas'], 500);
+        }
     }
-}
-
-
 
     public function store(Request $request)
     {
@@ -103,6 +112,53 @@ class AdminNilaiController extends Controller
         }
 
         return redirect()->back()->with('success', 'Nilai berhasil disimpan.');
+    }
+
+    public function nilaiSiswaIndex(Request $request)
+    {
+        $search = $request->input('search');
+
+        $query = Siswa::with('kelas');
+
+        if ($search) {
+            $query->where('nama_siswa', 'like', '%' . $search . '%');
+        }
+
+        $siswas = $query->paginate(10);
+
+        return view('admin.nilai.nilai_siswa', compact('siswas', 'search'));
+    }
+
+
+    public function detail(Request $request, $id)
+    {
+        $tahunPelajaranId = $request->input('tahun_pelajaran_id');
+        $tryoutId = $request->input('tryout_id');
+
+        \Log::info('Fetching details for siswa_id: ' . $id);
+        \Log::info('tahun_pelajaran_id: ' . $tahunPelajaranId);
+        \Log::info('tryout_id: ' . $tryoutId);
+
+        $siswa = Siswa::with(['kelas', 'nilais.mataPelajaran', 'nilais.tryout.tahunPelajaran'])->findOrFail($id);
+
+        if ($tahunPelajaranId) {
+            $siswa->nilais = $siswa->nilais->filter(function($nilai) use ($tahunPelajaranId) {
+                return $nilai->tryout->tahun_pelajaran_id == $tahunPelajaranId;
+            });
+            \Log::info('Filtered nilais by tahun_pelajaran_id: ' . $siswa->nilais->toJson());
+        }
+
+        if ($tryoutId) {
+            $siswa->nilais = $siswa->nilais->where('tryout_id', $tryoutId);
+            \Log::info('Filtered nilais by tryout_id: ' . $siswa->nilais->toJson());
+        }
+
+        $tahunPelajarans = TahunPelajaran::all();
+        $tryouts = $tahunPelajaranId ? Tryout::where('tahun_pelajaran_id', $tahunPelajaranId)->get() : collect();
+
+        \Log::info('Returning view with siswa: ' . $siswa->toJson());
+
+        return view('admin.nilai.detail', compact('siswa', 'tahunPelajarans', 'tryouts', 'tahunPelajaranId', 'tryoutId'));
     }
 
     public function update(Request $request, $id)

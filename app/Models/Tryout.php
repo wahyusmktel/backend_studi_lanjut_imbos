@@ -35,4 +35,9 @@ class Tryout extends Model
     {
         return $this->belongsTo(TahunPelajaran::class, 'tahun_pelajaran_id', 'id');
     }
+
+    public function nilais()
+    {
+        return $this->hasMany(Nilai::class, 'tryout_id', 'id');
+    }
 }
