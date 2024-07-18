@@ -34,6 +34,7 @@ class AdminGuruController extends Controller
             // 'tempat_lahir' => 'required|string|max:255',
             // 'tanggal_lahir' => 'required|date',
             'foto' => 'nullable|image|max:2048',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -57,6 +58,7 @@ class AdminGuruController extends Controller
             // 'tempat_lahir' => 'required|string|max:255',
             // 'tanggal_lahir' => 'required|date',
             'foto' => 'nullable|image|max:2048',
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         if ($request->hasFile('foto')) {

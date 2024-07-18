@@ -28,6 +28,7 @@
                         <h6 class="panel-title txt-dark">Detail Nilai Siswa: {{ $siswa->nama_siswa }}</h6>
                     </div>
                     <div class="col-md-4 col-xs-6 text-right">
+                        <a href="{{ route('admin.nilai.downloadSertifikat', ['id' => $siswa->id, 'tahun_pelajaran_id' => $tahunPelajaranId, 'tryout_id' => $tryoutId]) }}" class="btn btn-primary">Download Sertifikat</a>
                         <a href="{{ route('admin.nilai-siswa.index') }}" class="btn btn-default">Kembali</a>
                     </div>
                 </div>
@@ -70,6 +71,13 @@
     </div>
 </div>
 <!-- /Filter -->
+
+{{-- Grafik --}}
+{{-- <div class="row">
+    <div class="col-sm-12">
+        <canvas id="nilaiChart" width="400" height="200"></canvas>
+    </div>
+</div> --}}
 
 <!-- Row -->
 <div class="row">
@@ -152,6 +160,31 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('nilaiChart').getContext('2d');
+        var nilaiChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {!! json_encode($siswa->nilais->pluck('tryout.nama_tryout')) !!},
+                datasets: [{
+                    label: 'Nilai Tryout',
+                    data: {!! json_encode($siswa->nilais->pluck('nilai')) !!},
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
 
 
 

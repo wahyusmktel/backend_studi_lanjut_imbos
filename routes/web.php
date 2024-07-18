@@ -11,9 +11,20 @@ use App\Http\Controllers\Admin\AdminTahunPelajaranController;
 use App\Http\Controllers\Admin\AdminTryoutController;
 use App\Http\Controllers\Admin\ProgramBimbelController;
 use App\Http\Controllers\Admin\SiswaController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GuruAuthController;
+use App\Http\Controllers\AbsensiGuruController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'index']);
+
+// Route untuk login guru
+Route::get('/login-guru', [GuruAuthController::class, 'showLoginForm'])->name('guru.login');
+Route::post('/login-guru', [GuruAuthController::class, 'login'])->name('guru.login.submit');
+Route::post('/logout-guru', [GuruAuthController::class, 'logout'])->name('guru.logout');
+
+// Route untuk absensi guru
+Route::middleware('guru')->group(function () {
+    Route::get('/absensi-guru', [AbsensiGuruController::class, 'absensi'])->name('absensi.guru.index');
 });
 
 Route::prefix('admin')->group(function () {
@@ -78,6 +89,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/nilai/{id}', [AdminNilaiController::class, 'destroy'])->name('admin.nilai.destroy');
         Route::get('/nilai-siswa', [AdminNilaiController::class, 'nilaiSiswaIndex'])->name('admin.nilai-siswa.index');
         Route::get('/nilai-siswa/{id}', [AdminNilaiController::class, 'detail'])->name('admin.nilai.detail');
+        Route::get('/nilai-siswa/{id}/download-sertifikat', [AdminNilaiController::class, 'downloadSertifikat'])->name('admin.nilai.downloadSertifikat');
 
     });
 });

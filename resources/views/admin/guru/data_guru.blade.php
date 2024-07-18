@@ -140,6 +140,14 @@
                         <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir">
                     </div>
                     <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation">Confirm Password</label>
+                        <input type="password" name="password_confirmation" class="form-control" required>
+                    </div>
+                    <div class="form-group">
                         <label for="foto">Upload Foto</label>
                         <input type="file" class="dropify" id="foto" name="foto" />
                     </div>
@@ -188,6 +196,14 @@
                     <div class="form-group">
                         <label for="editTanggalLahir">Tanggal Lahir</label>
                         <input type="date" class="form-control" id="editTanggalLahir" name="tanggal_lahir">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password (Kosongkan jika tidak ingin mengubah)</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation">Confirm Password</label>
+                        <input type="password" name="password_confirmation" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="editFoto">Upload Foto</label>

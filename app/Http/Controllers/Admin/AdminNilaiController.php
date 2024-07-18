@@ -11,6 +11,7 @@ use App\Models\Kelas;
 use App\Models\TahunPelajaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminNilaiController extends Controller
 {
@@ -159,6 +160,28 @@ class AdminNilaiController extends Controller
         \Log::info('Returning view with siswa: ' . $siswa->toJson());
 
         return view('admin.nilai.detail', compact('siswa', 'tahunPelajarans', 'tryouts', 'tahunPelajaranId', 'tryoutId'));
+    }
+
+    public function downloadSertifikat(Request $request, $id)
+    {
+        $tahunPelajaranId = $request->input('tahun_pelajaran_id');
+        $tryoutId = $request->input('tryout_id');
+
+        $siswa = Siswa::with(['kelas', 'nilais.mataPelajaran', 'nilais.tryout.tahunPelajaran'])->findOrFail($id);
+
+        if ($tahunPelajaranId) {
+            $siswa->nilais = $siswa->nilais->filter(function($nilai) use ($tahunPelajaranId) {
+                return $nilai->tryout->tahun_pelajaran_id == $tahunPelajaranId;
+            });
+        }
+
+        if ($tryoutId) {
+            $siswa->nilais = $siswa->nilais->where('tryout_id', $tryoutId);
+        }
+
+        $pdf = Pdf::loadView('admin.nilai.sertifikat', compact('siswa', 'tahunPelajaranId', 'tryoutId'));
+
+        return $pdf->download('sertifikat.pdf');
     }
 
     public function update(Request $request, $id)

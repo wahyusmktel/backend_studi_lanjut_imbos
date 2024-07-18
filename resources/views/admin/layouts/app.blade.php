@@ -75,6 +75,8 @@
     
     <!-- Fancy Dropdown JS -->
     <script src="{{ asset('dist/js/dropdown-bootstrap-extended.js') }}"></script>
+
+    <script src="{{ asset('vendors/chart.js/Chart.min.js') }}"></script>
     
     <!-- Init JavaScript -->
     <script src="{{ asset('dist/js/init.js') }}"></script>
