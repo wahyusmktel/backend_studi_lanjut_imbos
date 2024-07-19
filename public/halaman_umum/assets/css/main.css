@@ -1536,7 +1536,9 @@ transform: translateX(-9%) translateY(-25%) rotate(45deg);
 }
 
 .profile-cover__img > img {
-  max-width: 120px;
+  /* max-width: 120px; */
+  width: 120px;
+  height: 120px;
   border: 5px solid #fff;
   border-radius: 50%;
 }
@@ -1545,6 +1547,15 @@ transform: translateX(-9%) translateY(-25%) rotate(45deg);
   color: #393939;
   font-size: 20px;
   line-height: 30px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  z-index: var(--bs-backdrop-zindex);
+}
+
+.no-fixed-backdrop + .modal-backdrop {
+  position: absolute !important;
 }
 
 .profile-cover__img > img + .h3 {

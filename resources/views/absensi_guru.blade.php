@@ -100,7 +100,7 @@
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
-      <h2>Nama Guru</h2>
+      <h2>{{ $guru->nama }}</h2> <!-- Tampilkan nama guru yang sedang login -->
       <p>Perkembangan Studi Lanjut IMBOS<br></p>
     </div><!-- End Section Title -->
 
@@ -111,8 +111,10 @@
             <!-- Panel Start -->
             <div class="panel profile-cover">
               <div class="profile-cover__img">
-                  <img src="assets/img/avatars/01_150x150.png" alt="">
-                  <h3 class="h3">M.Kosim Ali, M.Pd</h3> <p class="sub-name">Pengampu Penalaran Matematika</p>
+                  <img src="{{ asset('storage/' . $guru->foto) }}" alt="{{ $guru->nama }}"> <!-- Path gambar dari database -->
+                  {{-- <h3 class="h3">M.Kosim Ali, M.Pd</h3> <p class="sub-name">Pengampu Penalaran Matematika</p> --}}
+                  <h3 class="h3">{{ $guru->nama }}</h3> <!-- Tampilkan nama guru -->
+                  <p class="sub-name">Pengampu {{ $guru->mataPelajaran->namaMataPelajaran }}</p> <!-- Tampilkan nama mata pelajaran -->
               </div>
 
               <div class="profile-cover__action" data-bg-img="assets/img/covers/01_800x150.jpg" data-overlay="0.3">
@@ -121,10 +123,66 @@
                       <span>Follow</span>
                   </button> -->
 
-                  <button class="btn btn-rounded btn-info">
+                  {{-- <button class="btn btn-rounded btn-info">
                       <i class="bi bi-upload"></i>
                       <span>Ganti Foto Sampul</span>
-                  </button>
+                  </button> --}}
+              <!-- Tombol Ganti Foto Sampul -->
+              <button class="btn btn-rounded btn-info" data-bs-toggle="modal" data-bs-target="#uploadFotoSampulModal">
+                <i class="bi bi-upload"></i>
+                <span>Ganti Foto Sampul</span>
+              </button>
+
+              <!-- Modal Ganti Foto Sampul -->
+              <div class="modal fade no-fixed-backdrop" id="uploadFotoSampulModal" tabindex="-1" aria-labelledby="uploadFotoSampulModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="uploadFotoSampulModalLabel">Ganti Foto Sampul</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('guru.uploadFotoSampul') }}" method="POST" enctype="multipart/form-data">
+                      @csrf
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label for="foto_sampul" class="form-label">Pilih Foto Sampul</label>
+                          <input type="file" class="form-control" id="foto_sampul" name="foto_sampul" accept="image/*" onchange="previewImage(event)">
+                        </div>
+                        <div class="mb-3">
+                          <img id="preview" src="#" alt="Preview Image" style="display: none; max-width: 100%;">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <script>
+                function previewImage(event) {
+                  var reader = new FileReader();
+                  reader.onload = function(){
+                      var output = document.getElementById('preview');
+                      output.src = reader.result;
+                      output.style.display = 'block';
+                  }
+                  reader.readAsDataURL(event.target.files[0]);
+                }
+
+                document.addEventListener('show.bs.modal', function (event) {
+                  if (event.target.classList.contains('no-fixed-backdrop')) {
+                    var backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                      backdrop.classList.add('no-fixed-backdrop');
+                    }
+                  }
+                });
+              </script>
+
+
               </div>
 
               <div class="profile-cover__info">

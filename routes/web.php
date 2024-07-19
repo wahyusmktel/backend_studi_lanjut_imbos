@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GuruAuthController;
 use App\Http\Controllers\AbsensiGuruController;
+use App\Http\Controllers\AbsensiController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -24,7 +25,8 @@ Route::post('/logout-guru', [GuruAuthController::class, 'logout'])->name('guru.l
 
 // Route untuk absensi guru
 Route::middleware('guru')->group(function () {
-    Route::get('/absensi-guru', [AbsensiGuruController::class, 'absensi'])->name('absensi.guru.index');
+    Route::get('/absensi-guru', [AbsensiGuruController::class, 'index'])->name('absensi.guru.index');
+    Route::post('/upload-foto-sampul', [AbsensiGuruController::class, 'uploadFotoSampul'])->name('guru.uploadFotoSampul');
 });
 
 Route::prefix('admin')->group(function () {

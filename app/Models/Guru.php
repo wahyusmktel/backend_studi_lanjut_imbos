@@ -12,7 +12,7 @@ class Guru extends Authenticatable // Menggunakan Authenticatable untuk autentik
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'nama', 'nip', 'mata_pelajaran_id', 'tempat_lahir', 'tanggal_lahir', 'foto','password'
+        'nama', 'nip', 'mata_pelajaran_id', 'tempat_lahir', 'tanggal_lahir', 'foto','password','foto_sampul'
     ];
 
     // Menyembunyikan kolom password saat model dikonversi ke array atau JSON
