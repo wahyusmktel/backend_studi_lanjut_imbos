@@ -14,6 +14,9 @@ class AbsensiDetail extends Model
         'absensi_id', 'siswa_id', 'kehadiran'
     ];
 
+    // Mengaktifkan timestamps
+    public $timestamps = true;
+
     public function absensi()
     {
         return $this->belongsTo(Absensi::class);

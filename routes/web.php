@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GuruAuthController;
 use App\Http\Controllers\AbsensiGuruController;
-use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\Admin\AbsensiController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -25,8 +25,12 @@ Route::post('/logout-guru', [GuruAuthController::class, 'logout'])->name('guru.l
 
 // Route untuk absensi guru
 Route::middleware('guru')->group(function () {
-    Route::get('/absensi-guru', [AbsensiGuruController::class, 'index'])->name('absensi.guru.index');
+    Route::get('/absensi', [AbsensiGuruController::class, 'index'])->name('absensi.index');
     Route::post('/upload-foto-sampul', [AbsensiGuruController::class, 'uploadFotoSampul'])->name('guru.uploadFotoSampul');
+    Route::post('/absensi', [AbsensiGuruController::class, 'store'])->name('absensi.store');
+    Route::get('/absensi/get-siswa', [AbsensiGuruController::class, 'getSiswaByKelas'])->name('absensi.get-siswa');
+
+    
 });
 
 Route::prefix('admin')->group(function () {
@@ -93,5 +97,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/nilai-siswa/{id}', [AdminNilaiController::class, 'detail'])->name('admin.nilai.detail');
         Route::get('/nilai-siswa/{id}/download-sertifikat', [AdminNilaiController::class, 'downloadSertifikat'])->name('admin.nilai.downloadSertifikat');
 
+        //absensi
+        Route::get('/absensi', [AbsensiController::class, 'index'])->name('admin.absensi.index');
+        Route::get('/absensi/export', [AbsensiController::class, 'export'])->name('admin.absensi.export');
     });
 });

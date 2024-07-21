@@ -197,250 +197,77 @@
         </div>
         <div class="col-lg-12">
           <div class="panel">
-            <div class="panel-heading">
-              <h3 class="panel-title">Absensi Perkembangan Studi Lanjut Siswa IMBOS</h3>
-            </div>
-            <div class="panel-content">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="alert alert-info">
-                    Silahkan isi data dibawah ini dengan benar.
-                  </div>
-                </div>
+              <div class="panel-heading">
+                  <h3 class="panel-title">Absensi Perkembangan Studi Lanjut Siswa IMBOS</h3>
               </div>
-              <div class="row">
-                <div class="col-lg-6 mt-3">
-                  <form action="">
-                    <!-- Form Group Start -->
-                    <label>
-                        <span class="label-text">Tanggal</span>
-                        <input type="date" name="tanggal" placeholder="Pilih Tanggal..." class="form-control">
-                    </label>
-                    <!-- Form Group End -->
-                    <!-- Form Group Start -->
-                    <label>
-                        <span class="label-text">Nama Guru</span>
-                        <input type="text" name="nama_guru" placeholder="Masukan Nama Guru" class="form-control">
-                    </label>
-                    <!-- Form Group End -->
-                    <!-- Form Group Start -->
-                    <label>
-                        <span class="label-text">Materi</span>
-                        <select name="select" class="form-control">
-                          <option value="1">Option 1</option>
-                          <option value="2">Option 2</option>
-                          <option value="3">Option 3</option>
-                          <option value="4">Option 4</option>
-                      </select>
-                    </label>
-                    <!-- Form Group End -->
-                    <!-- Form Group Start -->
-                    <label>
-                        <span class="label-text">Kelas</span>
-                        <select name="select" class="form-control">
-                          <option value="1">Option 1</option>
-                          <option value="2">Option 2</option>
-                          <option value="3">Option 3</option>
-                          <option value="4">Option 4</option>
-                      </select>
-                    </label>
-                    <!-- Form Group End -->
-                    <!-- Form Group Start -->
-                    <label>
-                        <span class="label-text">Catatan</span>
-                        <textarea name="textarea" class="form-control" placeholder="Catatan..."></textarea>
-                    </label>
-                    <!-- Form Group End -->
-                     <!-- Form Group Start -->
-                    <label>
-                        <span class="label-text">Kirim Foto</span>
-                        <input class="form-control" type="file" id="formFile">
-                    </label>
-                  <!-- Form Group End -->
+              <div class="panel-content">
+                  <div class="row">
+                      <div class="col-lg-12">
+                          <div class="alert alert-info">
+                              Silahkan isi data dibawah ini dengan benar.
+                          </div>
+                      </div>
+                  </div>
+                  <form id="absensiForm" action="{{ route('absensi.store') }}" method="POST" enctype="multipart/form-data">
+                      @csrf
+                      <div class="row">
+                          <div class="col-lg-6 mt-3">
+                              <label>
+                                  <span class="label-text">Tanggal</span>
+                                  <input type="date" name="tanggal" placeholder="Pilih Tanggal..." class="form-control" required>
+                              </label>
+                              <label>
+                                  <span class="label-text">Nama Guru</span>
+                                  <input type="text" name="nama_guru" value="{{ $guru->nama }}" class="form-control" readonly>
+                              </label>
+                              <label>
+                                  <span class="label-text">Materi</span>
+                                  <input type="text" value="{{ $guru->mataPelajaran->namaMataPelajaran }}" class="form-control" readonly>
+                              </label>
+                              <label>
+                                  <span class="label-text">Kelas</span>
+                                  <select name="kelas_id" id="kelas_id" class="form-control" required>
+                                      <option value="">Pilih Kelas</option>
+                                      @foreach($kelases as $kelas)
+                                          <option value="{{ $kelas->id }}">{{ $kelas->nama_kelas }}</option>
+                                      @endforeach
+                                  </select>
+                              </label>
+                              <label>
+                                  <span class="label-text">Catatan</span>
+                                  <textarea name="catatan" class="form-control" placeholder="Catatan..." required></textarea>
+                              </label>
+                              <label>
+                                  <span class="label-text">Kirim Foto</span>
+                                  <input type="file" name="foto" class="form-control" required>
+                              </label>
+                              <div class="col-lg-12 mt-3">
+                                  <button type="submit" class="btn btn-imbos">SIMPAN</button>
+                              </div>
+                          </div>
+                          <div class="col-lg-6 mt-3">
+                              <div class="table-responsive">
+                                  <table class="table table-striped table-bordered">
+                                      <thead>
+                                          <tr>
+                                              <th>No</th>
+                                              <th>Nama Siswa</th>
+                                              <th>Kehadiran</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody id="siswa-table-body">
+                                          <tr>
+                                              <td colspan="3" class="text-center">Pilih kelas terlebih dahulu</td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
                   </form>
-                </div>
-                <div class="col-lg-6 mt-3">
-                  <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>No</th>
-                          <th>Nama Siswa</th>
-                          <th>Kehadiran</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Nama Siswa</td>
-                          <td>
-                            <div class="customradiobutton">
-                              <input type="radio" id="hadir1" name="kehadiran1" value="hadir">
-                              <label for="hadir1">Hadir</label>
-                    
-                              <input type="radio" id="tidak_hadir1" name="kehadiran1" value="tidak_hadir">
-                              <label for="tidak_hadir1">Tidak Hadir</label>
-                    
-                              <input type="radio" id="sakit1" name="kehadiran1" value="sakit">
-                              <label for="sakit1">Sakit</label>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
               </div>
-              <div class="row">
-                <div class="col-lg-12 mt-3">
-                  <a href="" class="btn btn-imbos">SIMPAN</a>
-                </div>
-              </div>
-            </div>
+          </div>
+      </div>
           </div>
         </div>
       </div><!-- End pricing row -->
@@ -448,5 +275,85 @@
     </div>
 
   </section><!-- /Pricing Section -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('kelas_id').addEventListener('change', function () {
+        var kelasId = this.value;
+        var tbody = document.getElementById('siswa-table-body');
 
-  @endsection
+        if (kelasId) {
+            fetch(`/absensi/get-siswa?kelas_id=${kelasId}`)
+                .then(response => response.json())
+                .then(data => {
+                    tbody.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach((siswa, index) => {
+                            var tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${index + 1}</td>
+                                <td>${siswa.nama_siswa}</td>
+                                <td>
+                                    <div class="customradiobutton">
+                                        <input type="hidden" name="siswa_id[]" value="${siswa.id}">
+                                        <input type="radio" id="hadir${index}" name="kehadiran[${siswa.id}]" value="1" required>
+                                        <label for="hadir${index}">Hadir</label>
+
+                                        <input type="radio" id="tidak_hadir${index}" name="kehadiran[${siswa.id}]" value="0" required>
+                                        <label for="tidak_hadir${index}">Tidak Hadir</label>
+
+                                        <input type="radio" id="sakit${index}" name="kehadiran[${siswa.id}]" value="2" required>
+                                        <label for="sakit${index}">Sakit</label>
+                                    </div>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    } else {
+                        var tr = document.createElement('tr');
+                        tr.innerHTML = '<td colspan="3" class="text-center">Tidak ada siswa</td>';
+                        tbody.appendChild(tr);
+                    }
+                });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center">Pilih kelas terlebih dahulu</td></tr>';
+        }
+    });
+
+    document.getElementById('absensiForm').addEventListener('submit', function(event) {
+        var radioGroups = document.querySelectorAll('#siswa-table-body .customradiobutton');
+        var allChecked = true;
+
+        radioGroups.forEach(function(group) {
+            var radios = group.querySelectorAll('input[type="radio"]');
+            var checked = Array.from(radios).some(function(radio) {
+                return radio.checked;
+            });
+            if (!checked) {
+                allChecked = false;
+            }
+        });
+
+        if (!allChecked) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Silahkan isikan kehadiran terlebih dahulu sebelum menyimpan.',
+            });
+        }
+    });
+
+</script>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses',
+            text: '{{ session('success') }}',
+        });
+    </script>
+@endif
+
+
+@endsection

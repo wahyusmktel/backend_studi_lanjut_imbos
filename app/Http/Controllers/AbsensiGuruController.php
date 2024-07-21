@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-// use App\Models\AbsensiGuru;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Guru;
+use App\Models\Kelas;
+use App\Models\Siswa;
+use App\Models\Absensi;
+use App\Models\AbsensiDetail;
+use Illuminate\Support\Facades\Auth;
 
 class AbsensiGuruController extends Controller
 {
@@ -13,8 +16,47 @@ class AbsensiGuruController extends Controller
     {
         $guru = Auth::guard('guru')->user();
         $guru = Guru::with('mataPelajaran')->find($guru->id);
+        $kelases = Kelas::all();
 
-        return view('absensi_guru', compact('guru'));
+        return view('absensi_guru', compact('guru', 'kelases'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'tanggal' => 'required|date',
+            'kelas_id' => 'required|uuid',
+            'catatan' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'siswa_id' => 'required|array',
+            'kehadiran' => 'required|array',
+        ]);
+
+        $guru = Auth::guard('guru')->user();
+
+        $absensi = Absensi::create([
+            'guru_id' => $guru->id,
+            'kelas_id' => $request->kelas_id,
+            'tanggal' => $request->tanggal,
+            'catatan' => $request->catatan,
+            'foto' => $request->hasFile('foto') ? $request->file('foto')->store('foto_absensi', 'public') : null,
+        ]);
+
+        foreach ($request->siswa_id as $siswa_id) {
+            AbsensiDetail::create([
+                'absensi_id' => $absensi->id,
+                'siswa_id' => $siswa_id,
+                'kehadiran' => $request->kehadiran[$siswa_id], // Gunakan siswa_id sebagai kunci
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Absensi berhasil disimpan.');
+    }
+
+    public function getSiswaByKelas(Request $request)
+    {
+        $siswa = Siswa::where('kelas_id', $request->kelas_id)->get();
+        return response()->json($siswa);
     }
 
     public function uploadFotoSampul(Request $request)

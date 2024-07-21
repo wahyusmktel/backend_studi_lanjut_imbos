@@ -26,6 +26,11 @@
 
   <!-- Main CSS File -->
   <link href="{{ asset('halaman_umum/assets/css/main.css') }}" rel="stylesheet">
+
+  <!-- jQuery -->
+  {{-- <script src="{{ asset('vendors/bower_components/jquery/dist/jquery.min.js') }}"></script> --}}
+  <!-- SweetAlert JavaScript -->
+  {{-- <script src="{{ asset('vendors/bower_components/sweetalert/dist/sweetalert.min.js') }}"></script> --}}
 </head>
 
 <body class="index-page">
