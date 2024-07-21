@@ -59,7 +59,7 @@
                     <a href="/admin/absensi">Data Absensi Siswa</a>
                 </li>
                 <li>
-                    <a href="/admin/absensi_guru">Data Absensi Guru</a>
+                    <a href="/admin/absensi-guru">Data Absensi Guru</a>
                 </li>
             </ul>
         </li>

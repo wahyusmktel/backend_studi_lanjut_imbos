@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GuruAuthController;
 use App\Http\Controllers\AbsensiGuruController;
 use App\Http\Controllers\Admin\AbsensiController;
+use App\Http\Controllers\Admin\AbsensiGurubaruController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -103,7 +104,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/absensi/detail/{siswa_id}', [AbsensiController::class, 'detail'])->name('admin.absensi.detail');
 
         // Route untuk export detail absensi siswa
-        Route::get('/admin/absensi/detail/export/{id}', [AbsensiController::class, 'exportDetail'])->name('admin.absensi.detail.export');
+        Route::get('/absensi/detail/export/{id}', [AbsensiController::class, 'exportDetail'])->name('admin.absensi.detail.export');
+
+        Route::get('/absensi-guru', [AbsensiGurubaruController::class, 'index'])->name('admin.absensi-guru.index');
+        Route::get('/absensi-guru/{id}', [AbsensiGurubaruController::class, 'show'])->name('admin.absensi-guru.show');
+        Route::get('/absensi-guru/export', [AbsensiGurubaruController::class, 'export'])->name('admin.absensi-guru.export');
+        Route::delete('/absensi/{id}', [AbsensiGurubaruController::class, 'destroy'])->name('admin.absensi.destroy');
+
+
 
 
 
