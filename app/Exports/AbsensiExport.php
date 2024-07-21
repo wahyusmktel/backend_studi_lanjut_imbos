@@ -97,7 +97,6 @@ class AbsensiExport implements FromCollection, WithHeadings, WithStyles, WithEve
     public function styles(Worksheet $sheet)
     {
         return [
-            // Set styles for the first row
             1 => [
                 'font' => ['bold' => true],
                 'fill' => [
@@ -114,7 +113,7 @@ class AbsensiExport implements FromCollection, WithHeadings, WithStyles, WithEve
 
     public function startCell(): string
     {
-        return 'A1';
+        return 'A4';
     }
 
     public function title(): string
@@ -131,7 +130,20 @@ class AbsensiExport implements FromCollection, WithHeadings, WithStyles, WithEve
                     ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT)
                     ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
 
-                $sheet->getStyle('A1:F1')->applyFromArray([
+                $sheet->mergeCells('A1:F1');
+                $sheet->mergeCells('A2:F2');
+                $sheet->setCellValue('A1', 'LAPORAN KEHADIRAN ABSENSI BIMBEL SISWA');
+                $sheet->setCellValue('A2', 'Laporan data dari tanggal ' . \Carbon\Carbon::parse($this->startDate)->format('d-m-Y') . ' sampai ' . \Carbon\Carbon::parse($this->endDate)->format('d-m-Y'));
+                $sheet->getStyle('A1:A2')->applyFromArray([
+                    'font' => ['bold' => true, 'size' => 14],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                    ],
+                ]);
+
+                // Set styles for the first row
+                $sheet->getStyle('A4:F4')->applyFromArray([
                     'font' => ['bold' => true],
                     'fill' => [
                         'fillType' => Fill::FILL_SOLID,
@@ -149,7 +161,7 @@ class AbsensiExport implements FromCollection, WithHeadings, WithStyles, WithEve
                 }
 
                 // Add border to all cells
-                $sheet->getStyle('A1:F' . $sheet->getHighestRow())->applyFromArray([
+                $sheet->getStyle('A4:F' . $sheet->getHighestRow())->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => Border::BORDER_THIN,
@@ -159,7 +171,7 @@ class AbsensiExport implements FromCollection, WithHeadings, WithStyles, WithEve
                 ]);
 
                 // Set date format for "Tanggal" column
-                $sheet->getStyle('E2:E' . $sheet->getHighestRow())->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
+                $sheet->getStyle('E5:E' . $sheet->getHighestRow())->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
 
                 // Add summary row
                 $lastRow = $sheet->getHighestRow() + 1;
