@@ -73,7 +73,7 @@ class AbsensiController extends Controller
             });
         }
 
-        if ($request->has('mata_pelajaran_id')) {
+        if ($request->has('mata_pelajaran_id') && $request->mata_pelajaran_id != '') {
             $query->whereHas('absensi.guru.mataPelajaran', function ($q) use ($request) {
                 $q->where('id', $request->mata_pelajaran_id);
             });
