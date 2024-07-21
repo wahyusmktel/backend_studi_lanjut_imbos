@@ -100,6 +100,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('admin.absensi.index');
         Route::get('/absensi/export', [AbsensiController::class, 'export'])->name('admin.absensi.export');
         Route::patch('/absensi/update', [AbsensiController::class, 'update'])->name('admin.absensi.update');
+        Route::get('/absensi/detail/{siswa_id}', [AbsensiController::class, 'detail'])->name('admin.absensi.detail');
+
+        // Route untuk export detail absensi siswa
+        Route::get('/admin/absensi/detail/export/{id}', [AbsensiController::class, 'exportDetail'])->name('admin.absensi.detail.export');
+
+
 
     });
 });

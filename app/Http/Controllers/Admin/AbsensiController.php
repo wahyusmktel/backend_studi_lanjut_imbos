@@ -9,6 +9,8 @@ use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AbsensiExport;
+use App\Models\Siswa;
+use App\Exports\AbsensiDetailExport;
 
 class AbsensiController extends Controller
 {
@@ -59,5 +61,37 @@ class AbsensiController extends Controller
 
         return redirect()->route('admin.absensi.index')->with('success', 'Data kehadiran berhasil diperbarui.');
     }
+
+    public function detail(Request $request, $siswa_id)
+    {
+        $query = AbsensiDetail::with('absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran')
+                            ->where('siswa_id', $siswa_id);
+
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereHas('absensi', function($q) use ($request) {
+                $q->whereBetween('tanggal', [$request->start_date, $request->end_date]);
+            });
+        }
+
+        if ($request->has('mata_pelajaran_id')) {
+            $query->whereHas('absensi.guru.mataPelajaran', function ($q) use ($request) {
+                $q->where('id', $request->mata_pelajaran_id);
+            });
+        }
+
+        // $absensiDetails = $query->get();
+        $absensiDetails = $query->paginate(10);
+
+        $siswa = Siswa::findOrFail($siswa_id);
+        $mataPelajarans = MataPelajaran::all();
+
+        return view('admin.absensi.detail_absensi', compact('absensiDetails', 'siswa', 'mataPelajarans', 'request'));
+    }
+
+    public function exportDetail($id, Request $request)
+    {
+        return Excel::download(new AbsensiDetailExport($id, $request->start_date, $request->end_date, $request->mata_pelajaran_id), 'absensi_detail.xlsx');
+    }
+
 
 }

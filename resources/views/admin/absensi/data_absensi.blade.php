@@ -124,6 +124,7 @@
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-primary edit-button" data-id="{{ $detail->id }}" data-kehadiran="{{ $detail->kehadiran }}">Edit</button>
+                                                    <a href="{{ route('admin.absensi.detail', $detail->siswa_id) }}" class="btn btn-info">Detail</a>
                                                 </td>
                                             </tr>
                                             @endforeach
