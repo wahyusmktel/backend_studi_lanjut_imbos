@@ -28,11 +28,18 @@
                         <form method="GET" action="{{ route('admin.absensi.index') }}">
                             <div class="form-group">
                                 <div class="input-group mb-15">
-                                    <input type="date" id="date" name="date" class="form-control" value="{{ request('date') }}">
+                                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request('start_date') }}" placeholder="Mulai Tanggal" required>
+                                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request('end_date') }}" placeholder="Sampai Tanggal" required>
                                     <select name="mata_pelajaran_id" class="form-control">
                                         <option value="">Pilih Mata Pelajaran</option>
                                         @foreach($mataPelajarans as $mp)
                                             <option value="{{ $mp->id }}" {{ request('mata_pelajaran_id') == $mp->id ? 'selected' : '' }}>{{ $mp->namaMataPelajaran }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select name="kelas_id" class="form-control">
+                                        <option value="">Pilih Kelas</option>
+                                        @foreach($kelases as $kelas)
+                                            <option value="{{ $kelas->id }}" {{ request('kelas_id') == $kelas->id ? 'selected' : '' }}>{{ $kelas->nama_kelas }}</option>
                                         @endforeach
                                     </select>
                                     <span class="input-group-btn">
@@ -43,7 +50,7 @@
                         </form>
                     </div>
                     <div class="col-md-4 col-xs-6 text-right">
-                        <a href="{{ route('admin.absensi.export', ['date' => request('date'), 'mata_pelajaran_id' => request('mata_pelajaran_id')]) }}" class="btn btn-success">Download Excel</a>
+                        <a href="{{ route('admin.absensi.export', ['start_date' => request('start_date'), 'end_date' => request('end_date'), 'mata_pelajaran_id' => request('mata_pelajaran_id'), 'kelas_id' => request('kelas_id')]) }}" class="btn btn-success">Download Excel</a>
                     </div>
                 </div>
             </div>
@@ -93,7 +100,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <nav class="pagination-wrap d-inline-block" aria-label="Page navigation example">
-                                {{ $absensiDetails->appends(['date' => request('date'), 'mata_pelajaran_id' => request('mata_pelajaran_id')])->links('vendor.pagination.custom') }}
+                                {{ $absensiDetails->appends(['start_date' => request('start_date'), 'end_date' => request('end_date'), 'mata_pelajaran_id' => request('mata_pelajaran_id'), 'kelas_id' => request('kelas_id')])->links('vendor.pagination.custom') }}
                             </nav>
                         </div>
                     </div>

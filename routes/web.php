@@ -97,8 +97,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/nilai-siswa/{id}', [AdminNilaiController::class, 'detail'])->name('admin.nilai.detail');
         Route::get('/nilai-siswa/{id}/download-sertifikat', [AdminNilaiController::class, 'downloadSertifikat'])->name('admin.nilai.downloadSertifikat');
 
-        //absensi
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('admin.absensi.index');
         Route::get('/absensi/export', [AbsensiController::class, 'export'])->name('admin.absensi.export');
+
     });
 });
