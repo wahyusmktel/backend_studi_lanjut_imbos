@@ -29,7 +29,10 @@ class AbsensiGurubaruController extends Controller
         $gurus = Guru::all();
         $mataPelajarans = MataPelajaran::all();
 
-        return view('admin.absensi_guru.index', compact('absensis', 'gurus', 'mataPelajarans'));
+        // Prepare data for the chart per month
+        $attendanceChartData = $this->prepareMonthlyAttendanceChartData($absensis);
+
+        return view('admin.absensi_guru.index', compact('absensis', 'gurus', 'mataPelajarans', 'attendanceChartData'));
     }
 
     public function show($id)
@@ -55,4 +58,30 @@ class AbsensiGurubaruController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Data absensi berhasil dihapus.']);
     }
+
+    private function prepareMonthlyAttendanceChartData($absensis)
+    {
+        $monthlyAttendance = [];
+
+        foreach ($absensis as $absensi) {
+            $month = \Carbon\Carbon::parse($absensi->tanggal)->format('Y-m');
+
+            if (!isset($monthlyAttendance[$month])) {
+                $monthlyAttendance[$month] = 0;
+            }
+
+            $monthlyAttendance[$month]++;
+        }
+
+        ksort($monthlyAttendance);
+
+        $labels = array_keys($monthlyAttendance);
+        $data = array_values($monthlyAttendance);
+
+        return [
+            'labels' => $labels,
+            'data' => $data
+        ];
+    }
+
 }

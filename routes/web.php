@@ -108,7 +108,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/absensi-guru', [AbsensiGurubaruController::class, 'index'])->name('admin.absensi-guru.index');
         Route::get('/absensi-guru/{id}', [AbsensiGurubaruController::class, 'show'])->name('admin.absensi-guru.show');
-        Route::get('/absensi-guru/export', [AbsensiGurubaruController::class, 'export'])->name('admin.absensi-guru.export');
+        Route::get('/admin/absensi-guru/export', [AbsensiGurubaruController::class, 'export'])->name('admin.absensi-guru.export');
         Route::delete('/absensi/{id}', [AbsensiGurubaruController::class, 'destroy'])->name('admin.absensi.destroy');
 
 

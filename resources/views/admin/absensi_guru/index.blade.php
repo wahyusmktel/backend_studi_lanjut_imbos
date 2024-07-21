@@ -95,6 +95,11 @@
                             </table>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <canvas id="attendanceChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>                    
                 </div>
                 <div class="panel-footer">
                     <div class="row">
@@ -168,6 +173,33 @@
                 }
             });
         });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data for the chart
+    var attendanceData = @json($attendanceChartData);
+    
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
+    const attendanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: attendanceData.labels,
+            datasets: [{
+                label: 'Jumlah Kehadiran per Bulan',
+                data: attendanceData.data,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
     });
 </script>
 
