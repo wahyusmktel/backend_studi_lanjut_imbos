@@ -48,7 +48,18 @@
             <a href="javascript:void(0);" data-toggle="collapse" data-target="#nilai"><div class="pull-left"><i class="ti-dashboard mr-20"></i><span class="right-nav-text">Nilai</span></div><div class="pull-right"><i class="ti-angle-down"></i></div><div class="clearfix"></div></a>
             <ul id="nilai" class="collapse collapse-level-1">
                 <li>
-                    <a href="/admin/nilai-siswa">Data Nilai</a>
+                    <a href="/admin/nilai-siswa">Data Absensi</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:void(0);" data-toggle="collapse" data-target="#absensi"><div class="pull-left"><i class="ti-dashboard mr-20"></i><span class="right-nav-text">Absensi</span></div><div class="pull-right"><i class="ti-angle-down"></i></div><div class="clearfix"></div></a>
+            <ul id="absensi" class="collapse collapse-level-1">
+                <li>
+                    <a href="/admin/absensi">Data Absensi Siswa</a>
+                </li>
+                <li>
+                    <a href="/admin/absensi_guru">Data Absensi Guru</a>
                 </li>
             </ul>
         </li>

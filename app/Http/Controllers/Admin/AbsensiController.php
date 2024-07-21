@@ -45,4 +45,19 @@ class AbsensiController extends Controller
     {
         return Excel::download(new AbsensiExport($request->start_date, $request->end_date, $request->mata_pelajaran_id, $request->kelas_id), 'absensi.xlsx');
     }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:absensi_details,id',
+            'kehadiran' => 'required|in:0,1,2',
+        ]);
+
+        $absensiDetail = AbsensiDetail::findOrFail($request->id);
+        $absensiDetail->kehadiran = $request->kehadiran;
+        $absensiDetail->save();
+
+        return redirect()->route('admin.absensi.index')->with('success', 'Data kehadiran berhasil diperbarui.');
+    }
+
 }

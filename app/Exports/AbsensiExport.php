@@ -174,11 +174,29 @@ class AbsensiExport implements FromCollection, WithHeadings, WithStyles, WithEve
                 $sheet->getStyle('E5:E' . $sheet->getHighestRow())->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
 
                 // Add summary row
+                // $lastRow = $sheet->getHighestRow() + 1;
+                // $sheet->setCellValue('A' . $lastRow, 'Jumlah Kehadiran: ' . $this->totalHadir);
+                // $sheet->setCellValue('B' . $lastRow, 'Jumlah Ketidakhadiran: ' . $this->totalTidakHadir);
+                // $sheet->setCellValue('C' . $lastRow, 'Jumlah Sakit: ' . $this->totalSakit);
+
+                // $sheet->mergeCells('A' . $lastRow . ':F' . $lastRow);
+                // $sheet->getStyle('A' . $lastRow . ':F' . $lastRow)->applyFromArray([
+                //     'font' => ['bold' => true],
+                //     'alignment' => [
+                //         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                //         'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                //     ],
+                //     'borders' => [
+                //         'top' => [
+                //             'borderStyle' => Border::BORDER_THIN,
+                //             'color' => ['argb' => '000000'],
+                //         ],
+                //     ],
+                // ]);
+
+                // Add summary row
                 $lastRow = $sheet->getHighestRow() + 1;
                 $sheet->setCellValue('A' . $lastRow, 'Jumlah Kehadiran: ' . $this->totalHadir);
-                $sheet->setCellValue('B' . $lastRow, 'Jumlah Ketidakhadiran: ' . $this->totalTidakHadir);
-                $sheet->setCellValue('C' . $lastRow, 'Jumlah Sakit: ' . $this->totalSakit);
-
                 $sheet->mergeCells('A' . $lastRow . ':F' . $lastRow);
                 $sheet->getStyle('A' . $lastRow . ':F' . $lastRow)->applyFromArray([
                     'font' => ['bold' => true],
@@ -193,6 +211,41 @@ class AbsensiExport implements FromCollection, WithHeadings, WithStyles, WithEve
                         ],
                     ],
                 ]);
+
+                // Add ketidakhadiran summary row
+                $sheet->setCellValue('A' . ($lastRow + 1), 'Jumlah Ketidakhadiran: ' . $this->totalTidakHadir);
+                $sheet->mergeCells('A' . ($lastRow + 1) . ':F' . ($lastRow + 1));
+                $sheet->getStyle('A' . ($lastRow + 1) . ':F' . ($lastRow + 1))->applyFromArray([
+                    'font' => ['bold' => true],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                    ],
+                    'borders' => [
+                        'top' => [
+                            'borderStyle' => Border::BORDER_THIN,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ]);
+
+                // Add sakit summary row
+                $sheet->setCellValue('A' . ($lastRow + 2), 'Jumlah Sakit: ' . $this->totalSakit);
+                $sheet->mergeCells('A' . ($lastRow + 2) . ':F' . ($lastRow + 2));
+                $sheet->getStyle('A' . ($lastRow + 2) . ':F' . ($lastRow + 2))->applyFromArray([
+                    'font' => ['bold' => true],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                    ],
+                    'borders' => [
+                        'top' => [
+                            'borderStyle' => Border::BORDER_THIN,
+                            'color' => ['argb' => '000000'],
+                        ],
+                    ],
+                ]);
+            
             },
         ];
     }

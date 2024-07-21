@@ -99,6 +99,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('admin.absensi.index');
         Route::get('/absensi/export', [AbsensiController::class, 'export'])->name('admin.absensi.export');
+        Route::patch('/absensi/update', [AbsensiController::class, 'update'])->name('admin.absensi.update');
 
     });
 });
