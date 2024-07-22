@@ -43,6 +43,7 @@ Route::prefix('orang-tua')->group(function () {
     Route::middleware('parent')->group(function () {
         Route::get('/dashboard', [OrangTuaController::class, 'index'])->name('orang_tua.index');
         Route::get('/download-sertifikat-siswa/{id}', [OrangTuaController::class, 'downloadSertifikat'])->name('parent.downloadSertifikat');
+        Route::get('/download-sertifikat-siswa/{id}/tryout/{tryout_id}', [OrangTuaController::class, 'downloadSertifikatTryout'])->name('parent.downloadSertifikatTryout');
     });
 });
 

@@ -12,6 +12,10 @@ use App\Models\Nilai;
 use App\Models\MataPelajaran;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+use App\Models\SertifikatTryout;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Str;
+
 class OrangTuaController extends Controller
 {
     public function index()
@@ -54,6 +58,40 @@ class OrangTuaController extends Controller
 
         return $pdf->download($fileName);
 
+    }
+
+    public function downloadSertifikatTryout(Request $request, $id, $tryout_id)
+    {
+        $siswa = Siswa::with(['kelas', 'nilais' => function($query) use ($tryout_id) {
+            $query->where('tryout_id', $tryout_id)->with('mataPelajaran', 'tryout.tahunPelajaran');
+        }])->findOrFail($id);
+
+        $mataPelajarans = MataPelajaran::all();
+
+        // Mengurutkan nilai berdasarkan nama tryout
+        $nilai = $siswa->nilais->sortBy(function($nilai) {
+            return $nilai->tryout->nama_tryout;
+        })->groupBy('tryout_id');
+
+        // Pisahkan mata pelajaran berdasarkan opsi_test_tps
+        $mataPelajaransFalse = $mataPelajarans->where('opsi_test_tps', false);
+        $mataPelajaransTrue = $mataPelajarans->where('opsi_test_tps', true);
+
+        // Check if sertifikat exists
+        $sertifikat = SertifikatTryout::firstOrCreate(
+            ['siswa_id' => $id, 'tryout_id' => $tryout_id],
+            ['no_sertifikat' => strtoupper(Str::random(10)), 'status' => true]
+        );
+
+        // Generate barcode for the sertifikat
+        $barcode = QrCode::size(100)->generate($sertifikat->no_sertifikat);
+
+        $pdf = Pdf::loadView('sertifikat_orang_tua_tryout', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'barcode', 'sertifikat'))
+                ->setPaper('a4', 'portrait');
+
+        $filename = 'Sertifikat_' . $siswa->nama_siswa . '_Tryout_' . $nilai->first()->first()->tryout->nama_tryout . '_' . date('Ymd_His') . '.pdf';
+
+        return $pdf->download($filename);
     }
     
     public function showLoginForm()

@@ -203,6 +203,7 @@
                                             <th rowspan="2">{{ $mataPelajaran->namaMataPelajaran }}</th>
                                         @endforeach
                                         <th colspan="{{ $mataPelajarans->where('opsi_test_tps', true)->count() }}">Tes Potensi Skolastik</th>
+                                        <th rowspan="2">Aksi</th>
                                     </tr>
                                     <tr>
                                         @foreach($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
@@ -226,6 +227,9 @@
                                             @foreach($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
                                                 <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
                                             @endforeach
+                                            <td>
+                                                <a href="{{ route('parent.downloadSertifikatTryout', ['id' => $siswa->id, 'tryout_id' => $tryoutId]) }}" class="btn btn-primary">Download Sertifikat</a>
+                                            </td>
                                         </tr>
                                         @php
                                             $index++;
