@@ -54,9 +54,9 @@
             <p><strong>NIS:</strong> {{ $siswa->nis }}</p>
             <p><strong>No Sertifikat:</strong> {{ $sertifikat->no_sertifikat }}</p>
         </div>
-        <div class="barcode">
-            {!! $barcode !!}
-        </div>
+        {{-- <div class="barcode">
+            <img src="{{ $barcode }}" alt="QR Code">
+        </div> --}}
         <p>Telah mengikuti TryOut {{ $nilai->first()->first()->tryout->nama_tryout }} pada tanggal {{ \Carbon\Carbon::parse($nilai->first()->first()->tryout->tanggal)->format('d-m-Y') }} dan berlaku sebagai bukti kemajuan hasil belajar bimbel studi lanjut SMAIT IMBOS Pringsewu, dengan hasil sebagai berikut:</p>
         
         <table>

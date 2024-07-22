@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
-
 use App\Models\Siswa;
-
 use App\Models\Nilai;
 use App\Models\MataPelajaran;
 use Barryvdh\DomPDF\Facade\Pdf;
-
 use App\Models\SertifikatTryout;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
@@ -83,10 +79,10 @@ class OrangTuaController extends Controller
             ['no_sertifikat' => strtoupper(Str::random(10)), 'status' => true]
         );
 
-        // Generate barcode for the sertifikat
-        $barcode = QrCode::size(100)->generate($sertifikat->no_sertifikat);
+        // Generate barcode for the sertifikat as base64
+        // $barcode = generateQrCodeBase64($sertifikat->no_sertifikat);
 
-        $pdf = Pdf::loadView('sertifikat_orang_tua_tryout', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'barcode', 'sertifikat'))
+        $pdf = Pdf::loadView('sertifikat_orang_tua_tryout', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikat'))
                 ->setPaper('a4', 'portrait');
 
         $filename = 'Sertifikat_' . $siswa->nama_siswa . '_Tryout_' . $nilai->first()->first()->tryout->nama_tryout . '_' . date('Ymd_His') . '.pdf';
