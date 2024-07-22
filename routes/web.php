@@ -16,6 +16,7 @@ use App\Http\Controllers\GuruAuthController;
 use App\Http\Controllers\AbsensiGuruController;
 use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Admin\AbsensiGurubaruController;
+use App\Http\Controllers\OrangTuaController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -30,8 +31,19 @@ Route::middleware('guru')->group(function () {
     Route::post('/upload-foto-sampul', [AbsensiGuruController::class, 'uploadFotoSampul'])->name('guru.uploadFotoSampul');
     Route::post('/absensi', [AbsensiGuruController::class, 'store'])->name('absensi.store');
     Route::get('/absensi/get-siswa', [AbsensiGuruController::class, 'getSiswaByKelas'])->name('absensi.get-siswa');
+});
 
-    
+// Routes untuk login orang tua
+Route::get('/orang-tua', [OrangTuaController::class, 'showLoginForm'])->name('parent.login');
+Route::post('/orang-tua', [OrangTuaController::class, 'login'])->name('parent.login.submit');
+Route::post('/logout-orang-tua', [OrangTuaController::class, 'logout'])->name('parent.logout');
+
+Route::prefix('orang-tua')->group(function () {
+    // Routes yang membutuhkan autentikasi orang tua
+    Route::middleware('parent')->group(function () {
+        Route::get('/dashboard', [OrangTuaController::class, 'index'])->name('orang_tua.index');
+        Route::get('/download-sertifikat-siswa/{id}', [OrangTuaController::class, 'downloadSertifikat'])->name('parent.downloadSertifikat');
+    });
 });
 
 Route::prefix('admin')->group(function () {

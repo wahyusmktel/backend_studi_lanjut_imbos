@@ -50,13 +50,36 @@
                                         <td>{{ $absensi->kelas->nama_kelas }}</td>
                                         <td>{{ \Carbon\Carbon::parse($absensi->tanggal)->format('d-m-Y') }}</td>
                                         <td>{{ $absensi->catatan }}</td>
-                                        <td>
+                                        {{-- <td>
                                             @if($absensi->foto)
                                                 <a href="{{ asset('storage/' . $absensi->foto) }}" target="_blank">Lihat Foto</a>
                                             @else
                                                 Tidak ada foto
                                             @endif
-                                        </td>
+                                        </td> --}}
+                                        <td>
+                                            @if($absensi->foto)
+                                                <button type="button" class="btn btn-primary view-photo" data-photo="{{ asset('storage/' . $absensi->foto) }}">Lihat Foto</button>
+                                            @else
+                                                Tidak ada foto
+                                            @endif
+                                        </td>                                        
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="photoModalLabel">Foto Absensi</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body text-center">
+                                                        <img id="photoModalImg" src="" class="img-fluid img-responsive" alt="Foto Absensi">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </tr>
                                 </tbody>
                             </table>
@@ -75,5 +98,13 @@
     </div>
 </div>
 <!-- /Row -->
-
+<script>
+    $(document).ready(function() {
+        $('.view-photo').on('click', function() {
+            var photoUrl = $(this).data('photo');
+            $('#photoModalImg').attr('src', photoUrl);
+            $('#photoModal').modal('show');
+        });
+    });
+</script>
 @endsection

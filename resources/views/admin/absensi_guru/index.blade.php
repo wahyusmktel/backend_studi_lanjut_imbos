@@ -27,8 +27,8 @@
                         <form method="GET" action="{{ route('admin.absensi-guru.index') }}">
                             <div class="form-group">
                                 <div class="input-group mb-15">
-                                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request('start_date') }}">
-                                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request('start_date') }}" required>
+                                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request('end_date') }}" required>
                                     <select name="guru_id" class="form-control">
                                         <option value="">Pilih Guru</option>
                                         @foreach($gurus as $guru)

@@ -12,11 +12,16 @@ class MataPelajaran extends Model
 
     protected $fillable = [
         'namaMataPelajaran',
-        'status'
+        'status',
+        'opsi_test_tps'
     ];
 
     public $incrementing = false;
     protected $keyType = 'string';
+
+    protected $attributes = [
+        'opsi_test_tps' => false,
+    ];
 
     protected static function boot()
     {
@@ -27,5 +32,10 @@ class MataPelajaran extends Model
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
+    }
+
+    public function nilais()
+    {
+        return $this->hasMany(Nilai::class, 'mata_pelajaran_id', 'id');
     }
 }

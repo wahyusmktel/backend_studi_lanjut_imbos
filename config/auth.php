@@ -49,6 +49,10 @@ return [
             'driver' => 'session',
             'provider' => 'gurus',
         ],
+        'parent' => [
+            'driver' => 'session',
+            'provider' => 'parents',
+        ],
     ],
 
     /*
@@ -81,6 +85,10 @@ return [
         'gurus' => [
             'driver' => 'eloquent',
             'model' => App\Models\Guru::class,
+        ],
+        'parents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\OrangTuaModel::class,
         ],
     ],
 

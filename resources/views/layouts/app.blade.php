@@ -47,10 +47,10 @@
           <li><a href="{{ url('/tentang_kami') }}">Tentang Kami</a></li>
           <li><a href="{{ url('/tracking-alumni') }}">Track Alumni</a></li>
           <li><a href="{{ url('/program') }}">Program</a></li>
-          <li><a href="{{ url('/pantau_ortu') }}">Pantau Ortu</a></li>
+          <li><a href="{{ url('/orang-tua') }}">Pantau Ortu</a></li>
           <li><a href="{{ url('/tryout') }}">Try Out</a></li>
           <li><a href="{{ url('/info') }}">Info</a></li>
-          <li><a href="{{ url('/absensi-guru') }}">Daftar Hadir Guru</a></li>
+          <li><a href="{{ url('/login-guru') }}">Daftar Hadir Guru</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

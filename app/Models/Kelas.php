@@ -26,4 +26,9 @@ class Kelas extends Model
     }
 
     public $incrementing = false;
+
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class);
+    }
 }

@@ -27,4 +27,9 @@ class ProgramBimbel extends Model
     }
 
     public $incrementing = false;
+
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class, 'program_bimbel_id');
+    }
 }
