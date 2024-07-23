@@ -27,6 +27,8 @@
     <script src="{{ asset('vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <!-- SweetAlert JavaScript -->
     <script src="{{ asset('vendors/bower_components/sweetalert/dist/sweetalert.min.js') }}"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -77,6 +79,8 @@
     <script src="{{ asset('dist/js/dropdown-bootstrap-extended.js') }}"></script>
 
     <script src="{{ asset('vendors/chart.js/Chart.min.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
     
     <!-- Init JavaScript -->
     <script src="{{ asset('dist/js/init.js') }}"></script>

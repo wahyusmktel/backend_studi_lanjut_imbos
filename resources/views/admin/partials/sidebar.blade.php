@@ -63,6 +63,31 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <a href="javascript:void(0);" data-toggle="collapse" data-target="#alumni"><div class="pull-left"><i class="ti-dashboard mr-20"></i><span class="right-nav-text">Alumni</span></div><div class="pull-right"><i class="ti-angle-down"></i></div><div class="clearfix"></div></a>
+            <ul id="alumni" class="collapse collapse-level-1">
+                <li>
+                    <a href="/admin/alumni">Data Alumni</a>
+                </li>
+                <li>
+                    <a href="/admin/testimonials">Testimonial</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:void(0);" data-toggle="collapse" data-target="#berita"><div class="pull-left"><i class="ti-dashboard mr-20"></i><span class="right-nav-text">Berita</span></div><div class="pull-right"><i class="ti-angle-down"></i></div><div class="clearfix"></div></a>
+            <ul id="berita" class="collapse collapse-level-1">
+                <li>
+                    <a href="/admin/kategori-berita">Kategori</a>
+                </li>
+                <li>
+                    <a href="/admin/berita">Berita</a>
+                </li>
+                <li>
+                    <a href="/admin/komentar">Komentar</a>
+                </li>
+            </ul>
+        </li>
         <!-- Add other sidebar items here -->
     </ul>
 </div>

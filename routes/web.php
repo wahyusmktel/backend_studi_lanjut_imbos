@@ -18,6 +18,13 @@ use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Admin\AbsensiGurubaruController;
 use App\Http\Controllers\OrangTuaController;
 use App\Http\Controllers\SertifikatController;
+use App\Http\Controllers\Admin\AdminAlumniController;
+use App\Http\Controllers\Admin\AdminJenisPtController;
+use App\Http\Controllers\Admin\AdminTestimonialsController;
+use App\Http\Controllers\Admin\AdminKategoriController;
+use App\Http\Controllers\Admin\AdminBeritaController;
+use App\Http\Controllers\Admin\AdminKomentarController;
+use App\Http\Controllers\Admin\AdminTanggapanController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -126,9 +133,46 @@ Route::prefix('admin')->group(function () {
         Route::get('/admin/absensi-guru/export', [AbsensiGurubaruController::class, 'export'])->name('admin.absensi-guru.export');
         Route::delete('/absensi/{id}', [AbsensiGurubaruController::class, 'destroy'])->name('admin.absensi.destroy');
 
+        // Routes untuk Jenis Perguruan Tinggi
+        Route::get('/jenis-pt', [AdminJenisPtController::class, 'index'])->name('admin.jenis_pt.index');
 
+        // Routes untuk Alumni
+        Route::get('/alumni', [AdminAlumniController::class, 'index'])->name('admin.alumni.index');
+        Route::post('/alumni', [AdminAlumniController::class, 'store'])->name('admin.alumni.store');
+        Route::get('/alumni/{id}/edit', [AdminAlumniController::class, 'edit'])->name('admin.alumni.edit');
+        Route::put('/alumni/{id}', [AdminAlumniController::class, 'update'])->name('admin.alumni.update');
+        Route::delete('/alumni/{id}', [AdminAlumniController::class, 'destroy'])->name('admin.alumni.destroy');
+        Route::post('/alumni/import', [AdminAlumniController::class, 'import'])->name('admin.alumni.import');
+        Route::get('/alumni/download-format', [AdminAlumniController::class, 'downloadFormat'])->name('admin.alumni.downloadFormat');
 
+        // Routes untuk Testimonials
+        Route::get('/testimonials', [AdminTestimonialsController::class, 'index'])->name('admin.testimonials.index');
+        Route::post('/testimonials', [AdminTestimonialsController::class, 'store'])->name('admin.testimonials.store');
+        Route::post('/testimonials/{id}', [AdminTestimonialsController::class, 'update'])->name('admin.testimonials.update');
+        Route::delete('/testimonials/{id}', [AdminTestimonialsController::class, 'destroy'])->name('admin.testimonials.destroy');
 
+        Route::get('/kategori-berita', [AdminKategoriController::class, 'index'])->name('admin.kategori.index');
+        Route::post('/kategori-berita', [AdminKategoriController::class, 'store'])->name('admin.kategori.store');
+        Route::put('/kategori-berita/{id}', [AdminKategoriController::class, 'update'])->name('admin.kategori.update');
+        Route::delete('/kategori-berita/{id}', [AdminKategoriController::class, 'destroy'])->name('admin.kategori.destroy');
+
+        // Routes untuk Berita
+        Route::get('/berita', [AdminBeritaController::class, 'index'])->name('admin.berita.index');
+        Route::get('/berita/create', [AdminBeritaController::class, 'create'])->name('admin.berita.create');
+        Route::post('/berita', [AdminBeritaController::class, 'store'])->name('admin.berita.store');
+        Route::get('/berita/{berita}/edit', [AdminBeritaController::class, 'edit'])->name('admin.berita.edit');
+        Route::post('/berita/{berita}', [AdminBeritaController::class, 'update'])->name('admin.berita.update');
+        Route::delete('/berita/{berita}', [AdminBeritaController::class, 'destroy'])->name('admin.berita.destroy');
+
+        // Routes untuk Komentar
+        Route::get('/komentar', [AdminKomentarController::class, 'index'])->name('admin.komentar.index');
+        Route::delete('/komentar/{id}', [AdminKomentarController::class, 'destroy'])->name('admin.komentar.destroy');
+
+        // Routes untuk Tanggapan
+        Route::get('/tanggapan', [AdminTanggapanController::class, 'index'])->name('admin.tanggapan.index');
+        Route::post('/tanggapan', [AdminTanggapanController::class, 'store'])->name('admin.tanggapan.store');
+        Route::put('/tanggapan/{id}', [AdminTanggapanController::class, 'update'])->name('admin.tanggapan.update');
+        Route::delete('/tanggapan/{id}', [AdminTanggapanController::class, 'destroy'])->name('admin.tanggapan.destroy');
 
     });
 });
