@@ -17,6 +17,7 @@ use App\Http\Controllers\AbsensiGuruController;
 use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Admin\AbsensiGurubaruController;
 use App\Http\Controllers\OrangTuaController;
+use App\Http\Controllers\SertifikatController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -24,6 +25,7 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/login-guru', [GuruAuthController::class, 'showLoginForm'])->name('guru.login');
 Route::post('/login-guru', [GuruAuthController::class, 'login'])->name('guru.login.submit');
 Route::post('/logout-guru', [GuruAuthController::class, 'logout'])->name('guru.logout');
+Route::get('/validasi-sertifikat/{no_sertifikat}', [SertifikatController::class, 'validasiSertifikat'])->name('validasi.sertifikat');
 
 // Route untuk absensi guru
 Route::middleware('guru')->group(function () {
