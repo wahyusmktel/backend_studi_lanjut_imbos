@@ -30,12 +30,12 @@
     
     <div class="wrapper pa-0">
         <header class="sp-header">
-            <div class="sp-logo-wrap pull-left">
+            {{-- <div class="sp-logo-wrap pull-left">
                 <a href="{{ url('/') }}">
-                    <img class="brand-img mr-10" src="{{ asset('img/logo.png') }}" alt="brand"/>
-                    <span class="brand-text"><img src="{{ asset('img/brand.png') }}" alt="brand"/></span>
+                    <img class="brand-img mr-10" src="{{ asset('img/logo-imbos.png') }}" alt="brand"/>
+                    <span class="brand-text"><img src="{{ asset('img/logo-imbos.png') }}" width="150px" alt="brand"/></span>
                 </a>
-            </div>
+            </div> --}}
             <div class="clearfix"></div>
         </header>
         

@@ -43,7 +43,7 @@
         
         <!-- Main Content -->
         <div class="page-wrapper">
-            <div class="container">
+            <div class="container pt-30">
                 @yield('content')
             </div>
         </div>

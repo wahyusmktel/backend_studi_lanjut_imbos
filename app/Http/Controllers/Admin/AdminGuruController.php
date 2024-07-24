@@ -29,7 +29,7 @@ class AdminGuruController extends Controller
     {
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            // 'nip' => 'required|string|max:255',
+            'nip' => 'required|string|max:255',
             'mata_pelajaran_id' => 'required|uuid',
             // 'tempat_lahir' => 'required|string|max:255',
             // 'tanggal_lahir' => 'required|date',
@@ -53,7 +53,7 @@ class AdminGuruController extends Controller
 
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            // 'nip' => 'required|string|max:255',
+            'nip' => 'required|string|max:255',
             'mata_pelajaran_id' => 'required|uuid',
             // 'tempat_lahir' => 'required|string|max:255',
             // 'tanggal_lahir' => 'required|date',

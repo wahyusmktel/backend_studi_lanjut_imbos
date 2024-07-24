@@ -45,6 +45,7 @@ class AdminTahunPelajaranController extends Controller
         $data = $request->validate([
             'nama_tahun_pelajaran' => 'required|string|max:255',
             'semester' => 'required|in:1,2',
+            'status' => 'required|in:0,1',
         ]);
 
         $tahunPelajaran->update($data);
@@ -57,6 +58,7 @@ class AdminTahunPelajaranController extends Controller
         $tahunPelajaran = TahunPelajaran::findOrFail($id);
         $tahunPelajaran->delete();
 
-        return redirect()->route('admin.tahun_pelajaran.index')->with('success', 'Data Tahun Pelajaran berhasil dihapus.');
+        // return redirect()->route('admin.tahun_pelajaran.index')->with('success', 'Data Tahun Pelajaran berhasil dihapus.');
+        return response()->json(['success' => 'Data Tahun Pelajaran berhasil dihapus.']);
     }
 }

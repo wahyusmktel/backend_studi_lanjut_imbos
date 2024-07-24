@@ -61,7 +61,7 @@
                             <select class="form-control" id="tahun_pelajaran_filter" name="tahun_pelajaran_id">
                                 <option value="">Pilih Tahun Pelajaran</option>
                                 @foreach($tahunPelajarans as $tp)
-                                    <option value="{{ $tp->id }}">{{ $tp->nama_tahun_pelajaran }}</option>
+                                    <option value="{{ $tp->id }}">{{ $tp->nama_tahun_pelajaran }} - {{ $tp->semester }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -123,11 +123,23 @@
 <script src="../vendors/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="../vendors/bower_components/jsgrid/dist/jsgrid.min.js"></script>
 
+@if(session('success'))
 <script>
     $(document).ready(function() {
-        @if(session('success'))
-            swal("Success", "{{ session('success') }}", "success");
-        @endif
+        setTimeout(function() {
+            swal({
+                title: "Success!",
+                text: "{{ session('success') }}",
+                type: "success",
+                confirmButtonText: "OK"
+            });
+        }, 1000);
+    });
+</script>
+@endif
+
+<script>
+    $(document).ready(function() {
 
         $('#tryout_filter').on('change', function() {
             var tryoutId = $(this).val();
@@ -187,6 +199,7 @@
             });
         }
 
+        // SweetAlert for Delete
         $('.delete-button').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -195,21 +208,36 @@
                 text: "You will not be able to recover this data!",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#e6b034",
+                confirmButtonColor: "#f83f37",
                 confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            }, function(){
-                $.ajax({
-                    url: '/admin/nilai/' + id,
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                    },
-                    success: function(result) {
-                        swal("Deleted!", "Your data has been deleted.", "success");
-                        location.reload();
-                    }
-                });
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        url: '/admin/nilai/' + id,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(result) {
+                            swal({
+                                title: "Deleted!",
+                                text: result.success,
+                                type: "success",
+                                confirmButtonText: "OK"
+                            }, function() {
+                                location.reload();
+                            });
+                        },
+                        error: function() {
+                            swal("Error!", "There was an error deleting the data.", "error");
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Your data is safe :)", "error");
+                }
             });
         });
     });

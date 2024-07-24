@@ -25,7 +25,18 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-8 col-xs-6">
-                        <h6 class="panel-title txt-dark">Data Nilai Siswa</h6>
+                        <div class="btn-group">
+                            <div class="dropdown">
+                                <button aria-expanded="false" data-toggle="dropdown" class="btn btn-orange dropdown-toggle" type="button">
+                                    Menu <span class="caret"></span>
+                                </button>
+                                <ul role="menu" class="dropdown-menu">
+                                    {{-- <li><a href="#" data-toggle="modal" data-target="#importModal"><i class="fa fa-upload"></i> Import Data</a></li>
+                                    <li class="divider"></li> --}}
+                                    <li><a href="/admin/nilai"><i class="fa fa-plus"></i> Tambah Data</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-4 col-xs-6 text-right">
                         <form method="GET" action="{{ route('admin.nilai-siswa.index') }}">

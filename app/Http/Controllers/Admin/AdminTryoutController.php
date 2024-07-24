@@ -18,6 +18,9 @@ class AdminTryoutController extends Controller
             $query->where('nama_tryout', 'like', '%' . $search . '%');
         }
 
+        // Urutkan berdasarkan nama_tryout untuk memastikan urutan alfabetis
+        $query->orderBy('nama_tryout', 'asc');
+
         $tryouts = $query->paginate(10)->appends(['search' => $request->input('search')]);
         $tahunPelajarans = TahunPelajaran::all();
 
@@ -58,6 +61,7 @@ class AdminTryoutController extends Controller
         $tryout = Tryout::findOrFail($id);
         $tryout->delete();
 
-        return redirect()->route('admin.tryout.index')->with('success', 'Data Try Out berhasil dihapus.');
+        // return redirect()->route('admin.tryout.index')->with('success', 'Data Try Out berhasil dihapus.');
+        return response()->json(['success' => 'Data Try Out berhasil dihapus.']);
     }
 }

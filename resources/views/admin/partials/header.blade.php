@@ -5,8 +5,8 @@
             <div class="nav-header pull-left">
                 <div class="logo-wrap">
                     <a href="{{ url('/admin/dashboard') }}">
-                        <img class="brand-img" src="{{ asset('img/logo.png') }}" alt="brand"/>
-                        <span class="brand-text"><img src="{{ asset('img/brand.png') }}" alt="brand"/></span>
+                        <img class="brand-img" src="{{ asset('img/brand-imbos.png') }}" alt="brand"/>
+                        <span class="brand-text"><img src="{{ asset('img/brand-imbos.png') }}" alt="brand"/></span>
                     </a>
                 </div>
             </div>    

@@ -71,7 +71,7 @@
                                         <td>{{ $tahunPelajaran->nama_tahun_pelajaran }}</td>
                                         <td>{{ $tahunPelajaran->semester }}</td>
                                         <td class="text-nowrap">
-                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $tahunPelajaran->id }}" data-nama="{{ $tahunPelajaran->nama_tahun_pelajaran }}" data-semester="{{ $tahunPelajaran->semester }}"> 
+                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $tahunPelajaran->id }}" data-nama="{{ $tahunPelajaran->nama_tahun_pelajaran }}" data-semester="{{ $tahunPelajaran->semester }}" data-status="{{ $tahunPelajaran->status }}"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
                                             </a> 
                                             <a href="#" class="delete-button" data-id="{{ $tahunPelajaran->id }}" data-toggle="tooltip" data-original-title="Delete"> 
@@ -155,6 +155,13 @@
                             <option value="2">2</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="editStatus">Status</label>
+                        <select class="form-control" id="editStatus" name="status" required>
+                            <option value="1">Aktif</option>
+                            <option value="0">Nonaktif</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -165,23 +172,38 @@
     </div>
 </div>
 
+@if(session('success'))
 <script>
     $(document).ready(function() {
-        @if(session('success'))
-            swal("Success", "{{ session('success') }}", "success");
-        @endif
+        setTimeout(function() {
+            swal({
+                title: "Success!",
+                text: "{{ session('success') }}",
+                type: "success",
+                confirmButtonText: "OK"
+            });
+        }, 1000);
+    });
+</script>
+@endif
+
+<script>
+    $(document).ready(function() {
 
         $('.edit-button').on('click', function() {
             var id = $(this).data('id');
             var nama = $(this).data('nama');
             var semester = $(this).data('semester');
+            var status = $(this).data('status');
 
             $('#editForm').attr('action', '/admin/tahun_pelajaran/' + id);
             $('#editNamaTahunPelajaran').val(nama);
             $('#editSemester').val(semester);
+            $('#editStatus').val(status);
             $('#editModal').modal('show');
         });
 
+        // SweetAlert for Delete
         $('.delete-button').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -190,21 +212,36 @@
                 text: "You will not be able to recover this data!",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#e6b034",
+                confirmButtonColor: "#f83f37",
                 confirmButtonText: "Yes, delete it!",
-                closeOnConfirm: false
-            }, function(){
-                $.ajax({
-                    url: '/admin/tahun_pelajaran/' + id,
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                    },
-                    success: function(result) {
-                        swal("Deleted!", "Your data has been deleted.", "success");
-                        location.reload();
-                    }
-                });
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                        url: '/admin/tahun_pelajaran/' + id,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(result) {
+                            swal({
+                                title: "Deleted!",
+                                text: result.success,
+                                type: "success",
+                                confirmButtonText: "OK"
+                            }, function() {
+                                location.reload();
+                            });
+                        },
+                        error: function() {
+                            swal("Error!", "There was an error deleting the data.", "error");
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Your data is safe :)", "error");
+                }
             });
         });
     });

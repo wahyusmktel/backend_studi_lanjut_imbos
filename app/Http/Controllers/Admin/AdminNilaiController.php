@@ -74,17 +74,17 @@ class AdminNilaiController extends Controller
     public function getSiswas(Request $request)
     {
         try {
-            \Log::info('Fetching siswas for kelas_id: ' . $request->kelas_id . ' and tryout_id: ' . $request->tryout_id);
+            // \Log::info('Fetching siswas for kelas_id: ' . $request->kelas_id . ' and tryout_id: ' . $request->tryout_id);
             
             // Mengambil siswa dengan nilai yang sesuai dengan tryout yang dipilih
             $siswas = Siswa::with(['nilais' => function($query) use ($request) {
                 $query->where('tryout_id', $request->tryout_id);
             }])->where('kelas_id', $request->kelas_id)->get();
 
-            \Log::info('Fetched siswas: ' . $siswas->toJson());
+            // \Log::info('Fetched siswas: ' . $siswas->toJson());
             return response()->json($siswas);
         } catch (\Exception $e) {
-            \Log::error('Error fetching siswas: ' . $e->getMessage());
+            // \Log::error('Error fetching siswas: ' . $e->getMessage());
             return response()->json(['error' => 'Error fetching siswas'], 500);
         }
     }
@@ -136,9 +136,9 @@ class AdminNilaiController extends Controller
         $tahunPelajaranId = $request->input('tahun_pelajaran_id');
         $tryoutId = $request->input('tryout_id');
 
-        \Log::info('Fetching details for siswa_id: ' . $id);
-        \Log::info('tahun_pelajaran_id: ' . $tahunPelajaranId);
-        \Log::info('tryout_id: ' . $tryoutId);
+        // \Log::info('Fetching details for siswa_id: ' . $id);
+        // \Log::info('tahun_pelajaran_id: ' . $tahunPelajaranId);
+        // \Log::info('tryout_id: ' . $tryoutId);
 
         $siswa = Siswa::with(['kelas', 'nilais.mataPelajaran', 'nilais.tryout.tahunPelajaran'])->findOrFail($id);
 
@@ -146,18 +146,18 @@ class AdminNilaiController extends Controller
             $siswa->nilais = $siswa->nilais->filter(function($nilai) use ($tahunPelajaranId) {
                 return $nilai->tryout->tahun_pelajaran_id == $tahunPelajaranId;
             });
-            \Log::info('Filtered nilais by tahun_pelajaran_id: ' . $siswa->nilais->toJson());
+            // \Log::info('Filtered nilais by tahun_pelajaran_id: ' . $siswa->nilais->toJson());
         }
 
         if ($tryoutId) {
             $siswa->nilais = $siswa->nilais->where('tryout_id', $tryoutId);
-            \Log::info('Filtered nilais by tryout_id: ' . $siswa->nilais->toJson());
+            // \Log::info('Filtered nilais by tryout_id: ' . $siswa->nilais->toJson());
         }
 
         $tahunPelajarans = TahunPelajaran::all();
         $tryouts = $tahunPelajaranId ? Tryout::where('tahun_pelajaran_id', $tahunPelajaranId)->get() : collect();
 
-        \Log::info('Returning view with siswa: ' . $siswa->toJson());
+        // \Log::info('Returning view with siswa: ' . $siswa->toJson());
 
         return view('admin.nilai.detail', compact('siswa', 'tahunPelajarans', 'tryouts', 'tahunPelajaranId', 'tryoutId'));
     }
@@ -205,6 +205,7 @@ class AdminNilaiController extends Controller
         $nilai = Nilai::findOrFail($id);
         $nilai->delete();
 
-        return redirect()->route('admin.nilai.index')->with('success', 'Data Nilai berhasil dihapus.');
+        // return redirect()->route('admin.nilai.index')->with('success', 'Data Nilai berhasil dihapus.');
+        return response()->json(['success' => 'Data Nilai berhasil dihapus.']);
     }
 }
