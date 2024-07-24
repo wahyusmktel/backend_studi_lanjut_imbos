@@ -123,7 +123,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Grafik Persebaran Alumni</h3>
 
-                    <div class="dropdown">
+                    {{-- <div class="dropdown">
                         <button type="button" class="btn-link dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-ellipsis-v"></i>
                         </button>
@@ -133,11 +133,11 @@
                             <li><a href="#"><i class="fa fa-cogs"></i>Settings</a></li>
                             <li><a href="#"><i class="fa fa-times"></i>Remove Panel</a></li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="panel-chart">
-                    <!-- Morris Area Chart 01 Start -->
+                    {{-- <!-- Morris Area Chart 01 Start -->
                     <div id="morrisAreaChart01" class="chart--body area--chart style--1"></div>
                     <!-- Morris Area Chart 01 End -->
 
@@ -156,7 +156,8 @@
                                 <p class="amount">PTS</p>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
+                    <canvas id="alumniChart"></canvas>
                 </div>
             </div>
         </div>
@@ -206,89 +207,30 @@
         }
         }
     </script>
+    
     <div class="swiper-wrapper">
+        @foreach($testimonials as $testimonial)
+            <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="stars">
+                        @for($i = 1; $i <= $testimonial->rating; $i++)
+                            <i class="bi bi-star-fill"></i>
+                        @endfor
+                        @for($i = $testimonial->rating + 1; $i <= 5; $i++)
+                            <i class="bi bi-star"></i>
+                        @endfor
+                    </div>
+                    <p>{{ $testimonial->isi_testimonial }}</p>
+                    <div class="profile mt-auto">
+                        <img src="{{ asset('storage/' . $testimonial->alumni->foto) }}" class="testimonial-img" alt="">
+                        <h3>{{ $testimonial->alumni->nama_alumni }}</h3>
+                        <h4>{{ $testimonial->alumni->nama_universitas }}</h4>
+                    </div>
+                </div>
+            </div><!-- End testimonial item -->
+        @endforeach
+    </div>    
 
-        <div class="swiper-slide">
-        <div class="testimonial-item">
-            <div class="stars">
-            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-            </div>
-            <p>
-            Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
-            </p>
-            <div class="profile mt-auto">
-            <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-            <h3>Saul Goodman</h3>
-            <h4>Ceo &amp; Founder</h4>
-            </div>
-        </div>
-        </div><!-- End testimonial item -->
-
-        <div class="swiper-slide">
-        <div class="testimonial-item">
-            <div class="stars">
-            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-            </div>
-            <p>
-            Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
-            </p>
-            <div class="profile mt-auto">
-            <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-            <h3>Sara Wilsson</h3>
-            <h4>Designer</h4>
-            </div>
-        </div>
-        </div><!-- End testimonial item -->
-
-        <div class="swiper-slide">
-        <div class="testimonial-item">
-            <div class="stars">
-            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-            </div>
-            <p>
-            Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
-            </p>
-            <div class="profile mt-auto">
-            <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-            <h3>Jena Karlis</h3>
-            <h4>Store Owner</h4>
-            </div>
-        </div>
-        </div><!-- End testimonial item -->
-
-        <div class="swiper-slide">
-        <div class="testimonial-item">
-            <div class="stars">
-            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-            </div>
-            <p>
-            Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
-            </p>
-            <div class="profile mt-auto">
-            <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-            <h3>Matt Brandon</h3>
-            <h4>Freelancer</h4>
-            </div>
-        </div>
-        </div><!-- End testimonial item -->
-
-        <div class="swiper-slide">
-        <div class="testimonial-item">
-            <div class="stars">
-            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-            </div>
-            <p>
-            Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
-            </p>
-            <div class="profile mt-auto">
-            <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-            <h3>John Larson</h3>
-            <h4>Entrepreneur</h4>
-            </div>
-        </div>
-        </div><!-- End testimonial item -->
-
-    </div>
     <div class="swiper-pagination"></div>
     </div>
 
@@ -309,165 +251,92 @@
 
     <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
 
-    <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-        <li data-filter="*" class="filter-active">Semua</li>
-        <li data-filter=".filter-app">PTK (Perguruan Tinggi Kedinasan)</li>
-        <li data-filter=".filter-product">PTN (Perguruan Tinggi Negeri)</li>
-        <li data-filter=".filter-branding">PTKIN (Perguruan Tinggi Islam Negeri)</li>
-        <li data-filter=".filter-books">PTS (Perguruan Tinggi Swasta)</li>
-    </ul><!-- End Portfolio Filters -->
+        <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+            <li data-filter="*" class="filter-active">Semua</li>
+            @foreach($jenisPt as $jenis)
+                <li data-filter=".filter-{{ Str::slug($jenis->nama_jenis_pt) }}">{{ $jenis->nama_jenis_pt }}</li>
+            @endforeach
+        </ul><!-- End Portfolio Filters -->
 
-    <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/app-1.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>App 1</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/product-1.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Product 1</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Branding 1</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/branding-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/books-1.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Books 1</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/books-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/app-2.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>App 2</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/app-2.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/product-2.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Product 2</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/product-2.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/branding-2.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Branding 2</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/branding-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/books-2.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Books 2</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/books-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/app-3.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>App 3</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/app-3.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/product-3.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Product 3</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/product-3.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/branding-3.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Branding 3</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/branding-3.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-        <div class="portfolio-content h-100">
-            <img src="assets/img/portfolio/books-3.jpg" class="img-fluid" alt="">
-            <div class="portfolio-info">
-            <h4>Books 3</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur</p>
-            <a href="assets/img/portfolio/books-3.jpg" title="Branding 3" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-            <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-            </div>
-        </div>
-        </div><!-- End Portfolio Item -->
-
-    </div><!-- End Portfolio Container -->
+        <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+            @foreach($alumnis as $alumni)
+                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}">
+                    <div class="portfolio-content h-100">
+                        <img src="{{ asset('storage/' . $alumni->foto) }}" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>{{ $alumni->nama_alumni }}</h4>
+                            <p>{{ $alumni->nama_universitas }}</p>
+                            <a href="{{ asset('storage/' . $alumni->foto) }}" title="{{ $alumni->nama_alumni }}" data-gallery="portfolio-gallery-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                            {{-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> --}}
+                            <a href="{{ route('alumni.detail', $alumni->id) }}" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                        </div>
+                    </div>
+                </div><!-- End Portfolio Item -->
+            @endforeach
+        </div><!-- End Portfolio Container -->
 
     </div>
 
 </div>
+
+<!-- Script for Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('alumniChart').getContext('2d');
+
+        // Define the colors for each type of perguruan tinggi
+        var backgroundColors = [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ];
+
+        var borderColors = [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ];
+
+        var chartData = {!! json_encode($chartData) !!};
+
+        var backgroundColorArray = [];
+        var borderColorArray = [];
+
+        chartData.forEach((data, index) => {
+            backgroundColorArray.push(backgroundColors[index % backgroundColors.length]);
+            borderColorArray.push(borderColors[index % borderColors.length]);
+        });
+
+        var alumniChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartData.map(data => data.label),
+                datasets: [{
+                    label: 'Jumlah Alumni',
+                    data: chartData.map(data => data.count),
+                    backgroundColor: backgroundColorArray,
+                    borderColor: borderColorArray,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
 
 </section><!-- /Portfolio Section -->
 

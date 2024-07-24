@@ -25,6 +25,8 @@ use App\Http\Controllers\Admin\AdminKategoriController;
 use App\Http\Controllers\Admin\AdminBeritaController;
 use App\Http\Controllers\Admin\AdminKomentarController;
 use App\Http\Controllers\Admin\AdminTanggapanController;
+use App\Http\Controllers\TrackAlumniController;
+use App\Http\Controllers\BeritaController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -55,6 +57,14 @@ Route::prefix('orang-tua')->group(function () {
         Route::get('/download-sertifikat-siswa/{id}/tryout/{tryout_id}', [OrangTuaController::class, 'downloadSertifikatTryout'])->name('parent.downloadSertifikatTryout');
     });
 });
+
+//Halaman Track Alumni
+Route::get('/tracking-alumni', [TrackAlumniController::class, 'index'])->name('track.alumni.index');
+Route::get('/tracking-alumni/{id}', [TrackAlumniController::class, 'show'])->name('alumni.detail');
+
+//Halaman Berita
+Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
+Route::get('/berita/{id}', [BeritaController::class, 'show'])->name('berita.detail');
 
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
