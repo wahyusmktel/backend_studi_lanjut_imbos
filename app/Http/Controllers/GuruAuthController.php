@@ -9,6 +9,9 @@ class GuruAuthController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::guard('guru')->check()) {
+            return redirect()->route('absensi.index');
+        }
         return view('absensi');
     }
 
@@ -17,7 +20,7 @@ class GuruAuthController extends Controller
         $credentials = $request->only('nip', 'password');
 
         if (Auth::guard('guru')->attempt($credentials)) {
-            return redirect()->intended('/absensi-guru');
+            return redirect()->intended('/absensi');
         }
 
         return redirect()->back()->with('error', 'NIP atau password salah.');

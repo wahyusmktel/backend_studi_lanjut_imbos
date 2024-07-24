@@ -11,7 +11,7 @@ class RedirectIfNotGuru
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::guard('guru')->check()) {
-            return redirect()->route('absensi.guru.index');
+            return redirect()->route('guru.login');
         }
 
         return $next($request);

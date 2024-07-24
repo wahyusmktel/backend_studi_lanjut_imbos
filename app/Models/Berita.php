@@ -34,4 +34,5 @@ class Berita extends Model
     {
         return $this->hasMany(Komentar::class, 'berita_id');
     }
+    
 }

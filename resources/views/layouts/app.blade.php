@@ -44,13 +44,29 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="{{ url('/') }}" class="active">Home</a></li>
-          <li><a href="{{ url('/tentang_kami') }}">Tentang Kami</a></li>
+          <li><a href="{{ url('/tentang-kami') }}">Tentang Kami</a></li>
           <li><a href="{{ url('/tracking-alumni') }}">Track Alumni</a></li>
           <li><a href="{{ url('/program') }}">Program</a></li>
           <li><a href="{{ url('/orang-tua') }}">Pantau Ortu</a></li>
           <li><a href="{{ url('/tryout') }}">Try Out</a></li>
           <li><a href="{{ url('/berita') }}">Info</a></li>
           <li><a href="{{ url('/login-guru') }}">Daftar Hadir Guru</a></li>
+          @auth('guru')
+          <li>
+              <form id="logout-form" action="{{ route('guru.logout') }}" method="POST" style="display: none;">
+                  @csrf
+              </form>
+              <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+          </li>
+          @endauth
+          @auth('parent')
+          <li>
+              <form id="logout-form" action="{{ route('parent.logout') }}" method="POST" style="display: none;">
+                  @csrf
+              </form>
+              <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+          </li>
+          @endauth
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

@@ -14,6 +14,6 @@ class ParentMiddleware
             return $next($request);
         }
 
-        return redirect()->route('orang_tua.index');
+        return redirect()->route('parent.login');
     }
 }

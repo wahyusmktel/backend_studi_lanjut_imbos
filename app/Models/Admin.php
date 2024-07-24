@@ -27,4 +27,9 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Berita::class, 'author_id');
     }
+
+    public function tanggapan()
+    {
+        return $this->hasMany(Tanggapan::class, 'author_id');
+    }
 }

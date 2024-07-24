@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Berita')
+@section('title', 'Tentang Kami')
 
 @section('content')
 
@@ -103,20 +103,21 @@
             <div class="row gx-0">
 
                 <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
-                    <div class="contents">
-                        <h2>Assalamualaikum, Wr, Wb</h2>
+                    <div class="content">
+                        <h2>Selamat Datang Di Bimbel Studi Lanjut SMAIT IMBOS Pringsewu</h2>
                         <p>
-                            Hallo semuanya.
-                            Anda punya pertanyaan seputar studi Lanjut SMAIT IMBOS Pringsewu? Butuh informasi bimbel akurat?
-                            Yuk bisa Klik Tombol dibawah ini !!!
+                            Bimbel Studi Lanjut SMAIT IMBOS Pringsewu merupakan pusat bimbingan belajar yang mendedikasikan
+                            untuk membantu para santri mencapai hasil terbaik dalam persiapan SNBP, SNBT-UTBK, Ujian
+                            Mandiri, dan Persiapan seleksi masuk perguruan tinggi Kedinasan (PTK). Kami berkomitmen untuk
+                            menyediakan lingkungan belajar yang efektif, inovatif, terarah, dan memberikan tips serta trik
+                            jitu dalam mengerjakan soal.
                         </p>
-                        <div class="text-center text-lg-start">
-                            <a href="#contact"
-                                class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
-                                <span>Hubungi Kami</span>
-                                <i class="bi bi-arrow-right"></i>
-                            </a>
-                        </div>
+                        <!-- <div class="text-center text-lg-start">
+                                <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
+                                  <span>Read More</span>
+                                  <i class="bi bi-arrow-right"></i>
+                                </a>
+                              </div> -->
                     </div>
                 </div>
 
@@ -126,95 +127,117 @@
 
             </div>
         </div>
-
+        <img src="{{ asset('halaman_umum/assets/img/kiri 2.png') }}" alt="Ornament" class="background-ornament-about-atas">
     </section><!-- /About Section -->
 
-    <!-- Team Section -->
-    <section id="features" class="features section">
+    <!-- Features Section -->
+    <section id="alt-features" class="alt-features section">
 
         <!-- Section Title -->
         <div class="container section-title-white" data-aos="fade-up">
-            <p>Seputar Info Nih !!!<br></p>
-        </div><!-- End Section Title -->
-
-        <div class="container">
-
-            <div class="row gy-2">
-
-                <div class="col-lg-8 d-flex align-items-center">
-                    <div class="row align-self-center">
-
-                        <div class="text-boxs" data-aos="fade-up">
-                            <p>
-                                Kalian bisa dapetin berbagai info terkait persiapan SNBP, SNBT-UTBK, Ujian Mandiri, Ujian
-                                Kedinasan, Ujian Perguruan Tinggi Swasta, Bahkan Informasi Beasiswa, Hanya dengan pantau
-                                terus Studi Lanjut imbos lho. Juga akan share informasi terupdate seputar informasi bimbel
-                                ini. Tetap pantau ya.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="col-lg-4 d-flex align-items-center hidden" data-aos="zoom-out" data-aos-delay="200">
-                    <img src="{{ asset('halaman_umum/assets/img/News-rafiki.png') }}" class="img-fluid" alt="">
-                </div>
-                <div class="tag-line-oke aos-init aos-animate" data-aos="flip-up" data-aos-delay="100">
-                    <h2>Studi Lanjut IMBOS</h2>
-                    <h3>Smart Learning, Bright Future !!!</h3>
-                </div>
-
-            </div>
-
-        </div>
-        <!-- Dibawah ini adalah kode untuk gambar yang seharusnya muncul di pojok kiri bawah -->
-        <img src="{{ asset('halaman_umum/assets/img/front.png') }}" alt="Ornament" class="background-ornament">
-    </section><!-- /Team Section -->
-
-    <!-- Recent Posts Section -->
-    <section id="recent-posts" class="recent-posts section">
-
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-            <h2>Cek Info Dibawah Ini</h2>
-            <p>Informasi Terbaru</p>
+            <p>Mengapa Memilih Kami ?<br></p>
         </div><!-- End Section Title -->
 
         <div class="container">
 
             <div class="row gy-5">
-                @foreach ($beritas as $berita)
-                    <div class="col-xl-4 col-md-6">
-                        <div class="post-item position-relative h-100" data-aos="fade-up" data-aos-delay="100">
-                            <div class="post-img position-relative overflow-hidden">
-                                <img src="{{ asset('storage/' . $berita->foto) }}" class="img-fluid" alt="">
-                                <span class="post-date">{{ $berita->created_at->format('F d') }}</span>
+
+                <div class="col-xl-7 d-flex order-2 order-xl-1" data-aos="fade-up" data-aos-delay="200">
+
+                    <div class="row align-self-center gy-5">
+
+                        <div class="col-md-6 icon-box">
+                            <i class="bi bi-award"></i>
+                            <div>
+                                <h4>Pengajar berpengalaman, professional, siap membimbing secara intensif</h4>
                             </div>
-                            <div class="post-content d-flex flex-column">
-                                <h3 class="post-title">{{ $berita->judul_berita }}</h3>
-                                <div class="meta d-flex align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="bi bi-person"></i> <span
-                                            class="ps-2">{{ $berita->author->name }}</span>
-                                    </div>
-                                    <span class="px-3 text-black-50">/</span>
-                                    <div class="d-flex align-items-center">
-                                        <i class="bi bi-folder2"></i> <span
-                                            class="ps-2">{{ $berita->kategori->nama_kategori }}</span>
-                                    </div>
-                                </div>
-                                <hr>
-                                <a href="{{ route('berita.detail', $berita->id) }}"
-                                    class="readmore stretched-link"><span>Read More</span><i
-                                        class="bi bi-arrow-right"></i></a>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-6 icon-box">
+                            <i class="bi bi-card-checklist"></i>
+                            <div>
+                                <h4>Kurikulum terintegrasi dengan program belajar menggunakan materi terupdate</h4>
                             </div>
-                        </div>
-                    </div><!-- End post item -->
-                @endforeach
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-6 icon-box">
+                            <i class="bi bi-patch-check"></i>
+                            <div>
+                                <h4>Metode pembelajaran yang interaktif dan menggunakan trik jitu</h4>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-6 icon-box">
+                            <i class="bi bi-journal-bookmark-fill"></i>
+                            <div>
+                                <h4>Fasilitas belajar lengkap, Try Out Internal dan Try Out Eksternal</h4>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-6 icon-box">
+                            <i class="bi bi-mortarboard-fill"></i>
+                            <div>
+                                <h4>Dukungan dan Bimbingan strategi Pemilihan Jurusan dan Universitas.</h4>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <!-- <div class="col-md-6 icon-box">
+                              <i class="bi bi-patch-check"></i>
+                              <div>
+                                <h4>Explicabo consectetur</h4>
+                              </div>
+                            </div> -->
+                        <!-- End Feature Item -->
+
+                    </div>
+
+                </div>
+
+                <div class="col-xl-5 d-flex align-items-center order-1 order-xl-2" data-aos="fade-up"
+                    data-aos-delay="100">
+                    <img src="{{ asset('halaman_umum/assets/img/model-tentang-kami.png') }}" class="img-fluid"
+                        alt="">
+                </div>
+
             </div>
 
         </div>
 
-    </section><!-- /Recent Posts Section -->
+    </section><!-- /Features Section -->
+
+    <!-- Team Section -->
+    <section id="team" class="team section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <p>Star Teacher Ketje, Siap<br></p>
+            <small class="section-title-white small" style="color: #433f3f;">Membimbing Belajarmu !!!</small>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row gy-4">
+
+                @foreach ($gurus as $guru)
+                    <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+                        <div class="team-member">
+                            <div class="member-img">
+                                <img src="{{ asset('storage/' . $guru->foto) }}" class="img-fluid"
+                                    alt="{{ $guru->nama }}">
+                            </div>
+                            <div class="member-info">
+                                <h4>{{ $guru->nama }}</h4>
+                                <span>Star Teacher {{ $guru->mataPelajaran->namaMataPelajaran }}</span>
+                                <p>"{{ $guru->motto }}"</p>
+                            </div>
+                        </div>
+                    </div><!-- End Team Member -->
+                @endforeach
+
+            </div>
+
+        </div>
+
+    </section><!-- /Team Section -->
 
 @endsection

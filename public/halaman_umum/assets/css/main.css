@@ -3587,7 +3587,8 @@ transform: translateX(-9%) translateY(-25%) rotate(45deg);
 }
 
 .blog-author img {
-  max-width: 120px;
+  width: 120px;
+  height: 120px;
   margin-right: 20px;
 }
 

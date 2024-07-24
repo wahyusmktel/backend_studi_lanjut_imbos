@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pantau Orang Tua')
+@section('title', 'Try Out')
 
 @section('content')
 
@@ -82,44 +82,10 @@
             <div class="row gy-4">
                 <div class="col-lg-6 order-2 order-lg-2 d-flex flex-column justify-content-center">
                     <h1 data-aos="fade-up">Assalamualaikum, Wr, Wb</h1>
-                    <p data-aos="fade-up" data-aos-delay="100">Selamat datang Abi dan Umi, Yuk pantau perkembangan Putra dan
-                        Putri Abi/Umi dibawah ini</p>
-                    <div class="d-flex flex-column" data-aos="fade-up" data-aos-delay="200">
-                        <div class="row">
-                            <div class="col-md-12">
+                    <p data-aos="fade-up" data-aos-delay="100">Hallo Santri IMBOS !!!
+                        Sekarang saatnya kamu, tes kemampuan dan progresmu melalui Try Out yang disediakan.
+                        Semangat !!!</p>
 
-                                <form role="form" class="get-a-quote" id="contact-form" method="post"
-                                    action="{{ route('parent.login.submit') }}">
-                                    @csrf
-                                    <div class="group-img">
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M15.364 11.636C14.3837 10.6558 13.217 9.93013 11.9439 9.49085C13.3074 8.55179 14.2031 6.9802 14.2031 5.20312C14.2031 2.33413 11.869 0 9 0C6.131 0 3.79688 2.33413 3.79688 5.20312C3.79688 6.9802 4.69262 8.55179 6.05609 9.49085C4.78308 9.93013 3.61631 10.6558 2.63605 11.636C0.936176 13.3359 0 15.596 0 18H1.40625C1.40625 13.8128 4.81279 10.4062 9 10.4062C13.1872 10.4062 16.5938 13.8128 16.5938 18H18C18 15.596 17.0638 13.3359 15.364 11.636ZM9 9C6.90641 9 5.20312 7.29675 5.20312 5.20312C5.20312 3.1095 6.90641 1.40625 9 1.40625C11.0936 1.40625 12.7969 3.1095 12.7969 5.20312C12.7969 7.29675 11.0936 9 9 9Z"
-                                                fill="#555555"></path>
-                                        </svg>
-                                        <input type="text" class="form-controls" name="nis"
-                                            placeholder="Masukan NIS Siswa IMBOS" required>
-                                    </div>
-                                    <div class="group-img">
-                                        <svg width="22" height="18" viewBox="0 0 22 18" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M15.8649 18H6.13513C2.58377 18 0.540527 15.9568 0.540527 12.4054V5.5946C0.540527 2.04324 2.58377 0 6.13513 0H15.8649C19.4162 0 21.4595 2.04324 21.4595 5.5946V12.4054C21.4595 15.9568 19.4162 18 15.8649 18ZM6.13513 1.45946C3.35242 1.45946 1.99999 2.81189 1.99999 5.5946V12.4054C1.99999 15.1881 3.35242 16.5406 6.13513 16.5406H15.8649C18.6476 16.5406 20 15.1881 20 12.4054V5.5946C20 2.81189 18.6476 1.45946 15.8649 1.45946H6.13513Z"
-                                                fill="#444444"></path>
-                                            <path
-                                                d="M10.9988 9.8465C10.1815 9.8465 9.35452 9.59352 8.72208 9.07785L5.67668 6.64539C5.36532 6.39241 5.30696 5.93511 5.55992 5.62376C5.8129 5.31241 6.2702 5.25403 6.58155 5.50701L9.62695 7.93947C10.3664 8.53298 11.6215 8.53298 12.361 7.93947L15.4064 5.50701C15.7178 5.25403 16.1848 5.30268 16.428 5.62376C16.681 5.93511 16.6324 6.40214 16.3113 6.64539L13.2659 9.07785C12.6432 9.59352 11.8161 9.8465 10.9988 9.8465Z"
-                                                fill="#444444"></path>
-                                        </svg>
-                                        <input type="password" class="form-controls" name="password"
-                                            placeholder="Masukan Password" required>
-                                    </div>
-                                    <button type="submit" class="btn batton">MASUK</button>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-1 hero-img" data-aos="zoom-out">
                     <img src="{{ asset('halaman_umum/assets/img/hero-img.png') }}" class="img-fluid animated"
@@ -146,16 +112,107 @@
 
     </section><!-- /Hero Section -->
 
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing section">
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '{{ session('error') }}',
-            });
-        </script>
-    @endif
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Try Out</h2>
+            <p>Pantau Progres Belajarmu !!!<br></p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row gy-3 d-flex justify-content-center">
+
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="pricing-tem d-flex flex-column">
+                        <h3 style="color: #20c997;">TRY OUT UTBK</h3>
+                        <div class="icon">
+                            <i class="bi bi-box" style="color: #20c997;"></i>
+                        </div>
+                        <div class="deskripsi-tryout deskripsi-tryout-green">
+                            Try Out UTBK adalah simulasi pengerjaan soal UTBK yang terdiri dari soal-soal sebagai berikut :
+                        </div>
+                        <ul class="flex-grow-1">
+                            <li>Tes Potensi Skolastik (PU, PK, PPU, PBM)</li>
+                            <li>Tes Literasi Bahasa Indonesia</li>
+                            <li>Tes Literasi Bahasa Inggris</li>
+                            <li>Tes Penalaran Matematika</li>
+                        </ul>
+                        <a href="/orang-tua" class="btn-buy mt-auto">LIHAT HASIL</a>
+                    </div>
+                </div><!-- End Pricing Item -->
+
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="pricing-tem d-flex flex-column">
+                        <h3 style="color: #0d6efd;">TRY OUT SKD</h3>
+                        <div class="icon">
+                            <i class="bi bi-rocket" style="color: #0d6efd;"></i>
+                        </div>
+                        <div class="deskripsi-tryout deskripsi-tryout-blue">
+                            Try Out SKD (Seleksi Kompetensi Dasar) adalah simulasi pengerjaan soal masuk Kedinasan yang
+                            terdiri dari soal-soal sebagai berikut :
+                        </div>
+                        <ul class="flex-grow-1">
+                            <li>Tes Wawasan Kebangsaan (TWK)</li>
+                            <li>Tes Intelegensia Umum (TIU)</li>
+                            <li>Tes Karakteristik Pribadi (TKP)</li>
+                        </ul>
+                        <a href="/orang-tua" class="btn-buy mt-auto">LIHAT HASIL</a>
+                    </div>
+                </div><!-- End Pricing Item -->
+
+
+            </div><!-- End pricing row -->
+
+        </div>
+
+    </section><!-- /Pricing Section -->
+
+    <!-- Features Section -->
+    <section id="alt-features" class="alt-features section">
+
+        <!-- Section Title -->
+        <div class="container section-title-white" data-aos="fade-up">
+            <p>Try Out IMBOS<br></p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="row gy-5">
+
+                <div class="col-xl-7 d-flex order-2 order-xl-1" data-aos="fade-up" data-aos-delay="200">
+
+                    <div class="row align-self-center gy-5">
+
+                        <div class="text-boxs">
+                            <p>
+                                Adalah sebuah persiapan berupa simulasi ujian UTBK dan SKD Kedinasan yang dirancang untuk
+                                membantu para siswa dalam mempersiapkan diri menghadapi Ujian SNBT, Ujian Mandiri dan Ujian
+                                Kedinasan.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-xl-5 d-flex align-items-center order-1 order-xl-2" data-aos="fade-up"
+                    data-aos-delay="100">
+                    <img src="{{ asset('halaman_umum/assets/img/model-tentang-kami.png') }}" class="img-fluid"
+                        alt="">
+                </div>
+
+            </div>
+
+            <div class="tag-line-oke" data-aos="flip-up" data-aos-delay="100">
+                <h2>Studi Lanjut IMBOS</h2>
+                <h3>Smart Learning, Bright Future !!!</h3>
+            </div>
+
+        </div>
+        <img src="{{ asset('halaman_umum/assets/img/front.png') }}" alt="Ornament" class="background-ornament">
+    </section><!-- /Features Section -->
 
 @endsection

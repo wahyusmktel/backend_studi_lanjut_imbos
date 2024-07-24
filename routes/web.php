@@ -27,6 +27,10 @@ use App\Http\Controllers\Admin\AdminKomentarController;
 use App\Http\Controllers\Admin\AdminTanggapanController;
 use App\Http\Controllers\TrackAlumniController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\InfoController;
+use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\TentangKamiController;
+use App\Http\Controllers\TryOutController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -65,6 +69,20 @@ Route::get('/tracking-alumni/{id}', [TrackAlumniController::class, 'show'])->nam
 //Halaman Berita
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
 Route::get('/berita/{id}', [BeritaController::class, 'show'])->name('berita.detail');
+Route::post('/komentar', [BeritaController::class, 'storeKomentar'])->name('komentar.store');
+// Route untuk pencarian berita
+Route::get('/search', [InfoController::class, 'search'])->name('berita.search');
+// Route untuk menampilkan berita berdasarkan kategori
+Route::get('/category/{id}', [InfoController::class, 'category'])->name('berita.category');
+
+//Halaman Tentang Kami
+Route::get('/tentang-kami', [TentangKamiController::class, 'index'])->name('tentang_kami.index');
+
+//Halaman Program
+Route::get('/program', [ProgramController::class, 'index'])->name('program.index');
+
+//Halaman TryOut
+Route::get('/tryout', [TryOutController::class, 'index'])->name('tryout.index');
 
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');

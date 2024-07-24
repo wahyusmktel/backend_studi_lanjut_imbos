@@ -4,126 +4,129 @@
 
 @section('content')
 
-<!-- Hero Section -->
-<section id="hero" class="hero section">
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
 
-<div class="menu-mobile-app">
-    <div class="menu-mobile-heading aos-init aos-animate" data-aos="fade-up">
-    <h2>Main Menu</h2>
-    </div>
-    <div class="row gy-3">
-
-    <div class="col-xl-3 d-flex">
-        <div class="row align-self-center gy-3">
-
-        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-            <div class="feature-box d-flex align-items-center">
-            <i class="bi bi-house-fill"></i>
-            <a href="index.html">Home</a>
+        <div class="menu-mobile-app">
+            <div class="menu-mobile-heading aos-init aos-animate" data-aos="fade-up">
+                <h2>Main Menu</h2>
             </div>
-        </div><!-- End Feature Item -->
+            <div class="row gy-3">
 
-        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-            <div class="feature-box d-flex align-items-center">
-            <i class="bi bi-buildings"></i>
-            <a href="tentang_kami.html">Tentang Kami</a>
+                <div class="col-xl-3 d-flex">
+                    <div class="row align-self-center gy-3">
+
+                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                            <div class="feature-box d-flex align-items-center">
+                                <i class="bi bi-house-fill"></i>
+                                <a href="index.html">Home</a>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                            <div class="feature-box d-flex align-items-center">
+                                <i class="bi bi-buildings"></i>
+                                <a href="tentang_kami.html">Tentang Kami</a>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
+                            <div class="feature-box d-flex align-items-center">
+                                <i class="bi bi-mortarboard-fill"></i>
+                                <a href="tracking-alumni.html">Track Alumni</a>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
+                            <div class="feature-box d-flex align-items-center">
+                                <i class="bi bi-list-task"></i>
+                                <a href="program.html">Program</a>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="600">
+                            <div class="feature-box d-flex align-items-center">
+                                <i class="bi bi-person-hearts"></i>
+                                <a href="pantau_ortu.html">Pantau Ortu</a>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
+                            <div class="feature-box d-flex align-items-center">
+                                <i class="bi bi-book-fill"></i>
+                                <a href="tryout.html">Try Out</a>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
+                            <div class="feature-box d-flex align-items-center">
+                                <i class="bi bi-info-square-fill"></i>
+                                <a href="info.html">Info</a>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
+                            <div class="feature-box d-flex align-items-center">
+                                <i class="bi bi-calendar2-check"></i>
+                                <a href="absensi-guru.html">Daftar Hadir Guru</a>
+                            </div>
+                        </div><!-- End Feature Item -->
+
+                    </div>
+                </div>
+
             </div>
-        </div><!-- End Feature Item -->
-
-        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
-            <div class="feature-box d-flex align-items-center">
-            <i class="bi bi-mortarboard-fill"></i>
-            <a href="tracking-alumni.html">Track Alumni</a>
-            </div>
-        </div><!-- End Feature Item -->
-
-        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
-            <div class="feature-box d-flex align-items-center">
-            <i class="bi bi-list-task"></i>
-            <a href="program.html">Program</a>
-            </div>
-        </div><!-- End Feature Item -->
-
-        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="600">
-            <div class="feature-box d-flex align-items-center">
-            <i class="bi bi-person-hearts"></i>
-            <a href="pantau_ortu.html">Pantau Ortu</a>
-            </div>
-        </div><!-- End Feature Item -->
-
-        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
-            <div class="feature-box d-flex align-items-center">
-            <i class="bi bi-book-fill"></i>
-            <a href="tryout.html">Try Out</a>
-            </div>
-        </div><!-- End Feature Item -->
-
-        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
-            <div class="feature-box d-flex align-items-center">
-            <i class="bi bi-info-square-fill"></i>
-            <a href="info.html">Info</a>
-            </div>
-        </div><!-- End Feature Item -->
-
-        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
-            <div class="feature-box d-flex align-items-center">
-            <i class="bi bi-calendar2-check"></i>
-            <a href="absensi-guru.html">Daftar Hadir Guru</a>
-            </div>
-        </div><!-- End Feature Item -->
-
-        </div>
-    </div>
-
-    </div>
-</div>
-
-<svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
-    <defs>
-    <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
-    </defs>
-    <g class="wave1">
-    <use xlink:href="#wave-path" x="50" y="3" fill="rgba(246, 197, 6, 100)">
-    </g>
-    <g class="wave2">
-    <use xlink:href="#wave-path" x="50" y="0" fill="rgba(246, 197, 6, 0.2)">
-    </g>
-    <g class="wave3">
-    <use xlink:href="#wave-path" x="50" y="9" fill="#ffffff">
-    </g>
-</svg>
-
-</section><!-- /Hero Section -->
-
-<!-- About Section -->
-<section id="about" class="about section">
-
-    <div class="container" data-aos="fade-up">
-    <div class="row gx-0">
-
-        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
-        <div class="content">
-            <h2>Alumni Studi Lanjut IMBOS</h2>
-            <p>
-            Tersebar diberbagai perguruan tinggi yang ada di Indonesia, seperti di Perguruan Tinggi Negeri (PTN), Perguruan Tinggi Kedinasan (PTK), Perguruan Tinggi Keagamaan Islam Negeri (PTKIN), dan Perguruan Tinggi Swasta (PTS). Berikut ini adalah sebaran alumni Bimbel Lanjut IMBOS.
-            </p>
-            <!-- <div class="text-center text-lg-start">
-            <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
-                <span>Read More</span>
-                <i class="bi bi-arrow-right"></i>
-            </a>
-            </div> -->
-        </div>
         </div>
 
-        <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-        <!-- Chart -->
-        <div class="col-xl-12 col-md-12 col-xs-6">
-            <div class="panel">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Grafik Persebaran Alumni</h3>
+        <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 24 150 28 " preserveAspectRatio="none">
+            <defs>
+                <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
+            </defs>
+            <g class="wave1">
+                <use xlink:href="#wave-path" x="50" y="3" fill="rgba(246, 197, 6, 100)">
+            </g>
+            <g class="wave2">
+                <use xlink:href="#wave-path" x="50" y="0" fill="rgba(246, 197, 6, 0.2)">
+            </g>
+            <g class="wave3">
+                <use xlink:href="#wave-path" x="50" y="9" fill="#ffffff">
+            </g>
+        </svg>
 
-                    {{-- <div class="dropdown">
+    </section><!-- /Hero Section -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+        <div class="container" data-aos="fade-up">
+            <div class="row gx-0">
+
+                <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="content">
+                        <h2>Alumni Studi Lanjut IMBOS</h2>
+                        <p>
+                            Tersebar diberbagai perguruan tinggi yang ada di Indonesia, seperti di Perguruan Tinggi Negeri
+                            (PTN), Perguruan Tinggi Kedinasan (PTK), Perguruan Tinggi Keagamaan Islam Negeri (PTKIN), dan
+                            Perguruan Tinggi Swasta (PTS). Berikut ini adalah sebaran alumni Bimbel Lanjut IMBOS.
+                        </p>
+                        <!-- <div class="text-center text-lg-start">
+                <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
+                    <span>Read More</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+                </div> -->
+                    </div>
+                </div>
+
+                <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+                    <!-- Chart -->
+                    <div class="col-xl-12 col-md-12 col-xs-6">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Grafik Persebaran Alumni</h3>
+
+                                {{-- <div class="dropdown">
                         <button type="button" class="btn-link dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-ellipsis-v"></i>
                         </button>
@@ -134,10 +137,10 @@
                             <li><a href="#"><i class="fa fa-times"></i>Remove Panel</a></li>
                         </ul>
                     </div> --}}
-                </div>
+                            </div>
 
-                <div class="panel-chart">
-                    {{-- <!-- Morris Area Chart 01 Start -->
+                            <div class="panel-chart">
+                                {{-- <!-- Morris Area Chart 01 Start -->
                     <div id="morrisAreaChart01" class="chart--body area--chart style--1"></div>
                     <!-- Morris Area Chart 01 End -->
 
@@ -157,32 +160,33 @@
                             </li>
                         </ul>
                     </div> --}}
-                    <canvas id="alumniChart"></canvas>
+                                <canvas id="alumniChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End -->
                 </div>
+
             </div>
         </div>
-        <!-- End -->
-        </div>
 
-    </div>
-    </div>
+    </section><!-- /About Section -->
 
-</section><!-- /About Section -->
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section">
 
-<!-- Testimonials Section -->
-<section id="testimonials" class="testimonials section">
+        <!-- Section Title -->
+        <div class="container section-title-white" data-aos="fade-up">
+            <h2>Testimonials</h2>
+            <p>Apa Kata Alumni ?<br></p>
+            <small>IMBOS selalu berupaya mempersiapkan para santrinya untuk bersaing dan berkompetisi dengan sekolah lain
+                untuk masuk ke Perguruan Tinggi secara optimal !!!</small>
+        </div><!-- End Section Title -->
 
-<!-- Section Title -->
-<div class="container section-title-white" data-aos="fade-up">
-    <h2>Testimonials</h2>
-    <p>Apa Kata Alumni ?<br></p>
-    <small>IMBOS selalu berupaya mempersiapkan para santrinya untuk bersaing dan berkompetisi dengan sekolah lain untuk masuk ke Perguruan Tinggi secara optimal !!!</small>
-</div><!-- End Section Title -->
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-<div class="container" data-aos="fade-up" data-aos-delay="100">
-
-    <div class="swiper init-swiper">
-    <script type="application/json" class="swiper-config">
+            <div class="swiper init-swiper">
+                <script type="application/json" class="swiper-config">
         {
         "loop": true,
         "speed": 600,
@@ -207,137 +211,142 @@
         }
         }
     </script>
-    
-    <div class="swiper-wrapper">
-        @foreach($testimonials as $testimonial)
-            <div class="swiper-slide">
-                <div class="testimonial-item">
-                    <div class="stars">
-                        @for($i = 1; $i <= $testimonial->rating; $i++)
-                            <i class="bi bi-star-fill"></i>
-                        @endfor
-                        @for($i = $testimonial->rating + 1; $i <= 5; $i++)
-                            <i class="bi bi-star"></i>
-                        @endfor
-                    </div>
-                    <p>{{ $testimonial->isi_testimonial }}</p>
-                    <div class="profile mt-auto">
-                        <img src="{{ asset('storage/' . $testimonial->alumni->foto) }}" class="testimonial-img" alt="">
-                        <h3>{{ $testimonial->alumni->nama_alumni }}</h3>
-                        <h4>{{ $testimonial->alumni->nama_universitas }}</h4>
-                    </div>
+
+                <div class="swiper-wrapper">
+                    @foreach ($testimonials as $testimonial)
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="stars">
+                                    @for ($i = 1; $i <= $testimonial->rating; $i++)
+                                        <i class="bi bi-star-fill"></i>
+                                    @endfor
+                                    @for ($i = $testimonial->rating + 1; $i <= 5; $i++)
+                                        <i class="bi bi-star"></i>
+                                    @endfor
+                                </div>
+                                <p>{{ $testimonial->isi_testimonial }}</p>
+                                <div class="profile mt-auto">
+                                    <img src="{{ asset('storage/' . $testimonial->alumni->foto) }}"
+                                        class="testimonial-img" alt="">
+                                    <h3>{{ $testimonial->alumni->nama_alumni }}</h3>
+                                    <h4>{{ $testimonial->alumni->nama_universitas }}</h4>
+                                </div>
+                            </div>
+                        </div><!-- End testimonial item -->
+                    @endforeach
                 </div>
-            </div><!-- End testimonial item -->
-        @endforeach
-    </div>    
 
-    <div class="swiper-pagination"></div>
-    </div>
+                <div class="swiper-pagination"></div>
+            </div>
 
-</div>
+        </div>
 
-</section><!-- /Testimonials Section -->
+    </section><!-- /Testimonials Section -->
 
-<!-- Portfolio Section -->
-<section id="portfolio" class="portfolio section">
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio section">
 
-<!-- Section Title -->
-<div class="container section-title" data-aos="fade-up">
-    <h2>Alumni</h2>
-    <p>Sebaran Alumni Studi Lanjut IMBOS</p>
-</div><!-- End Section Title -->
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Alumni</h2>
+            <p>Sebaran Alumni Studi Lanjut IMBOS</p>
+        </div><!-- End Section Title -->
 
-<div class="container">
+        <div class="container">
 
-    <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+            <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
 
-        <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-            <li data-filter="*" class="filter-active">Semua</li>
-            @foreach($jenisPt as $jenis)
-                <li data-filter=".filter-{{ Str::slug($jenis->nama_jenis_pt) }}">{{ $jenis->nama_jenis_pt }}</li>
-            @endforeach
-        </ul><!-- End Portfolio Filters -->
+                <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+                    <li data-filter="*" class="filter-active">Semua</li>
+                    @foreach ($jenisPt as $jenis)
+                        <li data-filter=".filter-{{ Str::slug($jenis->nama_jenis_pt) }}">{{ $jenis->nama_jenis_pt }}</li>
+                    @endforeach
+                </ul><!-- End Portfolio Filters -->
 
-        <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-            @foreach($alumnis as $alumni)
-                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}">
-                    <div class="portfolio-content h-100">
-                        <img src="{{ asset('storage/' . $alumni->foto) }}" class="img-fluid" alt="">
-                        <div class="portfolio-info">
-                            <h4>{{ $alumni->nama_alumni }}</h4>
-                            <p>{{ $alumni->nama_universitas }}</p>
-                            <a href="{{ asset('storage/' . $alumni->foto) }}" title="{{ $alumni->nama_alumni }}" data-gallery="portfolio-gallery-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                            {{-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> --}}
-                            <a href="{{ route('alumni.detail', $alumni->id) }}" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                        </div>
-                    </div>
-                </div><!-- End Portfolio Item -->
-            @endforeach
-        </div><!-- End Portfolio Container -->
+                <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+                    @foreach ($alumnis as $alumni)
+                        <div
+                            class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}">
+                            <div class="portfolio-content h-100">
+                                <img src="{{ asset('storage/' . $alumni->foto) }}" class="img-fluid" alt="">
+                                <div class="portfolio-info">
+                                    <h4>{{ $alumni->nama_alumni }}</h4>
+                                    <p>{{ $alumni->nama_universitas }}</p>
+                                    <a href="{{ asset('storage/' . $alumni->foto) }}" title="{{ $alumni->nama_alumni }}"
+                                        data-gallery="portfolio-gallery-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}"
+                                        class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    {{-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> --}}
+                                    <a href="{{ route('alumni.detail', $alumni->id) }}" title="More Details"
+                                        class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div>
+                        </div><!-- End Portfolio Item -->
+                    @endforeach
+                </div><!-- End Portfolio Container -->
 
-    </div>
+            </div>
 
-</div>
+        </div>
 
-<!-- Script for Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var ctx = document.getElementById('alumniChart').getContext('2d');
+        <!-- Script for Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var ctx = document.getElementById('alumniChart').getContext('2d');
 
-        // Define the colors for each type of perguruan tinggi
-        var backgroundColors = [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-        ];
+                // Define the colors for each type of perguruan tinggi
+                var backgroundColors = [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ];
 
-        var borderColors = [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-        ];
+                var borderColors = [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ];
 
-        var chartData = {!! json_encode($chartData) !!};
+                var chartData = {!! json_encode($chartData) !!};
 
-        var backgroundColorArray = [];
-        var borderColorArray = [];
+                var backgroundColorArray = [];
+                var borderColorArray = [];
 
-        chartData.forEach((data, index) => {
-            backgroundColorArray.push(backgroundColors[index % backgroundColors.length]);
-            borderColorArray.push(borderColors[index % borderColors.length]);
-        });
+                chartData.forEach((data, index) => {
+                    backgroundColorArray.push(backgroundColors[index % backgroundColors.length]);
+                    borderColorArray.push(borderColors[index % borderColors.length]);
+                });
 
-        var alumniChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: chartData.map(data => data.label),
-                datasets: [{
-                    label: 'Jumlah Alumni',
-                    data: chartData.map(data => data.count),
-                    backgroundColor: backgroundColorArray,
-                    borderColor: borderColorArray,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+                var alumniChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.map(data => data.label),
+                        datasets: [{
+                            label: 'Jumlah Alumni',
+                            data: chartData.map(data => data.count),
+                            backgroundColor: backgroundColorArray,
+                            borderColor: borderColorArray,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
                     }
-                }
-            }
-        });
-    });
-</script>
+                });
+            });
+        </script>
 
-</section><!-- /Portfolio Section -->
+    </section><!-- /Portfolio Section -->
 
 @endsection

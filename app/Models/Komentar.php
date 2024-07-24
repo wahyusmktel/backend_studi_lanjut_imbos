@@ -17,8 +17,13 @@ class Komentar extends Model
         return $this->belongsTo(Berita::class);
     }
 
+    // public function tanggapan()
+    // {
+    //     return $this->hasOne(Tanggapan::class, 'komentar_id');
+    // }
+
     public function tanggapan()
     {
-        return $this->hasOne(Tanggapan::class, 'komentar_id');
+        return $this->hasMany(Tanggapan::class, 'komentar_id');
     }
 }

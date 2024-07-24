@@ -92,6 +92,9 @@ class OrangTuaController extends Controller
     
     public function showLoginForm()
     {
+        if (Auth::guard('parent')->check()) {
+            return redirect()->route('orang_tua.index');
+        }
         return view('orang_tua');
     }
 

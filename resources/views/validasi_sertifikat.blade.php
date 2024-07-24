@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Validasi Sertifikat</title>
     <style>
@@ -8,34 +9,45 @@
             font-size: 14px;
             margin: 20px;
         }
-        .header, .content, .footer {
+
+        .header,
+        .content,
+        .footer {
             margin-bottom: 20px;
         }
+
         .content table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        .content table, .content th, .content td {
+
+        .content table,
+        .content th,
+        .content td {
             border: 1px solid black;
         }
-        .content th, .content td {
+
+        .content th,
+        .content td {
             padding: 8px;
             text-align: left;
         }
+
         .footer {
             text-align: center;
             margin-top: 20px;
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>Validasi Sertifikat</h1>
     </div>
-    
+
     <div class="content">
-        @if(isset($message))
+        @if (isset($message))
             <p>{{ $message }}</p>
         @else
             <p><strong>Nama Siswa:</strong> {{ $siswa->nama_siswa }}</p>
@@ -50,4 +62,5 @@
         @endif
     </div>
 </body>
+
 </html>

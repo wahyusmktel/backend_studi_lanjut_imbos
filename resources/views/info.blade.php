@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Berita')
+@section('title', 'Berita')
 
 @section('content')
 
@@ -102,7 +102,12 @@
             <div class="container">
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-lg-8">
-                        <h1>{{ $berita->judul_berita }}</h1>
+                        @if (isset($query))
+                            <h1>Search Results for: "{{ $query }}"</h1>
+                        @endif
+                        @if (isset($category))
+                            <h1>Category: {{ $category->nama_kategori }}</h1>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -111,7 +116,20 @@
             <div class="container">
                 <ol>
                     <li><a href="/">Home</a></li>
-                    <li class="current">{{ $berita->judul_berita }}</li>
+
+                    @if (isset($query))
+                        <li><a href="#">Search</a></li>
+                        <li class="current">
+                            {{ $query }}
+                        </li>
+                    @endif
+                    @if (isset($category))
+                        <li><a href="#">Kategori</a></li>
+                        <li class="current">
+                            {{ $category->nama_kategori }}
+                        </li>
+                    @endif
+
                 </ol>
             </div>
         </nav>
@@ -122,140 +140,59 @@
 
             <div class="col-lg-8">
 
-                <!-- Blog Details Section -->
-                <div id="blog-details" class="blog-details section">
+                <!-- Blog Posts Section -->
+                <section id="blog-posts" class="blog-posts section">
                     <div class="container">
 
-                        <article class="article">
-
-                            <div class="post-img">
-                                <img src="{{ asset('storage/' . $berita->foto) }}" alt="{{ $berita->judul_berita }}"
-                                    class="img-fluid">
-                            </div>
-
-                            <h2 class="title">{{ $berita->judul_berita }}</h2>
-
-                            <div class="meta-top">
-                                <ul>
-                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                            href="#">{{ $berita->author->name }}</a></li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
-                                            href="#"><time
-                                                datetime="{{ $berita->created_at }}">{{ $berita->created_at->format('M d, Y') }}</time></a>
-                                    </li>
-                                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
-                                            href="#">{{ $berita->komentars->count() }} Comments</a></li>
-                                </ul>
-                            </div><!-- End meta top -->
-
-                            <div class="content">
-                                <p>{{ $berita->isi_berita }}</p>
-                                <!-- You can add more sections of the content here as needed -->
-                            </div><!-- End post content -->
-
-                            <div class="meta-bottom">
-                                <i class="bi bi-folder"></i>
-                                <ul class="cats">
-                                    <li><a href="#">{{ $berita->kategori->nama_kategori }}</a></li>
-                                </ul>
-
-                                {{-- <i class="bi bi-tags"></i>
-                        <ul class="tags">
-                            <li><a href="#">Creative</a></li>
-                            <li><a href="#">Tips</a></li>
-                            <li><a href="#">Marketing</a></li>
-                        </ul> --}}
-                            </div><!-- End meta bottom -->
-
-                        </article>
-
-                    </div>
-                </div><!-- /Blog Details Section -->
-
-                <!-- Blog Author Section -->
-                <section id="blog-author" class="blog-author section">
-                    <div class="container">
-                        <div class="author-container d-flex align-items-center">
-                            <img src="{{ asset('storage/' . $berita->author->foto) }}"
-                                class="rounded-circle flex-shrink-0" alt="">
-                            <div>
-                                <h4>{{ $berita->author->name }}</h4>
-                                <p>{{ $berita->author->email }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </section><!-- /Blog Author Section -->
-
-                <!-- Blog Comments Section -->
-                <section id="blog-comments" class="blog-comments section">
-
-                    <div class="container">
-
-                        <h4 class="comments-count">{{ $berita->komentars->count() }} Comments</h4>
-
-                        @foreach ($berita->komentars as $komentar)
-                            <div id="comment" class="comment"><!-- Start comment -->
-                                <div class="d-flex">
-                                    <div class="comment-img"><img
-                                            src="{{ asset('halaman_umum/assets/img/blog/comments-2.jpg') }}"
-                                            alt=""></div>
-                                    <div>
-                                        <h5><a href="">{{ $komentar->nama_komentator }}</a></h5>
-                                        <time
-                                            datetime="{{ $komentar->created_at }}">{{ $komentar->created_at->format('d M, Y') }}</time>
-                                        <p>{{ $komentar->isi_komentar }}</p>
-                                    </div>
-                                </div>
-
-                                @foreach ($komentar->tanggapan as $tanggapan)
-                                    <div id="comment-reply-{{ $tanggapan->id }}" class="comment comment-reply">
-                                        <!-- Start comment reply -->
-                                        <div class="d-flex">
-                                            <div class="comment-img"><img
-                                                    src="{{ asset('storage/' . $tanggapan->author->foto) }}"
-                                                    alt=""></div>
-                                            <div>
-                                                <h5><a href="">{{ $tanggapan->author->name }}</a></h5>
-                                                <time
-                                                    datetime="{{ $tanggapan->created_at }}">{{ $tanggapan->created_at->format('d M, Y') }}</time>
-                                                <p>{{ $tanggapan->isi_tanggapan }}</p>
+                        <div class="row gy-4">
+                            @foreach ($beritas as $berita)
+                                <div class="col-12">
+                                    <article>
+                                        <div class="post-img">
+                                            <img src="{{ asset('storage/' . $berita->foto) }}" alt=""
+                                                class="img-fluid">
+                                        </div>
+                                        <h2 class="title">
+                                            <a
+                                                href="{{ route('berita.detail', $berita->id) }}">{{ $berita->judul_berita }}</a>
+                                        </h2>
+                                        <div class="meta-top">
+                                            <ul>
+                                                <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
+                                                        href="{{ route('berita.detail', $berita->id) }}">{{ $berita->author->name }}</a>
+                                                </li>
+                                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
+                                                        href="{{ route('berita.detail', $berita->id) }}"><time
+                                                            datetime="{{ $berita->created_at }}">{{ $berita->created_at->format('M d, Y') }}</time></a>
+                                                </li>
+                                                <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
+                                                        href="{{ route('berita.detail', $berita->id) }}">{{ $berita->komentars->count() }}
+                                                        Comments</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="content">
+                                            <p>{{ Str::limit(strip_tags($berita->isi_berita), 150, '...') }}</p>
+                                            <div class="read-more">
+                                                <a href="{{ route('berita.detail', $berita->id) }}">Read More</a>
                                             </div>
                                         </div>
-                                    </div><!-- End comment reply -->
-                                @endforeach
-                            </div><!-- End comment -->
-                        @endforeach
+                                    </article>
+                                </div><!-- End post list item -->
+                            @endforeach
+                        </div><!-- End blog posts list -->
+
 
                     </div>
+                </section><!-- /Blog Posts Section -->
 
-                </section><!-- /Blog Comments Section -->
-
-                <!-- Comment Form Section -->
-                <section id="comment-form" class="comment-form section">
+                <!-- Blog Pagination Section -->
+                <section id="blog-pagination" class="blog-pagination section">
                     <div class="container">
-                        <form action="{{ route('komentar.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="berita_id" value="{{ $berita->id }}">
-                            <h4>Berikan Komentar</h4>
-                            <p>Silahkan isikan form dibawah ini untuk membuat komentar *</p>
-
-                            <div class="row">
-                                <div class="col form-group">
-                                    <input name="nama_komentator" type="text" class="form-control"
-                                        placeholder="Nama Anda" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col form-group">
-                                    <textarea name="isi_komentar" class="form-control" placeholder="Tulis komentar anda" required></textarea>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Post Komentar</button>
-                            </div>
-                        </form>
+                        <div class="d-flex justify-content-center">
+                            {{ $beritas->links() }}
+                        </div>
                     </div>
-                </section><!-- /Comment Form Section -->
+                </section><!-- /Blog Pagination Section -->
 
             </div>
 
