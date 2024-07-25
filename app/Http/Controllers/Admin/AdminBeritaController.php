@@ -50,6 +50,22 @@ class AdminBeritaController extends Controller
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
 
+    public function uploadGambar(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $path = $file->store('gambar_berita', 'public');
+            $url = asset('storage/' . $path);
+            return response()->json(['url' => $url]);
+        }
+
+        return response()->json(['error' => 'Gagal mengupload gambar.'], 400);
+    }
+
     public function edit(Berita $berita)
     {
         $kategoriBeritas = KategoriBerita::all();

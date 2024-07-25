@@ -72,12 +72,46 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         /*Summernote Init*/
         $(function() {
             "use strict";
             $('#isi_berita').summernote({
                 height: 300,
+            });
+        });
+    </script> --}}
+
+    <script>
+        $(function() {
+            $('#isi_berita').summernote({
+                height: 300,
+                callbacks: {
+                    onImageUpload: function(files) {
+                        let editor = $(this);
+                        let data = new FormData();
+                        data.append("file", files[0]);
+                        data.append("_token", "{{ csrf_token() }}");
+    
+                        $.ajax({
+                            url: "{{ route('admin.berita.uploadGambar') }}",
+                            method: "POST",
+                            data: data,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                if(response.url) {
+                                    editor.summernote('insertImage', response.url);
+                                } else {
+                                    console.error('Gagal mengupload gambar');
+                                }
+                            },
+                            error: function(response) {
+                                console.error('Gagal mengupload gambar');
+                            }
+                        });
+                    }
+                }
             });
         });
     </script>

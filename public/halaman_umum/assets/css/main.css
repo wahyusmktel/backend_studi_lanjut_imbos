@@ -3367,6 +3367,10 @@ transform: translateX(-9%) translateY(-25%) rotate(45deg);
   line-height: 30px;
 }
 
+/* .blog-details .content img {
+  width: 100%;
+} */
+
 .blog-details .content h3 {
   font-size: 22px;
   margin-top: 30px;

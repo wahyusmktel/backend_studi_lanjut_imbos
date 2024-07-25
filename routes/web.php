@@ -191,6 +191,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/berita/{berita}/edit', [AdminBeritaController::class, 'edit'])->name('admin.berita.edit');
         Route::post('/berita/{berita}', [AdminBeritaController::class, 'update'])->name('admin.berita.update');
         Route::delete('/berita/{berita}', [AdminBeritaController::class, 'destroy'])->name('admin.berita.destroy');
+        Route::post('/upload-gambar-berita', [AdminBeritaController::class, 'uploadGambar'])->name('admin.berita.uploadGambar');
 
         // Routes untuk Komentar
         Route::get('/komentar', [AdminKomentarController::class, 'index'])->name('admin.komentar.index');
