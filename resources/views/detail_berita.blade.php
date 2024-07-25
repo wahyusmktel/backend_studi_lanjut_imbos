@@ -149,7 +149,7 @@
                             </div><!-- End meta top -->
 
                             <div class="content">
-                                <p>{{ $berita->isi_berita }}</p>
+                                <p>{!! $berita->isi_berita !!}</p>
                                 <!-- You can add more sections of the content here as needed -->
                             </div><!-- End post content -->
 

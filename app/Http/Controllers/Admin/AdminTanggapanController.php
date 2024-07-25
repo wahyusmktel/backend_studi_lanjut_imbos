@@ -9,9 +9,22 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminTanggapanController extends Controller
 {
-    public function index()
+    // public function index()
+    // {
+    //     $tanggapans = Tanggapan::with('komentar', 'author')->get();
+    //     return view('admin.tanggapan_komentar.index', compact('tanggapans'));
+    // }
+
+    public function index(Request $request)
     {
-        $tanggapans = Tanggapan::with('komentar', 'author')->get();
+        $query = Tanggapan::with('komentar', 'author');
+
+        if ($request->has('komentar_id')) {
+            $query->where('komentar_id', $request->input('komentar_id'));
+        }
+
+        $tanggapans = $query->get();
+
         return view('admin.tanggapan_komentar.index', compact('tanggapans'));
     }
 

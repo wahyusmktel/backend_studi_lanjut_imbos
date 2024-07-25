@@ -41,6 +41,7 @@ class AdminKategoriController extends Controller
         ]);
 
         return response()->json(['message' => 'Kategori berita berhasil diperbarui.']);
+        // return redirect()->route('admin.kategori_berita.index')->with('success', 'Kategori berita berhasil diperbarui.');
     }
 
     public function destroy($id)
