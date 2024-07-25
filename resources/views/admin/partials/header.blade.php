@@ -15,7 +15,7 @@
         </div>
         <div id="mobile_only_nav" class="mobile-only-nav pull-right">
             <ul class="nav navbar-right top-nav pull-right">
-                <li class="dropdown alert-drp">
+                {{-- <li class="dropdown alert-drp">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="zmdi zmdi-notifications top-nav-icon"></i><span class="top-nav-icon-badge"></span></a>
                     <ul class="dropdown-menu alert-dropdown" data-dropdown-in="bounceIn" data-dropdown-out="bounceOut">
                         <li>
@@ -39,14 +39,25 @@
                             </div>
                         </li>
                     </ul>
-                </li>
-                <li>
+                </li> --}}
+                {{-- <li>
                     <a id="open_right_sidebar" href="#"><i class="zmdi zmdi-settings  top-nav-icon"></i></a>
-                </li>
+                </li> --}}
                 <li class="dropdown auth-drp">
-                    <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown"><img src="{{ asset('img/user1.png') }}" alt="user_auth" class="user-auth-img img-circle"/><span class="user-online-status"></span><span class="user-auth-name inline-block">micheal hogan <span class="ti-angle-down"></span></span></a>
+                    {{-- <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown"><img src="{{ asset('img/user1.png') }}" alt="user_auth" class="user-auth-img img-circle"/><span class="user-online-status"></span><span class="user-auth-name inline-block">micheal hogan <span class="ti-angle-down"></span></span></a> --}}
+                    <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown">
+                        @if(Auth::guard('admin')->check())
+                            <img src="{{ asset('storage/' . Auth::guard('admin')->user()->foto) }}" alt="user_auth" class="user-auth-img img-circle"/>
+                            <span class="user-online-status"></span>
+                            <span class="user-auth-name inline-block">{{ Auth::guard('admin')->user()->name }} <span class="ti-angle-down"></span></span>
+                        @else
+                            <img src="{{ asset('img/user1.png') }}" alt="user_auth" class="user-auth-img img-circle"/>
+                            <span class="user-online-status"></span>
+                            <span class="user-auth-name inline-block">Guest <span class="ti-angle-down"></span></span>
+                        @endif
+                    </a>
                     <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
-                        <li>
+                        {{-- <li>
                             <a href="profile.html"><i class="zmdi zmdi-account"></i><span>Profile</span></a>
                         </li>
                         <li>
@@ -57,8 +68,8 @@
                         </li>
                         <li>
                             <a href="#"><i class="zmdi zmdi-settings"></i><span>Settings</span></a>
-                        </li>
-                        <li class="divider"></li>
+                        </li> --}}
+                        {{-- <li class="divider"></li>
                         <li class="sub-menu show-on-hover">
                             <a href="#" class="dropdown-toggle pr-0 level-2-drp"><i class="zmdi zmdi-check text-success"></i> available</a>
                             <ul class="dropdown-menu open-left-side">
@@ -72,7 +83,7 @@
                                     <a href="#"><i class="zmdi zmdi-minus-circle-outline text-danger"></i><span>offline</span></a>
                                 </li>
                             </ul>    
-                        </li>
+                        </li> --}}
                         <li class="divider"></li>
                         <li>
                             <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
