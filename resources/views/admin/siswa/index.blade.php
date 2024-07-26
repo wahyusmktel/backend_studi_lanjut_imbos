@@ -32,6 +32,8 @@
                                 </button>
                                 <ul role="menu" class="dropdown-menu">
                                     <li><a href="#" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> Tambah Data</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#" data-toggle="modal" data-target="#importModal"><i class="fa fa-upload"></i> Import Data</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -229,6 +231,32 @@
                     <button type="submit" class="btn btn-orange">Simpan</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Import Data -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h5 class="modal-title" id="importModalLabel">Import Data Siswa</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.siswa.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="importSiswa">Upload File Data Siswa</label>
+                        <input type="file" class="dropify" name="file" id="importSiswa" />
+                        <span class="help-block mt-10 mb-0"><small>Download format import data siswa <a href="/storage/format_excel/format_import_siswa.xlsx">disini</a>.</small></span>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-orange">Import Data</button>
+            </form>
+            </div>
         </div>
     </div>
 </div>

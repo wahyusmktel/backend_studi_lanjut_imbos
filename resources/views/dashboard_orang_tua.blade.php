@@ -116,8 +116,13 @@
                                 <div class="row">
                                     <div class="col-md-4 mt-2">
                                         <div class="img-profile">
-                                            {{-- <img src="https://placehold.co/400x600/png" alt="Profile"> --}}
-                                            <img src="{{ asset('storage/' . $siswa->foto_siswa) }}" alt="Profile">
+                                            {{-- <img src="https://placehold.co/400x600/png" alt="Profile">
+                                            <img src="{{ asset('storage/' . $siswa->foto_siswa) }}" alt="Profile"> --}}
+                                            @if($siswa->foto_siswa)
+                                                <img src="{{ asset('storage/' . $siswa->foto_siswa) }}" alt="Profile">
+                                            @else
+                                                <img src="https://placehold.co/400x600/png" alt="Profile">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-8 mt-2">

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\SiswaImport;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\ProgramBimbel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -97,5 +99,17 @@ class SiswaController extends Controller
 
         // return redirect()->route('admin.siswa.index')->with('success', 'Data Siswa berhasil dihapus.');
         return response()->json(['success' => 'Data Siswa berhasil dihapus.']);
+    }
+
+    public function import(Request $request)
+    {
+        
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        Excel::import(new SiswaImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data siswa berhasil diimport.');
     }
 }

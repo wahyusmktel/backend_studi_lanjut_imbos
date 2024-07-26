@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\AdminKategoriController;
 use App\Http\Controllers\Admin\AdminBeritaController;
 use App\Http\Controllers\Admin\AdminKomentarController;
 use App\Http\Controllers\Admin\AdminTanggapanController;
+use App\Http\Controllers\Admin\SiswaImportController;
 use App\Http\Controllers\TrackAlumniController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\InfoController;
@@ -124,6 +125,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/siswa', [SiswaController::class, 'store'])->name('admin.siswa.store');
         Route::post('/siswa/{id}', [SiswaController::class, 'update'])->name('admin.siswa.update');
         Route::delete('/siswa/{id}', [SiswaController::class, 'destroy'])->name('admin.siswa.destroy');
+        Route::post('/admin/siswa/import', [SiswaController::class, 'import'])->name('admin.siswa.import');
 
         // Tahun Pelajaran
         Route::get('/tahun_pelajaran', [AdminTahunPelajaranController::class, 'index'])->name('admin.tahun_pelajaran.index');
