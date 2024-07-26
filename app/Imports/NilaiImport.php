@@ -14,13 +14,29 @@ use Illuminate\Support\Facades\DB;
 
 class NilaiImport implements ToCollection, WithHeadingRow
 {
+    protected $columnMapping;
+
+    public function __construct()
+    {
+        // Ambil semua nama mata pelajaran dari database dan buat peta mapping
+        $mataPelajaran = MataPelajaran::all();
+        $this->columnMapping = $mataPelajaran->mapWithKeys(function ($item) {
+            return [$item->kode_mapel => $item->id];
+        })->toArray();
+    }
+
     public function collection(Collection $rows)
     {
         DB::transaction(function() use ($rows) {
             foreach ($rows as $row) {
+                // Log the row for debugging
+                Log::info('Processing row: ' . json_encode($row));
+
                 // Get Siswa
                 $siswa = Siswa::where('nama_siswa', $row['nama_siswa'])->first();
-                $tryout = Tryout::where('nama_tryout', $row['tryout'])->first();
+                // $tryout = Tryout::where('nama_tryout', $row['tryout'])->first();
+                // Get Tryout with status true
+                $tryout = Tryout::where('nama_tryout', $row['tryout'])->where('status', true)->first();
 
                 if (!$siswa) {
                     Log::warning("Siswa dengan nama {$row['nama_siswa']} tidak ditemukan");
@@ -34,14 +50,14 @@ class NilaiImport implements ToCollection, WithHeadingRow
 
                 // Process each MataPelajaran and save the score
                 foreach ($row as $key => $value) {
-                    if ($key !== 'nama_siswa' && $key !== 'tryout') {
-                        $mataPelajaran = MataPelajaran::where('namaMataPelajaran', $key)->first();
+                    if (!in_array($key, ['no', 'nama_siswa', 'tryout']) && !empty($value)) {
+                        if (isset($this->columnMapping[$key])) {
+                            $mataPelajaranId = $this->columnMapping[$key];
 
-                        if ($mataPelajaran) {
                             Nilai::updateOrCreate(
                                 [
                                     'siswa_id' => $siswa->id,
-                                    'mata_pelajaran_id' => $mataPelajaran->id,
+                                    'mata_pelajaran_id' => $mataPelajaranId,
                                     'tryout_id' => $tryout->id,
                                 ],
                                 [
@@ -49,6 +65,8 @@ class NilaiImport implements ToCollection, WithHeadingRow
                                     'status' => true,
                                 ]
                             );
+                        } else {
+                            Log::warning("Mata pelajaran dengan kode {$key} tidak ditemukan di database");
                         }
                     }
                 }

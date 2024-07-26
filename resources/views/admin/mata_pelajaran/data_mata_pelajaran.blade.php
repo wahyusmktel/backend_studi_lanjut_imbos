@@ -64,6 +64,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Mata Pelajaran</th>
+                                        <th>Kode Mapel</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -73,9 +74,10 @@
                                     <tr>
                                         <td>{{ $mataPelajaran->firstItem() + $index }}</td>
                                         <td>{{ $mp->namaMataPelajaran }}</td>
+                                        <td>{{ str_replace('_', ' ', strtoupper($mp->kode_mapel)) }}</td>
                                         <td>{{ $mp->status }}</td>
                                         <td class="text-nowrap">
-                                            <a href="#" class="mr-25 edit-button" data-id="{{ $mp->id }}" data-nama="{{ $mp->namaMataPelajaran }}" data-status="{{ $mp->status }}" data-toggle="tooltip" data-original-title="Edit"> 
+                                            <a href="#" class="mr-25 edit-button" data-id="{{ $mp->id }}" data-nama="{{ $mp->namaMataPelajaran }}" data-kodemapel="{{ $mp->kode_mapel }}" data-status="{{ $mp->status }}" data-toggle="tooltip" data-original-title="Edit"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
                                             </a> 
                                             <a href="#" class="delete-button" data-id="{{ $mp->id }}" data-toggle="tooltip" data-original-title="Delete"> 
@@ -134,6 +136,10 @@
                         <input type="text" class="form-control" id="namaMataPelajaran" name="namaMataPelajaran" placeholder="Nama Mata Pelajaran" required>
                     </div>
                     <div class="form-group">
+                        <label for="kode_mapel">Kode Mapel</label>
+                        <input type="text" class="form-control" id="kode_mapel" name="kode_mapel" placeholder="Kode Mapel" required>
+                    </div>
+                    <div class="form-group">
                         <label for="status">Status</label>
                         <select class="form-control" id="status" name="status" required>
                             <option value="Aktif">Aktif</option>
@@ -165,6 +171,10 @@
                     <div class="form-group">
                         <label for="editNamaMataPelajaran">Nama Mata Pelajaran</label>
                         <input type="text" class="form-control" id="editNamaMataPelajaran" name="namaMataPelajaran" placeholder="Nama Mata Pelajaran" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editKode_Mapel">Kode Mapel</label>
+                        <input type="text" class="form-control" id="editKode_Mapel" name="kode_mapel" placeholder="Kode Mapel" required>
                     </div>
                     <div class="form-group">
                         <label for="editStatus">Status</label>
@@ -271,8 +281,10 @@
         $('.edit-button').on('click', function() {
             var id = $(this).data('id');
             var nama = $(this).data('nama');
+            var kodemapel = $(this).data('kodemapel');
             var status = $(this).data('status');
             $('#editNamaMataPelajaran').val(nama);
+            $('#editKode_Mapel').val(kodemapel);
             $('#editStatus').val(status);
             $('#editForm').attr('action', '/admin/mata_pelajaran/' + id);
             $('#editModal').modal('show');

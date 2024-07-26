@@ -28,8 +28,9 @@
                             <h6 class="panel-title txt-dark">Detail Nilai Siswa: {{ $siswa->nama_siswa }}</h6>
                         </div>
                         <div class="col-md-4 col-xs-6 text-right">
-                            <a href="{{ route('admin.nilai.downloadSertifikat', ['id' => $siswa->id, 'tahun_pelajaran_id' => $tahunPelajaranId, 'tryout_id' => $tryoutId]) }}"
-                                class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Download Sertifikat</a>
+                            {{-- <a href="{{ route('admin.nilai.downloadSertifikat', ['id' => $siswa->id, 'tahun_pelajaran_id' => $tahunPelajaranId, 'tryout_id' => $tryoutId]) }}"
+                                class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Download Sertifikat</a> --}}
+                            <a href="#" id="downloadSertifikat" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Download Sertifikat</a>
                             <a href="{{ route('admin.nilai-siswa.index') }}" class="btn btn-default"><i
                                     class="fa fa-arrow-left"></i> Kembali</a>
                         </div>
@@ -147,6 +148,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
+            var filterApplied = new URLSearchParams(window.location.search).has('tahun_pelajaran_id') && new URLSearchParams(window.location.search).has('tryout_id');
             $('#tahun_pelajaran_id').change(function() {
                 var tahunPelajaranId = $(this).val();
                 if (tahunPelajaranId) {
@@ -171,6 +173,23 @@
                     $('#tryout_id').append('<option value="">Pilih Tryout</option>');
                 }
             });
+
+            $('#downloadSertifikat').click(function(e) {
+                var tahunPelajaranId = $('#tahun_pelajaran_id').val();
+                var tryoutId = $('#tryout_id').val();
+                if (!tahunPelajaranId || !tryoutId) {
+                    e.preventDefault();
+                    alert('Silakan pilih Tahun Pelajaran dan Try Out terlebih dahulu.');
+                } else if (!filterApplied) {
+                    e.preventDefault();
+                    alert('Silakan klik tombol Filter terlebih dahulu.');
+                } else {
+                    var url = "{{ route('admin.nilai.downloadSertifikat', ['id' => $siswa->id, 'tahun_pelajaran_id' => '__tahun_pelajaran_id__', 'tryout_id' => '__tryout_id__']) }}";
+                    url = url.replace('__tahun_pelajaran_id__', tahunPelajaranId).replace('__tryout_id__', tryoutId);
+                    window.location.href = url;
+                }
+            });
+
         });
     </script>
 

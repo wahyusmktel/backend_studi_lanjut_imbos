@@ -5,7 +5,7 @@
             <th>Nama Siswa</th>
             <th>TryOut</th>
             @foreach ($mataPelajarans as $mataPelajaran)
-                <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
+                <th>{{ $mataPelajaran->kode_mapel }}</th>
             @endforeach
         </tr>
     </thead>

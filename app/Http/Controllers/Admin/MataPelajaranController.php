@@ -40,11 +40,13 @@ class MataPelajaranController extends Controller
     {
         $request->validate([
             'namaMataPelajaran' => 'required|string|max:255',
+            'kode_mapel' => 'required|string|max:255',
             'status' => 'required|string'
         ]);
 
         MataPelajaran::create([
             'namaMataPelajaran' => $request->namaMataPelajaran,
+            'kode_mapel' => $request->kode_mapel,
             'status' => $request->status
         ]);
 
@@ -55,12 +57,14 @@ class MataPelajaranController extends Controller
     {
         $request->validate([
             'namaMataPelajaran' => 'required|string|max:255',
+            'kode_mapel' => 'required|string|max:255',
             'status' => 'required|string'
         ]);
 
         $mataPelajaran = MataPelajaran::findOrFail($id);
         $mataPelajaran->update([
             'namaMataPelajaran' => $request->namaMataPelajaran,
+            'kode_mapel' => $request->kode_mapel,
             'status' => $request->status
         ]);
 

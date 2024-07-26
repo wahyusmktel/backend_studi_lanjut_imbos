@@ -12,6 +12,7 @@ class MataPelajaran extends Model
 
     protected $fillable = [
         'namaMataPelajaran',
+        'kode_mapel',
         'status',
         'opsi_test_tps'
     ];
@@ -32,6 +33,16 @@ class MataPelajaran extends Model
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
+    }
+
+    // public function setKodeMapelAttribute($value)
+    // {
+    //     $this->attributes['kode_mapel'] = strtolower($value);
+    // }
+
+    public function setKodeMapelAttribute($value)
+    {
+        $this->attributes['kode_mapel'] = strtolower(str_replace(' ', '_', $value));
     }
 
     public function nilais()
