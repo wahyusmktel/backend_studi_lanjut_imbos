@@ -12,6 +12,9 @@ use App\Models\TahunPelajaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\NilaiTemplateExport;
+use App\Imports\NilaiImport;
 
 class AdminNilaiController extends Controller
 {
@@ -207,5 +210,40 @@ class AdminNilaiController extends Controller
 
         // return redirect()->route('admin.nilai.index')->with('success', 'Data Nilai berhasil dihapus.');
         return response()->json(['success' => 'Data Nilai berhasil dihapus.']);
+    }
+
+    public function downloadTemplate(Request $request)
+    {
+        $tryoutId = $request->input('tryout_id');
+        $kelasId = $request->input('kelas_id');
+
+        if (!$tryoutId || !$kelasId) {
+            return redirect()->back()->with('error', 'Tahun Pelajaran dan Kelas harus dipilih.');
+        }
+
+        $tryout = Tryout::find($tryoutId);
+        $kelas = Kelas::find($kelasId);
+        $mataPelajarans = MataPelajaran::all();
+        $siswas = Siswa::where('kelas_id', $kelasId)->get();
+
+        $data = [
+            'tryout' => $tryout,
+            'kelas' => $kelas,
+            'mataPelajarans' => $mataPelajarans,
+            'siswas' => $siswas,
+        ];
+
+        return Excel::download(new NilaiTemplateExport($data), 'template_import_nilai.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+    
+        Excel::import(new NilaiImport, $request->file('file'));
+    
+        return redirect()->back()->with('success', 'Nilai berhasil diimport.');
     }
 }

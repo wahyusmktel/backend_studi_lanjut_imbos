@@ -35,7 +35,8 @@
                                         <li><a href="#" data-toggle="modal" data-target="#importModal"><i
                                                     class="fa fa-upload"></i> Import Data</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="#"><i class="fa fa-download"></i> Download Data</a></li>
+                                        {{-- <li><a href="#"><i class="fa fa-download"></i> Download Data</a></li> --}}
+                                        <li><a href="#" data-toggle="modal" data-target="#downloadTemplateModal"><i class="fa fa-download"></i> Download Template</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -126,6 +127,73 @@
     </div>
     <!-- /Row -->
 
+    <!-- Modal Download Template -->
+    <div class="modal fade" id="downloadTemplateModal" tabindex="-1" role="dialog" aria-labelledby="downloadTemplateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ route('admin.nilai.downloadTemplate') }}" method="GET">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h5 class="modal-title" id="downloadTemplateModalLabel">Download Template Import Nilai</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="download_tahun_pelajaran_filter">Tahun Pelajaran</label>
+                            <select class="form-control" id="download_tahun_pelajaran_filter" name="tahun_pelajaran_id" required>
+                                <option value="">Pilih Tahun Pelajaran</option>
+                                @foreach ($tahunPelajarans as $tp)
+                                    <option value="{{ $tp->id }}">{{ $tp->nama_tahun_pelajaran }} - {{ $tp->semester }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="download_tryout_filter">Try Out</label>
+                            <select class="form-control" id="download_tryout_filter" name="tryout_id" required>
+                                <option value="">Pilih Try Out</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="download_kelas_filter">Kelas</label>
+                            <select class="form-control" id="download_kelas_filter" name="kelas_id" required>
+                                <option value="">Pilih Kelas</option>
+                                @foreach ($kelas as $k)
+                                    <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-orange">Download</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Import Data -->
+    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="importModalLabel">Import Data Nilai</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.nilai.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="file">Upload File Excel</label>
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="../vendors/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../vendors/bower_components/jsgrid/dist/jsgrid.min.js"></script>
 
@@ -146,6 +214,24 @@
 
     <script>
         $(document).ready(function() {
+
+            $('#download_tahun_pelajaran_filter').on('change', function() {
+                var tahunPelajaranId = $(this).val();
+                $.ajax({
+                    url: '{{ route('admin.nilai.getTryouts') }}',
+                    type: 'GET',
+                    data: {
+                        tahun_pelajaran_id: tahunPelajaranId
+                    },
+                    success: function(data) {
+                        $('#download_tryout_filter').empty();
+                        $('#download_tryout_filter').append('<option value="">Pilih Try Out</option>');
+                        $.each(data, function(key, value) {
+                            $('#download_tryout_filter').append('<option value="' + key + '">' + value + '</option>');
+                        });
+                    }
+                });
+            });
 
             $('#tryout_filter').on('change', function() {
                 var tryoutId = $(this).val();
