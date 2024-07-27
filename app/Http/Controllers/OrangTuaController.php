@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Siswa;
 use App\Models\Nilai;
 use App\Models\MataPelajaran;
+use App\Models\SertifikatPerkembangan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SertifikatTryout;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -44,13 +45,19 @@ class OrangTuaController extends Controller
         // Pisahkan mata pelajaran berdasarkan opsi_test_tps
         $mataPelajaransFalse = $mataPelajarans->where('opsi_test_tps', false);
         $mataPelajaransTrue = $mataPelajarans->where('opsi_test_tps', true);
+
+        // Check if sertifikat exists
+        $sertifikatperkembangan = SertifikatPerkembangan::firstOrCreate(
+            ['siswa_id' => $id],
+            ['no_sertifikat' => strtoupper(Str::random(10)), 'status' => true]
+        );
     
-        $pdf = Pdf::loadView('sertifikat_orang_tua', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue'))
+        $pdf = Pdf::loadView('sertifikat_orang_tua', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikatperkembangan'))
                 ->setPaper('a4', 'landscape');
     
         // return $pdf->download('sertifikat.pdf');
 
-        $fileName = 'Sertifikat_' . str_replace(' ', '_', $siswa->nama_siswa) . '_' . date('Ymd_His') . '.pdf';
+        $fileName = 'Sertifikat_perkembangan_' . str_replace(' ', '_', $siswa->nama_siswa) . '_' . date('Ymd_His') . '.pdf';
 
         return $pdf->download($fileName);
 

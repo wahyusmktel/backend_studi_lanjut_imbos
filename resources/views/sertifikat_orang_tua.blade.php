@@ -49,6 +49,7 @@
         <h1>Sertifikat Nilai</h1>
         <h3>{{ $siswa->nama_siswa }}</h3>
         <p><strong>NIS:</strong> {{ $siswa->nis }}</p>
+        <p><strong>No Sertifikat:</strong> {{ $sertifikatperkembangan->no_sertifikat }}</p>
     </div>
     <div class="content">
         <table class="table table-hover table-bordered mb-0">
