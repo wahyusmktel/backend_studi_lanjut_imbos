@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\AdminTestimonialsController;
 use App\Http\Controllers\Admin\AdminKategoriController;
 use App\Http\Controllers\Admin\AdminBeritaController;
 use App\Http\Controllers\Admin\AdminKomentarController;
+use App\Http\Controllers\Admin\AdminSettingSertifikatController;
 use App\Http\Controllers\Admin\AdminTanggapanController;
 use App\Http\Controllers\Admin\SiswaImportController;
 use App\Http\Controllers\TrackAlumniController;
@@ -208,6 +209,12 @@ Route::prefix('admin')->group(function () {
         Route::post('/tanggapan', [AdminTanggapanController::class, 'store'])->name('admin.tanggapan.store');
         Route::put('/tanggapan/{id}', [AdminTanggapanController::class, 'update'])->name('admin.tanggapan.update');
         Route::delete('/tanggapan/{id}', [AdminTanggapanController::class, 'destroy'])->name('admin.tanggapan.destroy');
+
+        // Tahun Pelajaran
+        Route::get('/setting_sertifikat', [AdminSettingSertifikatController::class, 'index'])->name('admin.setting_sertifikat.index');
+        Route::post('/setting_sertifikat', [AdminSettingSertifikatController::class, 'store'])->name('admin.setting_sertifikat.store');
+        Route::post('/setting_sertifikat/{id}', [AdminSettingSertifikatController::class, 'update'])->name('admin.setting_sertifikat.update');
+        Route::delete('/setting_sertifikat/{id}', [AdminSettingSertifikatController::class, 'destroy'])->name('admin.setting_sertifikat.destroy');
 
     });
 });
