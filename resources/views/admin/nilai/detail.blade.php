@@ -116,6 +116,7 @@
                                             <th>Tahun Pelajaran</th>
                                             <th>Semester</th>
                                             <th>Nilai</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -127,6 +128,10 @@
                                                 <td>{{ $nilai->tryout->tahunPelajaran->nama_tahun_pelajaran ?? '' }}</td>
                                                 <td>{{ $nilai->tryout->tahunPelajaran->semester ?? '' }}</td>
                                                 <td>{{ $nilai->nilai }}</td>
+                                                <td>
+                                                    <button class="btn btn-warning edit-button" data-id="{{ $nilai->id }}" data-nilai="{{ $nilai->nilai }}"><i class="fa fa-pencil"></i> Edit</button>
+                                                    <button class="btn btn-danger delete-button" data-id="{{ $nilai->id }}"><i class="fa fa-trash"></i> Hapus</button>
+                                                </td>
                                             </tr>
                                         @endforeach
                                         @if ($siswa->nilais->isEmpty())
@@ -144,6 +149,47 @@
         </div>
     </div>
     <!-- /Row -->
+
+    <!-- Modal Edit Data -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="editModalLabel">Edit Data Mata Pelajaran</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" action="" method="POST">
+                        @csrf
+                        @method('POST')
+                        <div class="form-group">
+                            <label for="editNilai">Nilai</label>
+                            <input type="text" class="form-control" id="editNilai" name="nilai" placeholder="Nilai" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-orange">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (session('success'))
+        <script>
+            $(document).ready(function() {
+                setTimeout(function() {
+                    swal({
+                        title: "Success!",
+                        text: "{{ session('success') }}",
+                        type: "success",
+                        confirmButtonText: "OK"
+                    });
+                }, 1000);
+            });
+        </script>
+    @endif
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -190,6 +236,57 @@
                 }
             });
 
+            $('.delete-button').on('click', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this data!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#f83f37",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel plx!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '/admin/nilai-detail/' + id,
+                            type: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(result) {
+                                swal({
+                                    title: "Deleted!",
+                                    text: result.success,
+                                    type: "success",
+                                    confirmButtonText: "OK"
+                                }, function() {
+                                    location.reload();
+                                });
+                            },
+                            error: function() {
+                                swal("Error!", "There was an error deleting the data.",
+                                    "error");
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", "Your data is safe :)", "error");
+                    }
+                });
+            });
+
+            // Edit Button Click
+            $('.edit-button').on('click', function() {
+                var id = $(this).data('id');
+                var nilai = $(this).data('nilai');
+                $('#editNilai').val(nilai);
+                $('#editForm').attr('action', '/admin/nilai/' + id);
+                $('#editModal').modal('show');
+            });
+
         });
     </script>
 
@@ -218,7 +315,5 @@
             });
         });
     </script>
-
-
 
 @endsection

@@ -79,13 +79,7 @@
                                                     <a href="{{ route('admin.nilai.detail', $siswa->id) }}"
                                                         class="btn btn-info btn-sm"><i class="fa fa-info-circle"></i>
                                                         Detail</a>
-                                                    <form action="{{ route('admin.nilai.destroy', $siswa->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"><i
-                                                                class="fa fa-trash-o"></i> Hapus</button>
-                                                    </form>
+                                                    <a href="#" class="delete-button btn btn-danger btn-sm" data-id="{{ $siswa->id }}"><i class="fa fa-trash-o"></i> Hapus</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -102,4 +96,51 @@
         </div>
     </div>
     <!-- /Row -->
+
+    <script>
+        $(document).ready(function() {
+        // SweetAlert for Delete
+            $('.delete-button').on('click', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                swal({
+                    title: "Peringatan !",
+                    text: "Tindakan ini akan menghapus semua data nilai pada siswa yang dipilih !",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#f83f37",
+                    confirmButtonText: "Yes, Saya Paham!",
+                    cancelButtonText: "No, Batal!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '/admin/nilai/' + id,
+                            type: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(result) {
+                                swal({
+                                    title: "Deleted!",
+                                    text: result.success,
+                                    type: "success",
+                                    confirmButtonText: "OK"
+                                }, function() {
+                                    location.reload();
+                                });
+                            },
+                            error: function() {
+                                swal("Error!", "There was an error deleting the data.",
+                                    "error");
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", "Your data is safe :)", "error");
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -92,26 +92,58 @@ class AdminNilaiController extends Controller
         }
     }
 
+    // public function store(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'nilai.*.*' => 'required|integer|min:10|max:100',
+    //         'tryout_id' => 'required|uuid',
+    //     ]);
+
+    //     foreach ($data['nilai'] as $siswaId => $nilaiPerPelajaran) {
+    //         foreach ($nilaiPerPelajaran as $mataPelajaranId => $nilai) {
+    //             Nilai::updateOrCreate(
+    //                 [
+    //                     'siswa_id' => $siswaId,
+    //                     'mata_pelajaran_id' => $mataPelajaranId,
+    //                     'tryout_id' => $data['tryout_id'],
+    //                 ],
+    //                 [
+    //                     'nilai' => $nilai,
+    //                     'status' => true,
+    //                 ]
+    //             );
+    //         }
+    //     }
+
+    //     return redirect()->back()->with('success', 'Nilai berhasil disimpan.');
+    // }
+
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'nilai.*.*' => 'required|integer|min:10|max:100',
+        // Validasi input
+        $request->validate([
+            'nilai' => 'array',
+            'nilai.*.*' => 'nullable|integer|min:10|max:100',
             'tryout_id' => 'required|uuid',
         ]);
 
-        foreach ($data['nilai'] as $siswaId => $nilaiPerPelajaran) {
+        // Iterasi melalui nilai-nilai yang diinputkan
+        foreach ($request->input('nilai', []) as $siswaId => $nilaiPerPelajaran) {
             foreach ($nilaiPerPelajaran as $mataPelajaranId => $nilai) {
-                Nilai::updateOrCreate(
-                    [
-                        'siswa_id' => $siswaId,
-                        'mata_pelajaran_id' => $mataPelajaranId,
-                        'tryout_id' => $data['tryout_id'],
-                    ],
-                    [
-                        'nilai' => $nilai,
-                        'status' => true,
-                    ]
-                );
+                // Cek apakah nilai tidak null sebelum disimpan
+                if (!is_null($nilai)) {
+                    Nilai::updateOrCreate(
+                        [
+                            'siswa_id' => $siswaId,
+                            'mata_pelajaran_id' => $mataPelajaranId,
+                            'tryout_id' => $request->tryout_id,
+                        ],
+                        [
+                            'nilai' => $nilai,
+                            'status' => true,
+                        ]
+                    );
+                }
             }
         }
 
@@ -192,23 +224,47 @@ class AdminNilaiController extends Controller
         $nilai = Nilai::findOrFail($id);
 
         $data = $request->validate([
-            'tryout_id' => 'required|uuid',
-            'mata_pelajaran_id' => 'required|uuid',
-            'siswa_id' => 'required|uuid',
+            // 'tryout_id' => 'required|uuid',
+            // 'mata_pelajaran_id' => 'required|uuid',
+            // 'siswa_id' => 'required|uuid',
             'nilai' => 'required|integer|between:10,100',
         ]);
 
         $nilai->update($data);
 
-        return redirect()->route('admin.nilai.index')->with('success', 'Data Nilai berhasil diupdate.');
+        // return redirect()->route('admin.nilai.index')->with('success', 'Data Nilai berhasil diupdate.');
+        return back()->with('success', 'Nilai berhasil diupdate.');
     }
 
+    // public function destroy($id)
+    // {
+    //     $nilai = Nilai::findOrFail($id);
+    //     $nilai->delete();
+
+    //     // return redirect()->route('admin.nilai.index')->with('success', 'Data Nilai berhasil dihapus.');
+    //     return response()->json(['success' => 'Data Nilai berhasil dihapus.']);
+    // }
+
     public function destroy($id)
+    {
+        // Cek apakah ada data nilais dengan siswa_id yang diberikan
+        $nilais = Nilai::where('siswa_id', $id);
+
+        if ($nilais->count() > 0) {
+            // Hapus semua data nilais berdasarkan siswa_id yang diberikan
+            $nilais->delete();
+            return response()->json(['success' => 'Data Nilai berhasil dihapus.']);
+        } else {
+            // Mengembalikan respons JSON gagal jika tidak ada data yang ditemukan
+            return response()->json(['error' => 'Data Nilai tidak ditemukan.'], 404);
+        }
+    }
+
+    public function hapusBerdasarkanNilai($id)
     {
         $nilai = Nilai::findOrFail($id);
         $nilai->delete();
 
-        // return redirect()->route('admin.nilai.index')->with('success', 'Data Nilai berhasil dihapus.');
         return response()->json(['success' => 'Data Nilai berhasil dihapus.']);
     }
 
