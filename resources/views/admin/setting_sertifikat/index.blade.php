@@ -68,7 +68,7 @@
                                         <td>{{ $settingsertifikats->firstItem() + $index }}</td>
                                         <td>{{ $settingsertifikat->nama_template }}</td>
                                         <td class="text-nowrap">
-                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $settingsertifikat->id }}" data-nama="{{ $settingsertifikat->nama_template }}" data-logo-1="{{ $settingsertifikat->logo_1 }}" data-logo-2="{{ $settingsertifikat->logo_2 }}" data-watermark="{{ $settingsertifikat->watermark }}" data-status="{{ $settingsertifikat->status }}"> 
+                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $settingsertifikat->id }}" data-nama="{{ $settingsertifikat->nama_template }}" data-logo1="{{ $settingsertifikat->logo_1 }}" data-logo2="{{ $settingsertifikat->logo_2 }}" data-watermark="{{ $settingsertifikat->watermark }}" data-status="{{ $settingsertifikat->status }}"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
                                             </a> 
                                             <a href="#" class="delete-button" data-id="{{ $settingsertifikat->id }}" data-toggle="tooltip" data-original-title="Delete"> 
@@ -101,7 +101,7 @@
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{ route('admin.setting_sertifikat.store') }}" method="POST">
+            <form action="{{ route('admin.setting_sertifikat.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -114,16 +114,23 @@
                     </div>
                     <div class="form-group">
                         <label for="file">Upload Logo 1</label>
-                        <input type="file" name="file_logo_1" class="form-control" required>
+                        <input type="file" name="logo_1" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="file">Upload Logo 1</label>
-                        <input type="file" name="file_logo_2" class="form-control" required>
+                        <label for="file">Upload Logo 2</label>
+                        <input type="file" name="logo_2" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="file">Upload Logo 1</label>
-                        <input type="file" name="watermark" class="form-control" required>
+                        <label for="file">Watermark</label>
+                        <input type="file" name="watermark" class="form-control">
                     </div>
+                    {{-- <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value="1">Aktif</option>
+                            <option value="0">Nonaktif</option>
+                        </select>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -138,7 +145,7 @@
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="editForm" method="POST">
+            <form id="editForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
                 <div class="modal-header">
@@ -151,17 +158,16 @@
                         <input type="text" class="form-control" id="editNama_Template" name="nama_template" placeholder="Masukan Nama Konfigurasi" required>
                     </div>
                     <div class="form-group">
-                        <label for="logo_1">Foto</label>
-                        <input type="file" class="form-control" id="logo_1" name="logo_1">
-                        <img src="{{ asset('storage/' . $berita->logo_1) }}" alt="Foto Berita" class="img-thumbnail mt-2"
-                            style="width: 200px;">
+                        <label for="editLogo1">Logo 1</label>
+                        <input type="file" class="form-control" id="editLogo1" name="logo_1">
                     </div>
                     <div class="form-group">
-                        <label for="editSemester">Semester</label>
-                        <select class="form-control" id="editSemester" name="semester" required>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
+                        <label for="editLogo2">Logo 2</label>
+                        <input type="file" class="form-control" id="editLogo2" name="logo_2">
+                    </div>
+                    <div class="form-group">
+                        <label for="editWatermark">Watermark</label>
+                        <input type="file" class="form-control" id="editWatermark" name="watermark">
                     </div>
                     <div class="form-group">
                         <label for="editStatus">Status</label>
@@ -195,23 +201,52 @@
 </script>
 @endif
 
+@if(session('error'))
 <script>
     $(document).ready(function() {
+        setTimeout(function() {
+            swal({
+                title: "Error!",
+                text: "{{ session('error') }}",
+                type: "error",
+                confirmButtonText: "OK"
+            });
+        }, 1000);
+    });
+</script>
+@endif
 
+@if ($errors->any())
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                swal({
+                    title: "Error!",
+                    text: "{{ $errors->first() }}",
+                    type: "error",
+                    confirmButtonText: "OK"
+                });
+            }, 1000);
+        });
+    </script>
+@endif
+
+<script>
+    $(document).ready(function() {
         $('.edit-button').on('click', function() {
             var id = $(this).data('id');
-            var nama = $(this).data('nama');
-            var semester = $(this).data('semester');
+            var editNama_Template = $(this).data('nama');
+            var editLogo1 = $(this).data('logo1');
+            var editLogo2 = $(this).data('logo2');
+            var editWatermark = $(this).data('watermark');
             var status = $(this).data('status');
 
-            $('#editForm').attr('action', '/admin/tahun_pelajaran/' + id);
-            $('#editNamaTahunPelajaran').val(nama);
-            $('#editSemester').val(semester);
+            $('#editForm').attr('action', '/admin/setting_sertifikat/' + id);
+            $('#editNama_Template').val(editNama_Template);
             $('#editStatus').val(status);
             $('#editModal').modal('show');
         });
 
-        // SweetAlert for Delete
         $('.delete-button').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -228,7 +263,7 @@
             }, function(isConfirm){
                 if (isConfirm) {
                     $.ajax({
-                        url: '/admin/tahun_pelajaran/' + id,
+                        url: '/admin/setting_sertifikat/' + id,
                         type: 'DELETE',
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -254,5 +289,4 @@
         });
     });
 </script>
-
 @endsection

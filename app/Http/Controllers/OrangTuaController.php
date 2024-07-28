@@ -10,6 +10,7 @@ use App\Models\MataPelajaran;
 use App\Models\SertifikatPerkembangan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SertifikatTryout;
+use App\Models\SettingSertifikat;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 
@@ -89,8 +90,11 @@ class OrangTuaController extends Controller
         // Generate barcode for the sertifikat as base64
         // $barcode = generateQrCodeBase64($sertifikat->no_sertifikat);
 
-        $pdf = Pdf::loadView('sertifikat_orang_tua_tryout', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikat'))
-                ->setPaper('a4', 'portrait');
+        // Fetch the active setting sertifikat
+        $settingSertifikat = SettingSertifikat::where('status', true)->first();
+
+        $pdf = Pdf::loadView('sertifikat_orang_tua_tryout', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikat', 'settingSertifikat'))
+                ->setPaper('a4', 'landscape');
 
         $filename = 'Sertifikat_' . $siswa->nama_siswa . '_Tryout_' . $nilai->first()->first()->tryout->nama_tryout . '_' . date('Ymd_His') . '.pdf';
 
