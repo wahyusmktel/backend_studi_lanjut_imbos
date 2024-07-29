@@ -51,7 +51,7 @@
                             <!-- Tampilkan nama mata pelajaran -->
                         </div>
 
-                        <div class="profile-cover__action" data-bg-img="assets/img/covers/01_800x150.jpg"
+                        <div class="profile-cover__action" data-bg-img="{{ asset('halaman_umum/assets/img/timeline 800x150.jpg') }}"
                             data-overlay="0.3">
                             <!-- <button class="btn btn-rounded btn-info">
                           <i class="fa fa-plus"></i>
@@ -63,11 +63,11 @@
                       <span>Ganti Foto Sampul</span>
                   </button> --}}
                             <!-- Tombol Ganti Foto Sampul -->
-                            <button class="btn btn-rounded btn-info" data-bs-toggle="modal"
+                            {{-- <button class="btn btn-rounded btn-info" data-bs-toggle="modal"
                                 data-bs-target="#uploadFotoSampulModal">
                                 <i class="bi bi-upload"></i>
                                 <span>Ganti Foto Sampul</span>
-                            </button>
+                            </button> --}}
 
                             <!-- Modal Ganti Foto Sampul -->
                             <div class="modal fade no-fixed-backdrop" id="uploadFotoSampulModal" tabindex="-1"

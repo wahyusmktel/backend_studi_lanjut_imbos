@@ -249,7 +249,7 @@
                     <div class="form-group">
                         <label for="importSiswa">Upload File Data Siswa</label>
                         <input type="file" class="dropify" name="file" id="importSiswa" />
-                        <span class="help-block mt-10 mb-0"><small>Download format import data siswa <a href="/storage/format_excel/format_import_siswa.xlsx">disini</a>.</small></span>
+                        <span class="help-block mt-10 mb-0"><small>Download format import data siswa <a href="https://docs.google.com/spreadsheets/d/1BAMIyqZKwtJQO11ewVElX58ogT1Fwifn/edit?usp=sharing&ouid=105663471066731245622&rtpof=true&sd=true" target="_blank">disini</a>.</small></span>
                     </div>
             </div>
             <div class="modal-footer">

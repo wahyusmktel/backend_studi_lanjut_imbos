@@ -15,7 +15,7 @@ class SiswaImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         // Gunakan header yang benar
-        $kelas = Kelas::where('nama_kelas', $row['nama_kelas'])->first();
+        $kelas = Kelas::where('nama_kelas', $row['kelompok'])->first();
         $programBimbel = ProgramBimbel::where('nama_program', $row['nama_program'])->first();
 
         if (!$kelas || !$programBimbel) {
