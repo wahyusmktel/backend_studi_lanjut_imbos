@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\AdminKomentarController;
 use App\Http\Controllers\Admin\AdminSettingSertifikatController;
 use App\Http\Controllers\Admin\AdminTanggapanController;
 use App\Http\Controllers\Admin\SiswaImportController;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\TrackAlumniController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\InfoController;
@@ -215,6 +216,10 @@ Route::prefix('admin')->group(function () {
         Route::post('/setting_sertifikat', [AdminSettingSertifikatController::class, 'store'])->name('admin.setting_sertifikat.store');
         Route::post('/setting_sertifikat/{id}', [AdminSettingSertifikatController::class, 'update'])->name('admin.setting_sertifikat.update');
         Route::delete('/setting_sertifikat/{id}', [AdminSettingSertifikatController::class, 'destroy'])->name('admin.setting_sertifikat.destroy');
+
+        //Profile Admin
+        Route::get('/profile', [AdminProfileController::class, 'editProfile'])->name('admin.profile.edit');
+        Route::post('/profile', [AdminProfileController::class, 'updateProfile'])->name('admin.profile.update');
 
     });
 });

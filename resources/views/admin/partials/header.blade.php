@@ -57,10 +57,10 @@
                         @endif
                     </a>
                     <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
-                        {{-- <li>
-                            <a href="profile.html"><i class="zmdi zmdi-account"></i><span>Profile</span></a>
-                        </li>
                         <li>
+                            <a href="{{ route('admin.profile.edit') }}"><i class="zmdi zmdi-account"></i><span>Profile</span></a>
+                        </li>
+                        {{-- <li>
                             <a href="#"><i class="zmdi zmdi-card"></i><span>my balance</span></a>
                         </li>
                         <li>
