@@ -5,72 +5,8 @@
 @section('content')
     <!-- Hero Section -->
     <section id="hero" class="hero section">
-        <div class="menu-mobile-app">
-            <div class="menu-mobile-heading aos-init aos-animate" data-aos="fade-up">
-                <h2>Main Menu</h2>
-            </div>
-            <div class="row gy-3">
-                <div class="col-xl-3 d-flex">
-                    <div class="row align-self-center gy-3">
-                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-                            <div class="feature-box d-flex align-items-center">
-                                <i class="bi bi-house-fill"></i>
-                                <a href="{{ url('/') }}">Home</a>
-                            </div>
-                        </div><!-- End Feature Item -->
-
-                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                            <div class="feature-box d-flex align-items-center">
-                                <i class="bi bi-buildings"></i>
-                                <a href="{{ url('/tentang_kami') }}">Tentang Kami</a>
-                            </div>
-                        </div><!-- End Feature Item -->
-
-                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
-                            <div class="feature-box d-flex align-items-center">
-                                <i class="bi bi-mortarboard-fill"></i>
-                                <a href="{{ url('/tracking-alumni') }}">Track Alumni</a>
-                            </div>
-                        </div><!-- End Feature Item -->
-
-                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
-                            <div class="feature-box d-flex align-items-center">
-                                <i class="bi bi-list-task"></i>
-                                <a href="{{ url('/program') }}">Program</a>
-                            </div>
-                        </div><!-- End Feature Item -->
-
-                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="600">
-                            <div class="feature-box d-flex align-items-center">
-                                <i class="bi bi-person-hearts"></i>
-                                <a href="{{ url('/pantau_ortu') }}">Pantau Ortu</a>
-                            </div>
-                        </div><!-- End Feature Item -->
-
-                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
-                            <div class="feature-box d-flex align-items-center">
-                                <i class="bi bi-book-fill"></i>
-                                <a href="{{ url('/tryout') }}">Try Out</a>
-                            </div>
-                        </div><!-- End Feature Item -->
-
-                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
-                            <div class="feature-box d-flex align-items-center">
-                                <i class="bi bi-info-square-fill"></i>
-                                <a href="{{ url('/info') }}">Info</a>
-                            </div>
-                        </div><!-- End Feature Item -->
-
-                        <div class="col-md-3 col-xs-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
-                            <div class="feature-box d-flex align-items-center">
-                                <i class="bi bi-calendar2-check"></i>
-                                <a href="{{ url('/absensi-guru') }}">Daftar Hadir Guru</a>
-                            </div>
-                        </div><!-- End Feature Item -->
-                    </div>
-                </div>
-            </div>
-        </div>
+        
+        @include('includes.menu_mobile_app')
 
         <div class="container">
             <div class="row gy-4">
