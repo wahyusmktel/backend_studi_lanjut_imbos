@@ -9,7 +9,7 @@
     <h2>LAPORAN KEHADIRAN ABSENSI BIMBEL SISWA</h2>
     <p>Laporan data dari tanggal {{ \Carbon\Carbon::parse($start_date)->format('d-m-Y') }} sampai {{ \Carbon\Carbon::parse($end_date)->format('d-m-Y') }}</p>
     <p>Nama Siswa: {{ $siswa->nama_siswa }}</p>
-    <p>Kelas: {{ $siswa->kelas->nama_kelas }}</p>
+    <p>Kelompok: {{ $siswa->kelas->nama_kelas }}</p>
     <p>Program Bimbel: {{ $siswa->programBimbel->nama_program }}</p>
     <table>
         <thead>

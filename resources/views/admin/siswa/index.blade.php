@@ -62,7 +62,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Siswa</th>
-                                        <th>Kelas</th>
+                                        <th>Kelompok</th>
                                         <th>Program Bimbel</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="kelas_id">Kelas</label>
+                        <label for="kelas_id">Kelompok</label>
                         <select class="form-control" id="kelas_id" name="kelas_id" required>
                             @foreach($kelas as $kls)
                                 <option value="{{ $kls->id }}">{{ $kls->nama_kelas }}</option>
@@ -182,7 +182,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="editKelasId">Kelas</label>
+                        <label for="editKelasId">Kelompok</label>
                         <select class="form-control" id="editKelasId" name="kelas_id" required>
                             @foreach($kelas as $kls)
                                 <option value="{{ $kls->id }}">{{ $kls->nama_kelas }}</option>

@@ -172,9 +172,9 @@
                                                 class="form-control" readonly>
                                         </label>
                                         <label>
-                                            <span class="label-text">Kelas</span>
+                                            <span class="label-text">Kelompok</span>
                                             <select name="kelas_id" id="kelas_id" class="form-control" required>
-                                                <option value="">Pilih Kelas</option>
+                                                <option value="">Pilih Kelompok</option>
                                                 @foreach ($kelases as $kelas)
                                                     <option value="{{ $kelas->id }}">{{ $kelas->nama_kelas }}</option>
                                                 @endforeach
@@ -204,7 +204,7 @@
                                                 </thead>
                                                 <tbody id="siswa-table-body">
                                                     <tr>
-                                                        <td colspan="3" class="text-center">Pilih kelas terlebih dahulu
+                                                        <td colspan="3" class="text-center">Pilih Kelompok terlebih dahulu
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -263,7 +263,7 @@
                         }
                     });
             } else {
-                tbody.innerHTML = '<tr><td colspan="3" class="text-center">Pilih kelas terlebih dahulu</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center">Pilih Kelompok terlebih dahulu</td></tr>';
             }
         });
 

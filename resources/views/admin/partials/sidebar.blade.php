@@ -42,7 +42,7 @@
                     <a href="/admin/mata_pelajaran/">Mata Pelajaran</a>
                 </li>
                 <li>
-                    <a href="/admin/kelas/">Kelas</a>
+                    <a href="/admin/kelas/">Kelompok</a>
                 </li>
                 <li>
                     <a href="/admin/program_bimbel/">Program Bimbel</a>

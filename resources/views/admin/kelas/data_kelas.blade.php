@@ -61,8 +61,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Kelas</th>
-                                        <th>Tingkat Kelas</th>
+                                        <th>Nama Kelompok</th>
+                                        <th>Kode Kelompok</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -110,16 +110,16 @@
                 @csrf
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h5 class="modal-title" id="addModalLabel">Tambah Data Kelas</h5>
+                    <h5 class="modal-title" id="addModalLabel">Tambah Data Kelompok</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="nama_kelas">Nama Kelas</label>
-                        <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" placeholder="Nama Kelas" required>
+                        <label for="nama_kelas">Nama Kelompok</label>
+                        <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" placeholder="Nama Kelompok" required>
                     </div>
                     <div class="form-group">
-                        <label for="tingkat_kelas">Tingkat Kelas</label>
-                        <input type="text" class="form-control" id="tingkat_kelas" name="tingkat_kelas" placeholder="Tingkat Kelas" required>
+                        <label for="tingkat_kelas">Kode Kelompok</label>
+                        <input type="text" class="form-control" id="tingkat_kelas" name="tingkat_kelas" placeholder="Kode Kelompok" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -140,16 +140,16 @@
                 @method('POST')
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h5 class="modal-title" id="editModalLabel">Edit Data Kelas</h5>
+                    <h5 class="modal-title" id="editModalLabel">Edit Data Kelompok</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="editNamaKelas">Nama Kelas</label>
-                        <input type="text" class="form-control" id="editNamaKelas" name="nama_kelas" placeholder="Nama Kelas" required>
+                        <label for="editNamaKelas">Nama Kelompok</label>
+                        <input type="text" class="form-control" id="editNamaKelas" name="nama_kelas" placeholder="Nama Kelompok" required>
                     </div>
                     <div class="form-group">
-                        <label for="editTingkatKelas">Tingkat Kelas</label>
-                        <input type="text" class="form-control" id="editTingkatKelas" name="tingkat_kelas" placeholder="Tingkat Kelas" required>
+                        <label for="editTingkatKelas">Kode Kelompok</label>
+                        <input type="text" class="form-control" id="editTingkatKelas" name="tingkat_kelas" placeholder="Kode Kelompok" required>
                     </div>
                 </div>
                 <div class="modal-footer">

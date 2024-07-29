@@ -87,7 +87,7 @@
 
                                     <div class="form-group">
                                         <select name="kelas_id" class="form-control">
-                                            <option value="">Pilih Kelas</option>
+                                            <option value="">Pilih Kelompok</option>
                                             @foreach ($kelases as $kelas)
                                                 <option value="{{ $kelas->id }}"
                                                     {{ request('kelas_id') == $kelas->id ? 'selected' : '' }}>
@@ -116,7 +116,7 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama Siswa</th>
-                                                    <th>Kelas</th>
+                                                    <th>Kelompok</th>
                                                     <th>Mata Pelajaran</th>
                                                     <th>Guru</th>
                                                     <th>Tanggal</th>

@@ -78,9 +78,9 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="kelas_filter">Kelas</label>
+                                <label for="kelas_filter">Kelompok</label>
                                 <select class="form-control" id="kelas_filter" name="kelas_id">
-                                    <option value="">Pilih Kelas</option>
+                                    <option value="">Pilih Kelompok</option>
                                     @foreach ($kelas as $k)
                                         <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
                                     @endforeach
@@ -153,9 +153,9 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="download_kelas_filter">Kelas</label>
+                            <label for="download_kelas_filter">Kelompok</label>
                             <select class="form-control" id="download_kelas_filter" name="kelas_id" required>
-                                <option value="">Pilih Kelas</option>
+                                <option value="">Pilih Kelompok</option>
                                 @foreach ($kelas as $k)
                                     <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
                                 @endforeach

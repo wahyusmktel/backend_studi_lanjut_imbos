@@ -91,7 +91,7 @@
                                             <th>No</th>
                                             <th>Nama Guru</th>
                                             <th>Mata Pelajaran</th>
-                                            <th>Kelas</th>
+                                            <th>Kelompok</th>
                                             <th>Tanggal</th>
                                             <th>Aksi</th>
                                         </tr>

@@ -65,7 +65,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Siswa</th>
-                                            <th>Kelas</th>
+                                            <th>Kelompok</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>

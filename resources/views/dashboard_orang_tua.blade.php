@@ -66,7 +66,7 @@
                                                 </script>
                                             </tr>
                                             <tr>
-                                                <th style="text-align: left;">Kelas</th>
+                                                <th style="text-align: left;">Kelompok</th>
                                                 <td>{{ $siswa->kelas->nama_kelas }}</td>
                                             </tr>
                                             <tr>
