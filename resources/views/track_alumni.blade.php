@@ -157,8 +157,11 @@
                                 </div>
                                 <p>{{ $testimonial->isi_testimonial }}</p>
                                 <div class="profile mt-auto">
-                                    <img src="{{ asset('storage/' . $testimonial->alumni->foto) }}"
-                                        class="testimonial-img" alt="">
+                                    @if($testimonial->alumni->foto)
+                                        <img src="{{ asset('storage/' . $testimonial->alumni->foto) }}" class="testimonial-img" alt="">
+                                    @else
+                                        <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" class="testimonial-img" alt="No Image">
+                                    @endif
                                     <h3>{{ $testimonial->alumni->nama_alumni }}</h3>
                                     <h4>{{ $testimonial->alumni->nama_universitas }}</h4>
                                 </div>
@@ -199,13 +202,24 @@
                         <div
                             class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}">
                             <div class="portfolio-content h-100">
-                                <img src="{{ asset('storage/' . $alumni->foto) }}" class="img-fluid" alt="">
+                                {{-- <img src="{{ asset('storage/' . $alumni->foto) }}" class="img-fluid" alt=""> --}}
+                                @if($alumni->foto)
+                                    <img src="{{ asset('storage/' . $alumni->foto) }}" class="img-fluid" alt="Foto Alumni">
+                                @else
+                                    <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" class="img-fluid" alt="No Image">
+                                @endif
                                 <div class="portfolio-info">
                                     <h4>{{ $alumni->nama_alumni }}</h4>
                                     <p>{{ $alumni->nama_universitas }}</p>
-                                    <a href="{{ asset('storage/' . $alumni->foto) }}" title="{{ $alumni->nama_alumni }}"
-                                        data-gallery="portfolio-gallery-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}"
-                                        class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    @if($alumni->foto)
+                                        <a href="{{ asset('storage/' . $alumni->foto) }}" title="{{ $alumni->nama_alumni }}"
+                                            data-gallery="portfolio-gallery-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}"
+                                            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    @else
+                                        <a href="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" title="{{ $alumni->nama_alumni }}"
+                                            data-gallery="portfolio-gallery-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}"
+                                            class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    @endif
                                     {{-- <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> --}}
                                     <a href="{{ route('alumni.detail', $alumni->id) }}" title="More Details"
                                         class="details-link"><i class="bi bi-link-45deg"></i></a>

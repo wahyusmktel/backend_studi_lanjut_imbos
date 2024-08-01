@@ -19,7 +19,7 @@
 
                 </div>
                 <div class="col-lg-6 order-1 order-lg-1 hero-img" data-aos="zoom-out">
-                    <img src="{{ asset('halaman_umum/assets/img/hero-img.png') }}" class="img-fluid animated"
+                    <img src="{{ asset('halaman_umum/assets/img/hero-image-putra.png') }}" class="img-fluid animated"
                         alt="">
                 </div>
             </div>

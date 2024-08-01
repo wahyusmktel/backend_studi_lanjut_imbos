@@ -27,7 +27,7 @@ class AbsensiGuruController extends Controller
             'tanggal' => 'required|date',
             'kelas_id' => 'required|uuid',
             'catatan' => 'nullable|string',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10204',
             'siswa_id' => 'required|array',
             'kehadiran' => 'required|array',
         ]);

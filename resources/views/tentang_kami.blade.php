@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-                    <img src="{{ asset('halaman_umum/assets/img/about.jpg') }}" class="img-fluid" alt="">
+                    <img src="{{ asset('halaman_umum/assets/img/about-3.jpg') }}" class="img-fluid" alt="">
                 </div>
 
             </div>
@@ -153,8 +153,11 @@
                     <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
                         <div class="team-member">
                             <div class="member-img">
-                                <img src="{{ asset('storage/' . $guru->foto) }}" class="img-fluid"
-                                    alt="{{ $guru->nama }}">
+                                @if($guru->foto)
+                                    <img src="{{ asset('storage/' . $guru->foto) }}" class="img-fluid" alt="{{ $guru->nama }}">
+                                @else
+                                    <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" class="img-fluid" alt="{{ $guru->nama }}">
+                                @endif
                             </div>
                             <div class="member-info">
                                 <h4>{{ $guru->nama }}</h4>

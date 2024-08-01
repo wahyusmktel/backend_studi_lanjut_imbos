@@ -72,7 +72,12 @@
                         </script>
                         <div class="swiper-wrapper align-items-center">
                             <div class="swiper-slide">
-                                <img src="{{ asset('storage/' . $alumni->foto) }}" alt="">
+                                @if($alumni->foto)
+                                    <img src="{{ asset('storage/' . $alumni->foto) }}" alt="">
+                                @else
+                                <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" alt="">
+                                    
+                                @endif
                             </div>
                         </div>
                         <div class="swiper-pagination"></div>

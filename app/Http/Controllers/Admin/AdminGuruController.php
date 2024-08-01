@@ -19,7 +19,7 @@ class AdminGuruController extends Controller
             $query->where('nama', 'like', '%' . $search . '%');
         }
 
-        $gurus = $query->simplePaginate(10)->appends(['search' => $request->input('search')]);
+        $gurus = $query->simplePaginate(30)->appends(['search' => $request->input('search')]);
         $mataPelajarans = MataPelajaran::all();
 
         return view('admin.guru.data_guru', compact('gurus', 'mataPelajarans'));
@@ -34,6 +34,7 @@ class AdminGuruController extends Controller
             // 'tempat_lahir' => 'required|string|max:255',
             // 'tanggal_lahir' => 'required|date',
             'foto' => 'nullable|image|max:2048',
+            'motto' => 'nullable',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -58,6 +59,7 @@ class AdminGuruController extends Controller
             // 'tempat_lahir' => 'required|string|max:255',
             // 'tanggal_lahir' => 'required|date',
             'foto' => 'nullable|image|max:2048',
+            'motto' => 'nullable',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 

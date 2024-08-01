@@ -68,6 +68,7 @@
                                 <i class="bi bi-upload"></i>
                                 <span>Ganti Foto Sampul</span>
                             </button> --}}
+                            <br><br>
 
                             <!-- Modal Ganti Foto Sampul -->
                             <div class="modal fade no-fixed-backdrop" id="uploadFotoSampulModal" tabindex="-1"

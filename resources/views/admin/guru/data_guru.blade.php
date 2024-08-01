@@ -75,7 +75,7 @@
                                         <td>{{ $guru->nama }}</td>
                                         <td>{{ $guru->mataPelajaran->namaMataPelajaran }}</td>
                                         <td class="text-nowrap">
-                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $guru->id }}" data-nama="{{ $guru->nama }}" data-nip="{{ $guru->nip }}" data-mata-pelajaran-id="{{ $guru->mata_pelajaran_id }}" data-tempat-lahir="{{ $guru->tempat_lahir }}" data-tanggal-lahir="{{ $guru->tanggal_lahir }}"> 
+                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $guru->id }}" data-nama="{{ $guru->nama }}" data-nip="{{ $guru->nip }}" data-mata-pelajaran-id="{{ $guru->mata_pelajaran_id }}" data-tempat-lahir="{{ $guru->tempat_lahir }}" data-tanggal-lahir="{{ $guru->tanggal_lahir }}" data-motto="{{ $guru->motto }}"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
                                             </a> 
                                             <a href="#" class="delete-button" data-id="{{ $guru->id }}" data-toggle="tooltip" data-original-title="Delete"> 
@@ -89,7 +89,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel-footer">
+                {{-- <div class="panel-footer">
                     <div class="row">
                         <div class="col-sm-12">
                             <nav class="pagination-wrap d-inline-block" aria-label="Page navigation example">
@@ -97,7 +97,7 @@
                             </nav>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -138,6 +138,10 @@
                     <div class="form-group">
                         <label for="tanggal_lahir">Tanggal Lahir</label>
                         <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir">
+                    </div>
+                    <div class="form-group">
+                        <label for="motto">Motto</label>
+                        <textarea name="motto" id="motto" cols="30" rows="10" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -196,6 +200,10 @@
                     <div class="form-group">
                         <label for="editTanggalLahir">Tanggal Lahir</label>
                         <input type="date" class="form-control" id="editTanggalLahir" name="tanggal_lahir">
+                    </div>
+                    <div class="form-group">
+                        <label for="editMotto">Motto</label>
+                        <textarea name="motto" id="editMotto" cols="30" rows="10" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="password">Password (Kosongkan jika tidak ingin mengubah)</label>
@@ -269,6 +277,7 @@
             var mataPelajaranId = $(this).data('mata-pelajaran-id');
             var tempatLahir = $(this).data('tempat-lahir');
             var tanggalLahir = $(this).data('tanggal-lahir');
+            var motto = $(this).data('motto');
 
             $('#editForm').attr('action', '/admin/guru/' + id);
             $('#editNama').val(nama);
@@ -276,6 +285,7 @@
             $('#editMataPelajaranId').val(mataPelajaranId);
             $('#editTempatLahir').val(tempatLahir);
             $('#editTanggalLahir').val(tanggalLahir);
+            $('#editMotto').val(motto);
             $('#editModal').modal('show');
         });
 

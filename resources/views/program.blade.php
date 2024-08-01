@@ -53,7 +53,7 @@
                             <li>Pembahasan dan Trik Jitu</li>
                             <li>Intensif Belajar 1 Tahun</li>
                         </ul>
-                        <a href="#" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
+                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
                     </div>
                 </div><!-- End Pricing Item -->
 
@@ -70,7 +70,7 @@
                             <li>Pembahasan dan Trik Jitu</li>
                             <li>Intensif Belajar 1 Tahun</li>
                         </ul>
-                        <a href="#" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
+                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
                     </div>
                 </div><!-- End Pricing Item -->
 
@@ -88,7 +88,7 @@
                             <li>Pembahasan dan Trik Jitu</li>
                             <li>Intensif Belajar 1 Tahun</li>
                         </ul>
-                        <a href="#" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
+                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
                     </div>
                 </div><!-- End Pricing Item -->
 

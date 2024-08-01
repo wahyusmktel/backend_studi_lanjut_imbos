@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-                    <img src="{{ asset('halaman_umum/assets/img/about.jpg') }}" class="img-fluid" alt="">
+                    <img src="{{ asset('halaman_umum/assets/img/about-2.png') }}" class="img-fluid" alt="">
                 </div>
 
             </div>
