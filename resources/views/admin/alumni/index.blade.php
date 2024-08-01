@@ -96,6 +96,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="pagination-wrapper">
+                        {{ $alumnis->links() }} <!-- Menampilkan tautan paginasi -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -293,39 +296,19 @@
         });
     </script>
 
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: '{{ session('success') }}',
+@if (session('success'))
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            swal({
+                title: "Success!",
+                text: "{{ session('success') }}",
+                type: "success",
+                confirmButtonText: "OK"
             });
-        </script>
-    @endif
+        }, 1000);
+    });
+</script>
+@endif
 
-@endsection
-
-@section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script>
-        @if (Session::has('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: '{{ Session::get('success') }}',
-                timer: 3000,
-                showConfirmButton: false
-            });
-        @endif
-
-        @if (Session::has('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: '{{ Session::get('error') }}',
-                timer: 3000,
-                showConfirmButton: false
-            });
-        @endif
-    </script>
 @endsection

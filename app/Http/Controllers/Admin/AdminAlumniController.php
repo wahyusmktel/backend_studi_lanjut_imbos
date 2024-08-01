@@ -13,9 +13,17 @@ use App\Exports\AlumniFormatExport;
 
 class AdminAlumniController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $alumnis = Alumni::all();
+
+        $query = Alumni::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nama_alumni', 'like', '%' . $search . '%');
+        }
+
+        $alumnis = $query->simplePaginate(10)->appends(['search' => $request->input('search')]);
         $jenisPts = JenisPt::all();
         return view('admin.alumni.index', compact('alumnis', 'jenisPts'));
     }
