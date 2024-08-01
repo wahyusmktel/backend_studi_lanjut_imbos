@@ -3,26 +3,34 @@
 namespace App\Imports;
 
 use App\Models\Alumni;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\JenisPt;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class AlumniImport implements ToModel, WithHeadingRow
+class AlumniImport implements ToCollection, WithHeadingRow
 {
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
+        foreach ($rows as $row) {
+            // Ambil jenis_perguruan_tinggi_id dari nama_jenis_pt
+            $jenisPerguruanTinggi = JenisPt::where('nama_jenis_pt', $row['nama_jenis_pt'])->first();
 
-        // if (!isset($row[0]) || !isset($row[1]) || !isset($row[2]) || !isset($row[3]) || !isset($row[4])) {
-        //     return null;
-        // }
-
-        return new Alumni([
-            'id' => Str::uuid(),
-            'nama_alumni' => $row[0],
-            'jenis_perguruan_tinggi_id' => $row[1],
-            'nama_universitas' => $row[2],
-            'foto' => $row[3],
-            'status' => $row[4] == 1 ? true : false,
-        ]);
+            if ($jenisPerguruanTinggi) {
+                Alumni::updateOrCreate(
+                    ['nama_alumni' => $row['nama_alumni']],
+                    [
+                        'nama_alumni' => $row['nama_alumni'],
+                        'jenis_perguruan_tinggi_id' => $jenisPerguruanTinggi->id,
+                        'nama_universitas' => $row['nama_universitas'],
+                        'foto' => $row['foto'], // Pastikan foto sudah diunggah dan disimpan di direktori yang benar
+                        // 'status' => $row['status'], // Jika ada
+                    ]
+                );
+            } else {
+                // Log atau berikan pesan error jika jenis perguruan tinggi tidak ditemukan
+            }
+        }
     }
 }

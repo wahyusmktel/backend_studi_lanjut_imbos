@@ -79,11 +79,22 @@ class AdminAlumniController extends Controller
         return response()->json(['message' => 'Data alumni berhasil dihapus.']);
     }
 
-    public function import(ImportAlumniRequest $request)
+    // public function import(ImportAlumniRequest $request)
+    // {
+    //     Excel::import(new AlumniImport, $request->file('file'));
+
+    //     return redirect()->route('admin.alumni.index')->with('success', 'Data alumni berhasil diimport.');
+    // }
+
+    public function import(Request $request)
     {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
+        ]);
+
         Excel::import(new AlumniImport, $request->file('file'));
 
-        return redirect()->route('admin.alumni.index')->with('success', 'Data alumni berhasil diimport.');
+        return redirect()->route('admin.alumni.index')->with('success', 'Data alumni berhasil diimpor.');
     }
 
     public function downloadFormat()
