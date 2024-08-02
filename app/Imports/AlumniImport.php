@@ -25,6 +25,7 @@ class AlumniImport implements ToCollection, WithHeadingRow
                         'jenis_perguruan_tinggi_id' => $jenisPerguruanTinggi->id,
                         'nama_universitas' => $row['nama_universitas'],
                         'foto' => $row['foto'], // Pastikan foto sudah diunggah dan disimpan di direktori yang benar
+                        'tahun_lulusan' => $row['tahun_lulusan'],
                         // 'status' => $row['status'], // Jika ada
                     ]
                 );

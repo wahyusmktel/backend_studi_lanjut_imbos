@@ -15,6 +15,7 @@ class Alumni extends Model
         'jenis_perguruan_tinggi_id',
         'nama_universitas',
         'foto',
+        'tahun_lulusan',
         'status'
     ];
 

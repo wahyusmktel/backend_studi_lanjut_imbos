@@ -34,6 +34,7 @@ class AdminAlumniController extends Controller
             'nama_alumni' => 'required|string|max:255',
             'jenis_perguruan_tinggi_id' => 'required|uuid',
             'nama_universitas' => 'required|string|max:255',
+            'tahun_lulusan' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -41,6 +42,7 @@ class AdminAlumniController extends Controller
         $alumni->nama_alumni = $request->nama_alumni;
         $alumni->jenis_perguruan_tinggi_id = $request->jenis_perguruan_tinggi_id;
         $alumni->nama_universitas = $request->nama_universitas;
+        $alumni->tahun_lulusan = $request->tahun_lulusan;
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
@@ -61,6 +63,7 @@ class AdminAlumniController extends Controller
             'nama_alumni' => 'required',
             'jenis_perguruan_tinggi_id' => 'required',
             'nama_universitas' => 'required',
+            'tahun_lulusan' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -68,6 +71,7 @@ class AdminAlumniController extends Controller
         $alumni->nama_alumni = $request->nama_alumni;
         $alumni->jenis_perguruan_tinggi_id = $request->jenis_perguruan_tinggi_id;
         $alumni->nama_universitas = $request->nama_universitas;
+        $alumni->tahun_lulusan = $request->tahun_lulusan;
 
         if ($request->hasFile('foto')) {
             $fotoPath = $request->file('foto')->store('foto_alumni', 'public');

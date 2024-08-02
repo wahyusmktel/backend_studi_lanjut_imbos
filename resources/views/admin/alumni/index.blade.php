@@ -49,6 +49,7 @@
                                             <th>Jenis Perguruan Tinggi</th>
                                             <th>Nama Universitas</th>
                                             <th>Foto</th>
+                                            <th>Tahun Lulusan</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -69,6 +70,7 @@
                                                         Tidak ada foto
                                                     @endif
                                                 </td>
+                                                <td>{{ $alumni->tahun_lulusan }}</td>
                                                 <td>{{ $alumni->status ? 'Aktif' : 'Tidak Aktif' }}</td>
                                                 <!-- Tombol Edit -->
                                                 <td>
@@ -77,7 +79,8 @@
                                                         data-id="{{ $alumni->id }}" data-nama="{{ $alumni->nama_alumni }}"
                                                         data-jenis="{{ $alumni->jenis_perguruan_tinggi_id }}"
                                                         data-universitas="{{ $alumni->nama_universitas }}"
-                                                        data-foto="{{ asset('storage/' . $alumni->foto) }}">
+                                                        data-foto="{{ asset('storage/' . $alumni->foto) }}"
+                                                        data-tahun_lulusan="{{ $alumni->tahun_lulusan }}">
                                                         <i class="fa fa-edit"></i> Edit
                                                     </button>
                                                     <button class="btn btn-danger btn-sm delete-alumni"
@@ -147,6 +150,11 @@
                             <label for="foto">Foto</label>
                             <input type="file" class="form-control" id="foto" name="foto">
                         </div>
+                        <div class="form-group">
+                            <label for="tahun_lulusan">Tahun Lulusan</label>
+                            <input type="number" class="form-control" id="tahun_lulusan" name="tahun_lulusan"
+                                required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -195,6 +203,11 @@
                             <input type="file" class="form-control" id="edit-foto" name="foto">
                             <img id="current-foto" src="" alt="Current Foto" width="100" class="mt-2">
                         </div>
+                        <div class="form-group">
+                            <label for="edit-tahun_lulusan">Tahun Lulusan</label>
+                            <input type="number" class="form-control" id="edit-tahun_lulusan" name="tahun_lulusan"
+                                required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -240,6 +253,7 @@
             var nama = button.data('nama');
             var jenis = button.data('jenis');
             var universitas = button.data('universitas');
+            var tahun_lulusan = button.data('tahun_lulusan');
             var foto = button.data('foto');
 
             var modal = $(this);
@@ -247,6 +261,7 @@
             modal.find('#edit-nama').val(nama);
             modal.find('#edit-jenis').val(jenis);
             modal.find('#edit-universitas').val(universitas);
+            modal.find('#edit-tahun_lulusan').val(tahun_lulusan);
             modal.find('#current-foto').attr('src', foto);
 
             $('#editAlumniForm').attr('action', '/admin/alumni/' + id);
