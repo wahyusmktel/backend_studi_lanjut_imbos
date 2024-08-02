@@ -74,7 +74,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $siswa->nama_siswa }}</td>
-                                                <td>{{ $siswa->kelas->nama_kelas }}</td>
+                                                <td>{{ $siswa->kelas ? $siswa->kelas->nama_kelas : 'Kelas Tidak Ditemukan' }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.nilai.detail', $siswa->id) }}"
                                                         class="btn btn-info btn-sm"><i class="fa fa-info-circle"></i>

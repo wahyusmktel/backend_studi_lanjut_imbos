@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class SiswaImport implements ToModel, WithHeadingRow
 {
@@ -22,6 +23,11 @@ class SiswaImport implements ToModel, WithHeadingRow
             throw new \Exception('Kelas atau Program Bimbel tidak ditemukan untuk baris ini');
         }
 
+        // Konversi tanggal dari format Excel jika perlu
+        $tgl_lahir = is_numeric($row['tgl_lahir']) 
+            ? Date::excelToDateTimeObject($row['tgl_lahir'])->format('Y-m-d')
+            : $row['tgl_lahir'];
+
         // Periksa apakah siswa sudah ada berdasarkan NIS
         $siswa = Siswa::where('nis', $row['nis'])->first();
 
@@ -31,7 +37,7 @@ class SiswaImport implements ToModel, WithHeadingRow
                 'kelas_id' => $kelas->id,
                 'program_bimbel_id' => $programBimbel->id,
                 'nama_siswa' => $row['nama_siswa'],
-                'tgl_lahir' => $row['tgl_lahir'],
+                'tgl_lahir' => $tgl_lahir,
                 'tmpt_lahir' => $row['tmpt_lahir'],
                 'no_hp' => $row['no_hp'],
                 'foto_siswa' => $row['foto_siswa'],
@@ -45,7 +51,7 @@ class SiswaImport implements ToModel, WithHeadingRow
                 'kelas_id' => $kelas->id,
                 'program_bimbel_id' => $programBimbel->id,
                 'nama_siswa' => $row['nama_siswa'],
-                'tgl_lahir' => $row['tgl_lahir'],
+                'tgl_lahir' => $tgl_lahir,
                 'tmpt_lahir' => $row['tmpt_lahir'],
                 'no_hp' => $row['no_hp'],
                 'foto_siswa' => $row['foto_siswa'],
