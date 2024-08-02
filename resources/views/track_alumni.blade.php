@@ -209,7 +209,7 @@
                                     <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" class="img-fluid" alt="No Image">
                                 @endif
                                 <div class="portfolio-info">
-                                    <h4>{{ $alumni->nama_alumni }}</h4>
+                                    <h4>{{ $alumni->nama_alumni }} - Alumni {{ $alumni->tahun_lulusan }}</h4>
                                     <p>{{ $alumni->nama_universitas }}</p>
                                     @if($alumni->foto)
                                         <a href="{{ asset('storage/' . $alumni->foto) }}" title="{{ $alumni->nama_alumni }}"

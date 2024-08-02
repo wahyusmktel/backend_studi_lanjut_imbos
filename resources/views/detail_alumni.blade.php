@@ -90,6 +90,7 @@
                             <li><strong>Nama:</strong> {{ $alumni->nama_alumni }}</li>
                             <li><strong>Jenis Perguruan Tinggi:</strong> {{ $alumni->jenisPt->nama_jenis_pt }}</li>
                             <li><strong>Nama Universitas:</strong> {{ $alumni->nama_universitas }}</li>
+                            <li><strong>Tahun Lulusan:</strong> {{ $alumni->tahun_lulusan }}</li>
                         </ul>
                     </div>
                     {{-- <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
