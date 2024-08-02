@@ -41,13 +41,15 @@ class MataPelajaranController extends Controller
         $request->validate([
             'namaMataPelajaran' => 'required|string|max:255',
             'kode_mapel' => 'required|string|max:255',
-            'status' => 'required|string'
+            'status' => 'required|string',
+            'opsi_kedinasan' => 'sometimes|boolean'
         ]);
 
         MataPelajaran::create([
             'namaMataPelajaran' => $request->namaMataPelajaran,
             'kode_mapel' => $request->kode_mapel,
-            'status' => $request->status
+            'status' => $request->status,
+            'opsi_kedinasan' => $request->opsi_kedinasan
         ]);
 
         return redirect()->route('admin.mata_pelajaran.index')->with('success', 'Data Mata Pelajaran berhasil ditambahkan.');
@@ -58,14 +60,16 @@ class MataPelajaranController extends Controller
         $request->validate([
             'namaMataPelajaran' => 'required|string|max:255',
             'kode_mapel' => 'required|string|max:255',
-            'status' => 'required|string'
+            'status' => 'required|string',
+            'opsi_kedinasan' => 'sometimes|boolean'
         ]);
 
         $mataPelajaran = MataPelajaran::findOrFail($id);
         $mataPelajaran->update([
             'namaMataPelajaran' => $request->namaMataPelajaran,
             'kode_mapel' => $request->kode_mapel,
-            'status' => $request->status
+            'status' => $request->status,
+            'opsi_kedinasan' => $request->opsi_kedinasan
         ]);
 
         return redirect()->route('admin.mata_pelajaran.index')->with('success', 'Data Mata Pelajaran berhasil diupdate.');

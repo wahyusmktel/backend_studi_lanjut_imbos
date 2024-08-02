@@ -19,6 +19,20 @@ class OrangTuaController extends Controller
     public function index()
     {
         $siswa = Auth::guard('parent')->user();
+
+        // Ambil nilai status_kedinasan dari kelas siswa
+        $statusKedinasan = $siswa->kelas->status_kedinasan;
+        
+        // Menyaring mata pelajaran berdasarkan status_kedinasan
+        if ($statusKedinasan === 1) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+        } elseif ($statusKedinasan === 0) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+        } else {
+            // Jika status_kedinasan adalah 2, ambil semua mata pelajaran
+            $mataPelajarans = MataPelajaran::all();
+        }
+        
         $nilai = Nilai::where('siswa_id', $siswa->id)
                     ->with(['tryout.tahunPelajaran', 'mataPelajaran'])
                     ->get()
@@ -26,15 +40,32 @@ class OrangTuaController extends Controller
                         return $nilai->tryout->nama_tryout;
                     })
                     ->groupBy('tryout_id');
-        $mataPelajarans = MataPelajaran::all(); // Pastikan ini dikirim ke view
+        // $mataPelajarans = MataPelajaran::all(); // Pastikan ini dikirim ke view
 
-        return view('dashboard_orang_tua', compact('siswa', 'nilai', 'mataPelajarans'));
+        $statusKedinasan = $siswa->kelas->status_kedinasan;
+
+        return view('dashboard_orang_tua', compact('siswa', 'nilai', 'mataPelajarans', 'statusKedinasan'));
     }
 
     public function downloadSertifikat(Request $request, $id)
     {
         $siswa = Siswa::with(['kelas', 'nilais.mataPelajaran', 'nilais.tryout.tahunPelajaran'])->findOrFail($id);
-        $mataPelajarans = MataPelajaran::all();
+        
+        
+        // $mataPelajarans = MataPelajaran::all();
+
+        // Mengambil status_kedinasan dari kelas siswa
+        $statusKedinasan = $siswa->kelas->status_kedinasan;
+
+        // Menyaring mata pelajaran berdasarkan status_kedinasan
+        if ($statusKedinasan === 1) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+        } elseif ($statusKedinasan === 0) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+        } else {
+            // Jika status_kedinasan adalah 2, ambil semua mata pelajaran
+            $mataPelajarans = MataPelajaran::all();
+        }
 
         // $nilai = $siswa->nilais->groupBy('tryout_id');
 
@@ -53,7 +84,7 @@ class OrangTuaController extends Controller
             ['no_sertifikat' => strtoupper(Str::random(10)), 'status' => true]
         );
     
-        $pdf = Pdf::loadView('sertifikat_orang_tua', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikatperkembangan'))
+        $pdf = Pdf::loadView('sertifikat_orang_tua', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikatperkembangan', 'statusKedinasan', 'mataPelajarans'))
                 ->setPaper('a4', 'landscape');
     
         // return $pdf->download('sertifikat.pdf');
@@ -70,7 +101,20 @@ class OrangTuaController extends Controller
             $query->where('tryout_id', $tryout_id)->with('mataPelajaran', 'tryout.tahunPelajaran');
         }])->findOrFail($id);
 
-        $mataPelajarans = MataPelajaran::all();
+        // $mataPelajarans = MataPelajaran::all();
+
+        // Mengambil status_kedinasan dari kelas siswa
+        $statusKedinasan = $siswa->kelas->status_kedinasan;
+
+        // Menyaring mata pelajaran berdasarkan status_kedinasan
+        if ($statusKedinasan === 1) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+        } elseif ($statusKedinasan === 0) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+        } else {
+            // Jika status_kedinasan adalah 2, ambil semua mata pelajaran
+            $mataPelajarans = MataPelajaran::all();
+        }
 
         // Mengurutkan nilai berdasarkan nama tryout
         $nilai = $siswa->nilais->sortBy(function($nilai) {

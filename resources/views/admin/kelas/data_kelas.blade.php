@@ -63,6 +63,7 @@
                                         <th>No</th>
                                         <th>Nama Kelompok</th>
                                         <th>Kode Kelompok</th>
+                                        <th>Status Kedinasan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -72,8 +73,19 @@
                                         <td>{{ $kelas->firstItem() + $index }}</td>
                                         <td>{{ $item->nama_kelas }}</td>
                                         <td>{{ $item->tingkat_kelas }}</td>
+                                        <td>
+                                            @if($item->status_kedinasan == 0)
+                                                TIDAK
+                                            @elseif($item->status_kedinasan == 1)
+                                                YA
+                                            @elseif($item->status_kedinasan == 2)
+                                                KELAS GABUNGAN
+                                            @else
+                                                Tidak Diketahui
+                                            @endif
+                                        </td>
                                         <td class="text-nowrap">
-                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $item->id }}" data-nama_kelas="{{ $item->nama_kelas }}" data-tingkat_kelas="{{ $item->tingkat_kelas }}"> 
+                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $item->id }}" data-nama_kelas="{{ $item->nama_kelas }}" data-tingkat_kelas="{{ $item->tingkat_kelas }}" data-status_kedinasan="{{ $item->status_kedinasan }}"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
                                             </a> 
                                             <a href="#" class="delete-button" data-id="{{ $item->id }}" data-toggle="tooltip" data-original-title="Delete"> 
@@ -121,6 +133,15 @@
                         <label for="tingkat_kelas">Kode Kelompok</label>
                         <input type="text" class="form-control" id="tingkat_kelas" name="tingkat_kelas" placeholder="Kode Kelompok" required>
                     </div>
+                    <div class="form-group">
+                        <label for="status_kedinasan">Status Kedinasan</label>
+                        <select name="status_kedinasan" id="status_kedinasan" class="form-control" required>
+                            <option>Pilih Salah Satu</option>
+                            <option value="0">Tidak</option>
+                            <option value="1">Ya</option>
+                            <option value="2">Kelas Gabungan</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -150,6 +171,15 @@
                     <div class="form-group">
                         <label for="editTingkatKelas">Kode Kelompok</label>
                         <input type="text" class="form-control" id="editTingkatKelas" name="tingkat_kelas" placeholder="Kode Kelompok" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatusKedinasan">Status Kedinasan</label>
+                        <select name="status_kedinasan" id="editStatusKedinasan" class="form-control" required>
+                            <option>Pilih Salah Satu</option>
+                            <option value="0">Tidak</option>
+                            <option value="1">Ya</option>
+                            <option value="2">Kelas Gabungan</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -183,10 +213,12 @@
             var id = $(this).data('id');
             var namaKelas = $(this).data('nama_kelas');
             var tingkatKelas = $(this).data('tingkat_kelas');
+            var status_kedinasan = $(this).data('status_kedinasan');
 
             $('#editForm').attr('action', '/admin/kelas/' + id);
             $('#editNamaKelas').val(namaKelas);
             $('#editTingkatKelas').val(tingkatKelas);
+            $('#editStatusKedinasan').val(status_kedinasan);
             $('#editModal').modal('show');
         });
 

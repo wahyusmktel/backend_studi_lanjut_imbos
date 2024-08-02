@@ -129,63 +129,89 @@
                                 </tbody>
                             </table> --}}
 
-                                    <table class="table table-hover table-bordered mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th rowspan="2">No</th>
-                                                <th rowspan="2">Try Out</th>
-                                                <th rowspan="2">Tahun Pelajaran</th>
-                                                <th rowspan="2">Semester</th>
-                                                @foreach ($mataPelajarans->where('opsi_test_tps', false) as $mataPelajaran)
-                                                    <th rowspan="2">{{ $mataPelajaran->namaMataPelajaran }}</th>
-                                                @endforeach
-                                                <th colspan="{{ $mataPelajarans->where('opsi_test_tps', true)->count() }}">
-                                                    Tes Potensi Skolastik</th>
-                                                <th rowspan="2">Aksi</th>
-                                            </tr>
-                                            <tr>
-                                                @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
-                                                    <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
-                                                @endforeach
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $index = 1;
-                                            @endphp
-                                            @foreach ($nilai as $tryoutId => $nilaiGroup)
-                                                <tr>
-                                                    <td>{{ $index }}</td>
-                                                    <td>{{ $nilaiGroup->first()->tryout->nama_tryout }}</td>
-                                                    <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->nama_tahun_pelajaran }}
-                                                    </td>
-                                                    <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester == 1 ? 'Ganjil' : 'Genap' }}
-                                                    </td>
-                                                    @foreach ($mataPelajarans->where('opsi_test_tps', false) as $mataPelajaran)
-                                                        <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}
-                                                        </td>
-                                                    @endforeach
-                                                    @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
-                                                        <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}
-                                                        </td>
-                                                    @endforeach
-                                                    <td>
-                                                        <a href="{{ route('parent.downloadSertifikatTryout', ['id' => $siswa->id, 'tryout_id' => $tryoutId]) }}"
-                                                            class="btn btn-primary">Download Sertifikat</a>
-                                                    </td>
-                                                </tr>
-                                                @php
-                                                    $index++;
-                                                @endphp
+                            <table class="table table-hover table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">No</th>
+                                        <th rowspan="2">Try Out</th>
+                                        <th rowspan="2">Tahun Pelajaran</th>
+                                        <th rowspan="2">Semester</th>
+                                        
+                                        <!-- Tampilkan mata pelajaran yang tidak termasuk TPS dan tidak kedinasan -->
+                                        @foreach ($mataPelajarans->where('opsi_test_tps', false)->where('opsi_kedinasan', false) as $mataPelajaran)
+                                            <th rowspan="2">{{ $mataPelajaran->namaMataPelajaran }}</th>
+                                        @endforeach
+                            
+                                        <!-- Kondisi untuk menampilkan kolom "Tes Potensi Skolastik" -->
+                                        @if($statusKedinasan === 0 || $statusKedinasan === 2)
+                                            <th colspan="{{ $mataPelajarans->where('opsi_test_tps', true)->count() }}">Tes Potensi Skolastik</th>
+                                        @endif
+                            
+                                        <!-- Kondisi untuk menampilkan kolom "Tes Kedinasan" -->
+                                        @if($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() > 0)
+                                            <th colspan="{{ $mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() }}">Tes Kedinasan</th>
+                                        @endif
+                            
+                                        <th rowspan="2">Aksi</th>
+                                    </tr>
+                                    <tr>
+                                        <!-- Kolom untuk Tes Potensi Skolastik -->
+                                        @if($statusKedinasan === 0 || $statusKedinasan === 2)
+                                            @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
+                                                <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
                                             @endforeach
-                                            @if ($nilai->isEmpty())
-                                                <tr>
-                                                    <td colspan="{{ 4 + $mataPelajarans->count() }}" class="text-center">
-                                                        Data tidak ditemukan</td>
-                                                </tr>
+                                        @endif
+                            
+                                        <!-- Kolom untuk Tes Kedinasan -->
+                                        @foreach ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false) as $mataPelajaran)
+                                            <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $index = 1;
+                                    @endphp
+                                    @foreach ($nilai as $tryoutId => $nilaiGroup)
+                                        <tr>
+                                            <td>{{ $index }}</td>
+                                            <td>{{ $nilaiGroup->first()->tryout->nama_tryout }}</td>
+                                            <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->nama_tahun_pelajaran }}</td>
+                                            <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester == 1 ? 'Ganjil' : 'Genap' }}</td>
+                            
+                                            <!-- Nilai untuk mata pelajaran tanpa TPS dan tanpa kedinasan -->
+                                            @foreach ($mataPelajarans->where('opsi_test_tps', false)->where('opsi_kedinasan', false) as $mataPelajaran)
+                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                            @endforeach
+                            
+                                            <!-- Nilai untuk Tes Potensi Skolastik -->
+                                            @if($statusKedinasan === 0 || $statusKedinasan === 2)
+                                                @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
+                                                    <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                                @endforeach
                                             @endif
-                                        </tbody>
-                                    </table>
+                            
+                                            <!-- Nilai untuk Tes Kedinasan -->
+                                            @foreach ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false) as $mataPelajaran)
+                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                            @endforeach
+                            
+                                            <td>
+                                                <a href="{{ route('parent.downloadSertifikatTryout', ['id' => $siswa->id, 'tryout_id' => $tryoutId]) }}" class="btn btn-primary">Download Sertifikat</a>
+                                            </td>
+                                        </tr>
+                                        @php
+                                            $index++;
+                                        @endphp
+                                    @endforeach
+                                    @if ($nilai->isEmpty())
+                                        <tr>
+                                            <td colspan="{{ 4 + $mataPelajarans->count() }}" class="text-center">Data tidak ditemukan</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                            
 
                                 </div>
                             </div>

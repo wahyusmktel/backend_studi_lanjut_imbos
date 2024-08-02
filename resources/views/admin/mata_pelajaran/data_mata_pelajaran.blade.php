@@ -66,6 +66,7 @@
                                         <th>Nama Mata Pelajaran</th>
                                         <th>Kode Mapel</th>
                                         <th>Status</th>
+                                        <th>Mapel Kedinasan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -76,8 +77,9 @@
                                         <td>{{ $mp->namaMataPelajaran }}</td>
                                         <td>{{ str_replace('_', ' ', strtoupper($mp->kode_mapel)) }}</td>
                                         <td>{{ $mp->status }}</td>
+                                        <td>{{ $mp->opsi_kedinasan ? 'YA' : 'BUKAN' }}</td>
                                         <td class="text-nowrap">
-                                            <a href="#" class="mr-25 edit-button" data-id="{{ $mp->id }}" data-nama="{{ $mp->namaMataPelajaran }}" data-kodemapel="{{ $mp->kode_mapel }}" data-status="{{ $mp->status }}" data-toggle="tooltip" data-original-title="Edit"> 
+                                            <a href="#" class="mr-25 edit-button" data-id="{{ $mp->id }}" data-nama="{{ $mp->namaMataPelajaran }}" data-kodemapel="{{ $mp->kode_mapel }}" data-status="{{ $mp->status }}" data-opsi_kedinasan="{{ $mp->opsi_kedinasan }}" data-toggle="tooltip" data-original-title="Edit"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
                                             </a> 
                                             <a href="#" class="delete-button" data-id="{{ $mp->id }}" data-toggle="tooltip" data-original-title="Delete"> 
@@ -146,6 +148,13 @@
                             <option value="Non-Aktif">Non-Aktif</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="opsi_kedinasan">Apakah Mapel Kedinasan</label>
+                        <select class="form-control" id="opsi_kedinasan" name="opsi_kedinasan" required>
+                            <option value="0">Bukan</option>
+                            <option value="1">Ya</option>
+                        </select>
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -181,6 +190,13 @@
                         <select class="form-control" id="editStatus" name="status" required>
                             <option value="Aktif">Aktif</option>
                             <option value="Non-Aktif">Non-Aktif</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOpsiKedinasan">Apakah Mapel Kedinasan</label>
+                        <select class="form-control" id="editOpsiKedinasan" name="opsi_kedinasan" required>
+                            <option value="0">Bukan</option>
+                            <option value="1">Ya</option>
                         </select>
                     </div>
                     <div class="modal-footer">
@@ -283,9 +299,11 @@
             var nama = $(this).data('nama');
             var kodemapel = $(this).data('kodemapel');
             var status = $(this).data('status');
+            var opsi_kedinasan = $(this).data('opsi_kedinasan');
             $('#editNamaMataPelajaran').val(nama);
             $('#editKode_Mapel').val(kodemapel);
             $('#editStatus').val(status);
+            $('#editOpsiKedinasan').val(opsi_kedinasan);
             $('#editForm').attr('action', '/admin/mata_pelajaran/' + id);
             $('#editModal').modal('show');
         });

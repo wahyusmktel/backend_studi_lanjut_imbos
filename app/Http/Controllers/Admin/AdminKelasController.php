@@ -28,6 +28,7 @@ class AdminKelasController extends Controller
         $request->validate([
             'nama_kelas' => 'required|string|max:255',
             'tingkat_kelas' => 'required|string|max:255',
+            'status_kedinasan' => 'required',
         ]);
 
         Kelas::create($request->all());
@@ -40,6 +41,7 @@ class AdminKelasController extends Controller
         $request->validate([
             'nama_kelas' => 'required|string|max:255',
             'tingkat_kelas' => 'required|string|max:255',
+            'status_kedinasan' => 'required',
         ]);
 
         $kelas = Kelas::findOrFail($id);

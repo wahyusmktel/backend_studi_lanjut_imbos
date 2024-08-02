@@ -59,13 +59,30 @@
                     <th rowspan="2">Try Out</th>
                     <th rowspan="2">Tahun Pelajaran</th>
                     <th rowspan="2">Semester</th>
-                    @foreach ($mataPelajaransFalse as $mataPelajaran)
+                    <!-- Tampilkan mata pelajaran yang tidak termasuk TPS dan tidak kedinasan -->
+                    @foreach ($mataPelajarans->where('opsi_test_tps', false)->where('opsi_kedinasan', false) as $mataPelajaran)
                         <th rowspan="2">{{ $mataPelajaran->namaMataPelajaran }}</th>
                     @endforeach
-                    <th colspan="{{ $mataPelajaransTrue->count() }}">Tes Potensi Skolastik</th>
+                    <!-- Kondisi untuk menampilkan kolom "Tes Potensi Skolastik" -->
+                    @if($statusKedinasan === 0 || $statusKedinasan === 2)
+                    <th colspan="{{ $mataPelajarans->where('opsi_test_tps', true)->count() }}">Tes Potensi Skolastik</th>
+                    @endif
+        
+                    <!-- Kondisi untuk menampilkan kolom "Tes Kedinasan" -->
+                    @if($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() > 0)
+                        <th colspan="{{ $mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() }}">Tes Kedinasan</th>
+                    @endif
                 </tr>
                 <tr>
-                    @foreach ($mataPelajaransTrue as $mataPelajaran)
+                    <!-- Kolom untuk Tes Potensi Skolastik -->
+                    @if($statusKedinasan === 0 || $statusKedinasan === 2)
+                    @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
+                        <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
+                    @endforeach
+                    @endif
+        
+                    <!-- Kolom untuk Tes Kedinasan -->
+                    @foreach ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false) as $mataPelajaran)
                         <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
                     @endforeach
                 </tr>
@@ -80,13 +97,21 @@
                         <td>{{ $nilaiGroup->first()->tryout->nama_tryout }}</td>
                         <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->nama_tahun_pelajaran }}</td>
                         <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester == 1 ? 'Ganjil' : 'Genap' }}</td>
-                        @foreach ($mataPelajaransFalse as $mataPelajaran)
-                            <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}
-                            </td>
+                        <!-- Nilai untuk mata pelajaran tanpa TPS dan tanpa kedinasan -->
+                        @foreach ($mataPelajarans->where('opsi_test_tps', false)->where('opsi_kedinasan', false) as $mataPelajaran)
+                        <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
                         @endforeach
-                        @foreach ($mataPelajaransTrue as $mataPelajaran)
-                            <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}
-                            </td>
+        
+                        <!-- Nilai untuk Tes Potensi Skolastik -->
+                        @if($statusKedinasan === 0 || $statusKedinasan === 2)
+                            @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
+                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                            @endforeach
+                        @endif
+        
+                        <!-- Nilai untuk Tes Kedinasan -->
+                        @foreach ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false) as $mataPelajaran)
+                            <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
                         @endforeach
                     </tr>
                     @php

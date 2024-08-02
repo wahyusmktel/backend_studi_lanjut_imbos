@@ -92,13 +92,7 @@
                                     <input type="hidden" name="tryout_id" value="{{ $tryoutId }}" id="tryout_hidden">
                                     <table class="table table-hover table-bordered mb-0">
                                         <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama Siswa</th>
-                                                @foreach ($mataPelajarans as $mataPelajaran)
-                                                    <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
-                                                @endforeach
-                                            </tr>
+                                            <tr id="tableHeader"></tr>
                                         </thead>
                                         <tbody id="siswa_nilai_body">
                                             <!-- Data siswa dan nilai akan diisi oleh JavaScript -->
@@ -265,6 +259,45 @@
                 }
             });
 
+            // function loadSiswas(kelasId, tryoutId) {
+            //     $.ajax({
+            //         url: '{{ route('admin.nilai.getSiswas') }}',
+            //         type: 'GET',
+            //         data: {
+            //             kelas_id: kelasId,
+            //             tryout_id: tryoutId
+            //         },
+            //         success: function(data) {
+            //             var tableBody = $('#siswa_nilai_body');
+            //             tableBody.empty();
+            //             var isKedinasan = data.length > 0 && data[0].kelas.status_kedinasan; // Cek status_kedinasan
+            //             $.each(data, function(index, siswa) {
+            //                 var row = '<tr>' +
+            //                     '<td>' + (index + 1) + '</td>' +
+            //                     '<td>' + siswa.nama_siswa + '</td>';
+            //                 @foreach ($mataPelajarans as $mataPelajaran)
+            //                     // var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id ===
+            //                     //     '{{ $mataPelajaran->id }}');
+            //                     // var nilai = nilaiObj ? nilaiObj.nilai : '';
+            //                     // row +=
+            //                     //     '<td><input type="number" class="form-control" name="nilai[' +
+            //                     //     siswa.id + '][{{ $mataPelajaran->id }}]" value="' + nilai +
+            //                     //     '" min="10" max="100"></td>';
+            //                     // Tampilkan mata pelajaran berdasarkan status_kedinasan
+            //                     if (!isKedinasan || (isKedinasan && '{{ $mataPelajaran->opsi_kedinasan }}' === '1')) {
+            //                         var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id === '{{ $mataPelajaran->id }}');
+            //                         var nilai = nilaiObj ? nilaiObj.nilai : '';
+            //                         row += '<td><input type="number" class="form-control" name="nilai[' + siswa.id + '][{{ $mataPelajaran->id }}]" value="' + nilai + '" min="10" max="100"></td>';
+            //                     }
+            //                 @endforeach
+            //                 row += '</tr>';
+            //                 tableBody.append(row);
+            //             });
+            //         }
+            //     });
+            // }
+
+            // Berhasil
             function loadSiswas(kelasId, tryoutId) {
                 $.ajax({
                     url: '{{ route('admin.nilai.getSiswas') }}',
@@ -275,20 +308,32 @@
                     },
                     success: function(data) {
                         var tableBody = $('#siswa_nilai_body');
+                        var tableHeaderRow = $('#tableHeader');
                         tableBody.empty();
-                        $.each(data, function(index, siswa) {
+                        tableHeaderRow.empty();
+
+                        // Tambahkan kolom header "No" dan "Nama Siswa"
+                        tableHeaderRow.append('<th>No</th>');
+                        tableHeaderRow.append('<th>Nama Siswa</th>');
+
+                        // Tambahkan kolom header dinamis untuk mata pelajaran
+                        $.each(data.mataPelajarans, function(index, mataPelajaran) {
+                            tableHeaderRow.append('<th>' + mataPelajaran.namaMataPelajaran + '</th>');
+                        });
+
+                        // Tambahkan baris data siswa
+                        $.each(data.siswas, function(index, siswa) {
                             var row = '<tr>' +
-                                '<td>' + (index + 1) + '</td>' +
-                                '<td>' + siswa.nama_siswa + '</td>';
-                            @foreach ($mataPelajarans as $mataPelajaran)
-                                var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id ===
-                                    '{{ $mataPelajaran->id }}');
+                                '<td>' + (index + 1) + '</td>' + // Kolom "No"
+                                '<td>' + siswa.nama_siswa + '</td>'; // Kolom "Nama Siswa"
+
+                            // Tambahkan input nilai untuk setiap mata pelajaran
+                            $.each(data.mataPelajarans, function(index, mataPelajaran) {
+                                var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id === mataPelajaran.id);
                                 var nilai = nilaiObj ? nilaiObj.nilai : '';
-                                row +=
-                                    '<td><input type="number" class="form-control" name="nilai[' +
-                                    siswa.id + '][{{ $mataPelajaran->id }}]" value="' + nilai +
-                                    '" min="10" max="100"></td>';
-                            @endforeach
+                                row += '<td><input type="number" class="form-control" name="nilai[' + siswa.id + '][' + mataPelajaran.id + ']" value="' + nilai + '" min="10" max="100"></td>';
+                            });
+
                             row += '</tr>';
                             tableBody.append(row);
                         });

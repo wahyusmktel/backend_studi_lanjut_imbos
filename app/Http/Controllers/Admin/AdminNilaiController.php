@@ -42,6 +42,18 @@ class AdminNilaiController extends Controller
         $tahunPelajarans = TahunPelajaran::where('status', true)->get();
         $tryouts = $tahunPelajaranId ? Tryout::where('tahun_pelajaran_id', $tahunPelajaranId)->get() : collect();
         $mataPelajarans = MataPelajaran::all();
+
+        // Check if the selected class has kedinasan status
+        $isKedinasan = false;
+        if ($kelasId) {
+            $selectedKelas = Kelas::find($kelasId);
+            if ($selectedKelas && $selectedKelas->status_kedinasan) {
+                $isKedinasan = true;
+                // Filter mata pelajaran based on opsi_kedinasan
+                $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+            }
+        }
+
         $siswas = $kelasId ? Siswa::where('kelas_id', $kelasId)->get() : collect();
         $kelas = Kelas::all();
 
@@ -53,7 +65,7 @@ class AdminNilaiController extends Controller
                                 return $items->keyBy('mata_pelajaran_id');
                             });
 
-        return view('admin.nilai.data_nilai', compact('nilais', 'tahunPelajarans', 'mataPelajarans', 'siswas', 'tryouts', 'tahunPelajaranId', 'tryoutId', 'kelas', 'search', 'kelasId', 'existingNilai'));
+        return view('admin.nilai.data_nilai', compact('nilais', 'tahunPelajarans', 'mataPelajarans', 'siswas', 'tryouts', 'tahunPelajaranId', 'tryoutId', 'kelas', 'search', 'kelasId', 'existingNilai', 'isKedinasan'));
     }
 
     public function getTryouts(Request $request)
@@ -74,20 +86,107 @@ class AdminNilaiController extends Controller
     // }
 
 
+    // public function getSiswas(Request $request)
+    // {
+    //     try {
+    //         // \Log::info('Fetching siswas for kelas_id: ' . $request->kelas_id . ' and tryout_id: ' . $request->tryout_id);
+            
+    //         // Mengambil siswa dengan nilai yang sesuai dengan tryout yang dipilih
+    //         $siswas = Siswa::with(['nilais' => function($query) use ($request) {
+    //             $query->where('tryout_id', $request->tryout_id);
+    //         }])->where('kelas_id', $request->kelas_id)->get();
+
+    //         // Cek status kedinasan kelas
+    //         $isKedinasan = false;
+    //         $kelas = Kelas::find($request->kelas_id);
+    //         if ($kelas && $kelas->status_kedinasan) {
+    //             $isKedinasan = true;
+    //         }
+
+    //         // Fetch mata pelajaran sesuai kondisi kedinasan
+    //         $mataPelajarans = MataPelajaran::all();
+    //         if ($isKedinasan) {
+    //             $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+    //         }
+
+    //         // \Log::info('Fetched siswas: ' . $siswas->toJson());
+    //         // return response()->json($siswas);
+    //         return response()->json(['siswas' => $siswas, 'mataPelajarans' => $mataPelajarans]);
+    //     } catch (\Exception $e) {
+    //         // \Log::error('Error fetching siswas: ' . $e->getMessage());
+    //         return response()->json(['error' => 'Error fetching siswas'], 500);
+    //     }
+    // }
+
+    // public function getSiswas(Request $request)
+    // {
+    //     try {
+    //         // Mengambil siswa dengan nilai yang sesuai dengan tryout yang dipilih
+    //         $siswas = Siswa::with(['nilais' => function($query) use ($request) {
+    //             $query->where('tryout_id', $request->tryout_id);
+    //         }])->where('kelas_id', $request->kelas_id)->get();
+
+    //         // Cek status kedinasan kelas
+    //         $kelas = Kelas::find($request->kelas_id);
+    //         $isKedinasan = $kelas ? $kelas->status_kedinasan : false;
+
+    //         // Fetch mata pelajaran sesuai kondisi kedinasan
+    //         $mataPelajarans = MataPelajaran::where(function ($query) use ($isKedinasan) {
+    //             if ($isKedinasan === true) {
+    //                 // Jika kelas memiliki status kedinasan true, ambil mata pelajaran dengan opsi_kedinasan true
+    //                 $query->where('opsi_kedinasan', true);
+    //             } elseif ($isKedinasan === false) {
+    //                 // Jika kelas memiliki status kedinasan false, ambil mata pelajaran dengan opsi_kedinasan false
+    //                 $query->where('opsi_kedinasan', false);
+    //             } elseif ($isKedinasan === 2) {
+    //                 // Jika kelas memiliki status kedinasan 2, ambil semua mata pelajaran
+    //                 $query->orWhere('opsi_kedinasan', 2)
+    //                       ->orWhere('opsi_kedinasan', true)
+    //                       ->orWhere('opsi_kedinasan', false);
+    //             }
+    //         })
+    //         ->get();
+
+    //         return response()->json([
+    //             'siswas' => $siswas,
+    //             'mataPelajarans' => $mataPelajarans,
+    //             'isKedinasan' => $isKedinasan
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => 'Error fetching siswas'], 500);
+    //     }
+    // }
+
     public function getSiswas(Request $request)
     {
         try {
-            // \Log::info('Fetching siswas for kelas_id: ' . $request->kelas_id . ' and tryout_id: ' . $request->tryout_id);
-            
             // Mengambil siswa dengan nilai yang sesuai dengan tryout yang dipilih
             $siswas = Siswa::with(['nilais' => function($query) use ($request) {
                 $query->where('tryout_id', $request->tryout_id);
             }])->where('kelas_id', $request->kelas_id)->get();
 
-            // \Log::info('Fetched siswas: ' . $siswas->toJson());
-            return response()->json($siswas);
+            // Cek status kedinasan kelas
+            $kelas = Kelas::find($request->kelas_id);
+            $statusKedinasan = $kelas ? $kelas->status_kedinasan : false;
+
+            // Fetch mata pelajaran sesuai kondisi kedinasan
+            $mataPelajarans = MataPelajaran::where(function ($query) use ($statusKedinasan) {
+                if ($statusKedinasan === 1) {
+                    // Jika kelas memiliki status kedinasan true, ambil mata pelajaran dengan opsi_kedinasan true
+                    $query->where('opsi_kedinasan', true);
+                } elseif ($statusKedinasan === 0) {
+                    // Jika kelas tidak memiliki status kedinasan, ambil mata pelajaran dengan opsi_kedinasan false
+                    $query->where('opsi_kedinasan', false);
+                }
+                // Jika status_kedinasan adalah 2, ambil semua mata pelajaran (tidak ada kondisi tambahan yang diperlukan)
+            })->get();
+
+            return response()->json([
+                'siswas' => $siswas,
+                'mataPelajarans' => $mataPelajarans,
+                'statusKedinasan' => $statusKedinasan
+            ]);
         } catch (\Exception $e) {
-            // \Log::error('Error fetching siswas: ' . $e->getMessage());
             return response()->json(['error' => 'Error fetching siswas'], 500);
         }
     }

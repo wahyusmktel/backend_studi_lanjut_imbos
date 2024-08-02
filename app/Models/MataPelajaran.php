@@ -14,7 +14,8 @@ class MataPelajaran extends Model
         'namaMataPelajaran',
         'kode_mapel',
         'status',
-        'opsi_test_tps'
+        'opsi_test_tps',
+        'opsi_kedinasan'
     ];
 
     public $incrementing = false;
