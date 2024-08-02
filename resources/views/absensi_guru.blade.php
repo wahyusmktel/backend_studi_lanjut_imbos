@@ -210,6 +210,37 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            <div class="col-lg-12 mt-3">
+                                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
+                                                    Tambah Siswa
+                                                </button>
+                                                <br>
+                                                <hr>
+                                                <p><b>Catatan :</b> Tambah data diatas hanya digunakan untuk menambahkan apabila siswa di dalam kelompok tidak ada !</p>
+                                            </div>
+                                            <div class="modal fade" id="addSiswaModal" tabindex="-1" aria-labelledby="addSiswaModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="addSiswaModalLabel">Tambah Siswa</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <label for="siswa_select">Pilih Siswa:</label>
+                                                            <select id="siswa_select" class="form-control">
+                                                                <option value="">Pilih Siswa</option>
+                                                                @foreach ($allSiswa as $siswa)
+                                                                    <option value="{{ $siswa->id }}">{{ $siswa->nama_siswa }} - {{ $kelas->nama_kelas }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                            <button type="button" class="btn btn-primary" id="addSiswaButton">Tambahkan</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                                                                        
                                         </div>
                                     </div>
                                 </div>
@@ -265,6 +296,49 @@
                     });
             } else {
                 tbody.innerHTML = '<tr><td colspan="3" class="text-center">Pilih Kelompok terlebih dahulu</td></tr>';
+            }
+        });
+
+        document.getElementById('addSiswaButton').addEventListener('click', function () {
+            var siswaSelect = document.getElementById('siswa_select');
+            var siswaId = siswaSelect.value;
+            var siswaText = siswaSelect.options[siswaSelect.selectedIndex].text;
+
+            if (siswaId) {
+                var tbody = document.getElementById('siswa-table-body');
+
+                // Periksa apakah siswa sudah ada di tabel
+                var existingRow = document.querySelector(`input[value="${siswaId}"]`);
+                if (existingRow) {
+                    alert('Siswa sudah ada dalam daftar.');
+                    return;
+                }
+
+                var index = tbody.rows.length + 1;
+                var tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index}</td>
+                    <td>${siswaText.split(' - ')[0]}</td>
+                    <td>
+                        <div class="customradiobutton">
+                            <input type="hidden" name="siswa_id[]" value="${siswaId}">
+                            <input type="radio" id="hadir${index}" name="kehadiran[${siswaId}]" value="1" required>
+                            <label for="hadir${index}">Hadir</label>
+
+                            <input type="radio" id="tidak_hadir${index}" name="kehadiran[${siswaId}]" value="0" required>
+                            <label for="tidak_hadir${index}">Tidak Hadir</label>
+
+                            <input type="radio" id="sakit${index}" name="kehadiran[${siswaId}]" value="2" required>
+                            <label for="sakit${index}">Sakit</label>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+
+                // Tutup modal setelah siswa ditambahkan
+                $('#addSiswaModal').modal('hide');
+            } else {
+                alert('Silakan pilih siswa.');
             }
         });
 

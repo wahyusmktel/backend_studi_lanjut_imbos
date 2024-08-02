@@ -60,7 +60,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Try Out</th>
-                                        <th>Tahun Pelajaran</th>
+                                        <th>Tahun Pelajaran / Semester</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -69,7 +69,7 @@
                                     <tr>
                                         <td>{{ $tryouts->firstItem() + $index }}</td>
                                         <td>{{ $tryout->nama_tryout }}</td>
-                                        <td>{{ $tryout->tahunPelajaran->nama_tahun_pelajaran }}</td>
+                                        <td>{{ $tryout->tahunPelajaran->nama_tahun_pelajaran }} - {{ $tryout->tahunPelajaran->semester }}</td>
                                         <td class="text-nowrap">
                                             <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $tryout->id }}" data-nama="{{ $tryout->nama_tryout }}" data-tahun-pelajaran-id="{{ $tryout->tahun_pelajaran_id }}"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
@@ -149,7 +149,7 @@
                         <label for="editTahunPelajaranId">Tahun Pelajaran</label>
                         <select class="form-control" id="editTahunPelajaranId" name="tahun_pelajaran_id" required>
                             @foreach($tahunPelajarans as $tahunPelajaran)
-                                <option value="{{ $tahunPelajaran->id }}">{{ $tahunPelajaran->nama_tahun_pelajaran }}</option>
+                                <option value="{{ $tahunPelajaran->id }}">{{ $tahunPelajaran->nama_tahun_pelajaran }} - {{ $tahunPelajaran->semester }}</option>
                             @endforeach
                         </select>
                     </div>

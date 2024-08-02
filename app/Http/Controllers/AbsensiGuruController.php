@@ -17,8 +17,9 @@ class AbsensiGuruController extends Controller
         $guru = Auth::guard('guru')->user();
         $guru = Guru::with('mataPelajaran')->find($guru->id);
         $kelases = Kelas::all();
+        $allSiswa = Siswa::with('kelas')->get(); // Mengambil semua siswa dengan data kelas
 
-        return view('absensi_guru', compact('guru', 'kelases'));
+        return view('absensi_guru', compact('guru', 'kelases', 'allSiswa'));
     }
 
     public function store(Request $request)
