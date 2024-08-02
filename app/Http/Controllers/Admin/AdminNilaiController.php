@@ -378,7 +378,21 @@ class AdminNilaiController extends Controller
 
         $tryout = Tryout::find($tryoutId);
         $kelas = Kelas::find($kelasId);
-        $mataPelajarans = MataPelajaran::all();
+
+        // Menentukan mata pelajaran yang ditampilkan berdasarkan status_kedinasan
+        if ($kelas->status_kedinasan == 1) {
+            // Jika status_kedinasan adalah 1, ambil mata pelajaran dengan opsi_kedinasan true
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+        } elseif ($kelas->status_kedinasan == 0) {
+            // Jika status_kedinasan adalah 0, ambil mata pelajaran dengan opsi_kedinasan false
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+        } else {
+            // Jika status_kedinasan adalah 2, ambil semua mata pelajaran
+            $mataPelajarans = MataPelajaran::all();
+        }
+
+        // $mataPelajarans = MataPelajaran::all();
+
         $siswas = Siswa::where('kelas_id', $kelasId)->get();
 
         $data = [
