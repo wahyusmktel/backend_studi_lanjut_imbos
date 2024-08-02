@@ -25,7 +25,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-8 col-xs-6">
-                            <h6 class="panel-title txt-dark">Tambah Berita</h6>
+                            <h6 class="panel-title txt-dark">Kategori</h6>
                         </div>
                         <div class="col-md-4 col-xs-6 text-right">
                             <button class="btn btn-success btn-sm mb-3" data-toggle="modal" data-target="#addModal"><i

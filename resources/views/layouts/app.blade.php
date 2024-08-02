@@ -39,7 +39,7 @@
       <a href="{{ url('/') }}" class="logo d-flex align-items-center me-auto center-logo">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <img src="{{ asset('halaman_umum/assets/img/logo-imbos.png') }}" alt="">
-        <h1 class="sitename">Studi Lanjut <br>SMAIT Imbos</h1>
+        <h1 class="sitename">STUDI LANJUT <br>SMAIT IMBOS</h1>
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>

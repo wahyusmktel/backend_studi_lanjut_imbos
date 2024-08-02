@@ -160,7 +160,7 @@
                                 @endif
                             </div>
                             <div class="member-info">
-                                <h4>{{ $guru->nama }}</h4>
+                                <h4>{{ strtoupper($guru->nama) }}</h4>
                                 <span>Star Teacher {{ $guru->mataPelajaran->namaMataPelajaran }}</span>
                                 <p>"{{ $guru->motto }}"</p>
                             </div>
