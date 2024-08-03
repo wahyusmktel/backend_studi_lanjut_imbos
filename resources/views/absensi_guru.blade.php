@@ -210,14 +210,14 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <div class="col-lg-12 mt-3">
+                                            {{-- <div class="col-lg-12 mt-3">
                                                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addSiswaModal">
                                                     Tambah Siswa
                                                 </button>
                                                 <br>
                                                 <hr>
                                                 <p><b>Catatan :</b> Tambah data diatas hanya digunakan untuk menambahkan apabila siswa di dalam kelompok tidak ada !</p>
-                                            </div>
+                                            </div> --}}
                                             <div class="modal fade" id="addSiswaModal" tabindex="-1" aria-labelledby="addSiswaModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
