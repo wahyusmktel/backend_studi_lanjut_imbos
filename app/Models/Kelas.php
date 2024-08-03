@@ -28,6 +28,12 @@ class Kelas extends Model
 
     public $incrementing = false;
 
+    // Mutator untuk memastikan status_kedinasan selalu berupa integer
+    public function getStatusKedinasanAttribute($value)
+    {
+        return (int) $value;
+    }
+
     public function siswa()
     {
         return $this->hasMany(Siswa::class);

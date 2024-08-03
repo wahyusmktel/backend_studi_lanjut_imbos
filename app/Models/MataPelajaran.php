@@ -36,6 +36,18 @@ class MataPelajaran extends Model
         });
     }
 
+    // Mengatur mutator untuk opsi_test_tps agar selalu berupa integer
+    public function getOpsiTestTpsAttribute($value)
+    {
+        return (int) $value;
+    }
+
+    // Mengatur mutator untuk opsi_kedinasan agar selalu berupa integer
+    public function getOpsiKedinasanAttribute($value)
+    {
+        return (int) $value;
+    }
+
     // public function setKodeMapelAttribute($value)
     // {
     //     $this->attributes['kode_mapel'] = strtolower($value);
@@ -50,4 +62,6 @@ class MataPelajaran extends Model
     {
         return $this->hasMany(Nilai::class, 'mata_pelajaran_id', 'id');
     }
+
+
 }
