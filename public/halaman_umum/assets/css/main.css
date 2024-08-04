@@ -3202,6 +3202,14 @@ transform: translateX(-9%) translateY(-25%) rotate(45deg);
   color: var(--accent-color);
 }
 
+.content-title-custom-1 p{
+  text-align: center;
+  position: relative;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: var(--nav-font);
+}
+
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/

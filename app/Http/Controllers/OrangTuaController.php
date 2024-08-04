@@ -11,6 +11,7 @@ use App\Models\SertifikatPerkembangan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SertifikatTryout;
 use App\Models\SettingSertifikat;
+use App\Models\AbsensiDetail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 
@@ -170,4 +171,50 @@ class OrangTuaController extends Controller
         Auth::guard('parent')->logout();
         return redirect()->route('parent.login');
     }
+
+    public function detailAbsensi(Request $request)
+    {
+        // Ambil data siswa yang sedang login
+        $siswa = Auth::guard('parent')->user();
+
+        // Membuat query untuk mengambil data absensi siswa berdasarkan filter yang diberikan
+        $query = AbsensiDetail::with('absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran')
+                            ->where('siswa_id', $siswa->id);
+
+        // Filter berdasarkan tanggal mulai dan akhir jika tersedia
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereHas('absensi', function($q) use ($request) {
+                $q->whereBetween('tanggal', [$request->start_date, $request->end_date]);
+            });
+        }
+
+        // Filter berdasarkan mata pelajaran yang diikuti oleh siswa
+        if ($request->has('mata_pelajaran_id') && $request->mata_pelajaran_id != '') {
+            $query->whereHas('absensi.guru.mataPelajaran', function ($q) use ($request) {
+                $q->where('id', $request->mata_pelajaran_id);
+            });
+        }
+
+        // Paginate hasil query untuk ditampilkan di halaman
+        $absensiDetails = $query->paginate(10);
+
+        // Hitung jumlah kehadiran untuk setiap kategori
+        $hadirCount = $query->where('kehadiran', 1)->count();
+        $tidakHadirCount = $query->where('kehadiran', 0)->count();
+        $sakitCount = $query->where('kehadiran', 2)->count();
+
+        // Filter mata pelajaran berdasarkan status kedinasan siswa
+        $statusKedinasan = $siswa->kelas->status_kedinasan;
+        if ($statusKedinasan === 1) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+        } elseif ($statusKedinasan === 0) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+        } else {
+            $mataPelajarans = MataPelajaran::all();
+        }
+
+        // Mengirim data yang dibutuhkan ke view
+        return view('detail_absensi', compact('absensiDetails', 'siswa', 'mataPelajarans', 'request', 'hadirCount', 'tidakHadirCount', 'sakitCount'));
+    }
+
 }

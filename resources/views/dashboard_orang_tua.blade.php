@@ -74,6 +74,7 @@
                                                 <td>{{ $siswa->programBimbel->nama_program }}</td>
                                             </tr>
                                         </table>
+                                        <a href="/orang-tua/absensi/detail" class="btn btn-warning btn-sm" style="padding: 8px;">LIHAT ABSENSI PERKEMBANGAN SISWA</a>
                                     </div>
                                 </div>
                             </div>
@@ -84,10 +85,14 @@
                         {{-- <div class="row">
                             <div class="col-md-12">
                                 <div class="alert alert-info">
-                                    <h2>Hasil Try Out Siswa : 100</h2>
+                                    <h2>Klik tombol berikut untuk melihat Aktifitas Absensi Siswa</h2> 
                                 </div>
                             </div>
                         </div> --}}
+                        <hr>
+                        <div class="content-title-custom-1">
+                            <p>Tabel Perkembangan Nilai TryOut Siswa</p>
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
