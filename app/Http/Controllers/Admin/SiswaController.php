@@ -40,7 +40,7 @@ class SiswaController extends Controller
             'tgl_lahir' => 'nullable|date',
             'tmpt_lahir' => 'nullable|string|max:255',
             'no_hp' => 'nullable|string|max:15',
-            'nis' => 'required|integer',
+            'nis' => 'required|integer|unique:siswas,nis',
             'password' => 'required|string|max:255',
             'foto' => 'nullable|image|max:2048',
         ]);
@@ -60,36 +60,41 @@ class SiswaController extends Controller
 
     public function update(Request $request, $id)
     {
-        $siswa = Siswa::findOrFail($id);
+        try {
+            $siswa = Siswa::findOrFail($id);
 
-        $data = $request->validate([
-            'kelas_id' => 'required|uuid',
-            'program_bimbel_id' => 'required|uuid',
-            'nama_siswa' => 'required|string|max:255',
-            'tgl_lahir' => 'nullable|date',
-            'tmpt_lahir' => 'nullable|string|max:255',
-            'no_hp' => 'nullable|string|max:15',
-            'nis' => 'required|integer',
-            'password' => 'nullable|string|max:255',
-            'foto' => 'nullable|image|max:2048',
-        ]);
+            $data = $request->validate([
+                'kelas_id' => 'required|uuid',
+                'program_bimbel_id' => 'required|uuid',
+                'nama_siswa' => 'required|string|max:255',
+                'tgl_lahir' => 'nullable|date',
+                'tmpt_lahir' => 'nullable|string|max:255',
+                'no_hp' => 'nullable|string|max:15',
+                'nis' => 'required|integer|unique:siswas,nis,' . $siswa->id,
+                'password' => 'nullable|string|max:255|confirmed',
+                'foto' => 'nullable|image|max:2048',
+            ]);
 
-        if ($request->hasFile('foto')) {
-            if ($siswa->foto_siswa && \Storage::disk('public')->exists($siswa->foto_siswa)) {
-                \Storage::disk('public')->delete($siswa->foto_siswa);
+            if ($request->hasFile('foto')) {
+                if ($siswa->foto_siswa && \Storage::disk('public')->exists($siswa->foto_siswa)) {
+                    \Storage::disk('public')->delete($siswa->foto_siswa);
+                }
+                $data['foto_siswa'] = $request->file('foto')->store('foto_siswa', 'public');
             }
-            $data['foto_siswa'] = $request->file('foto')->store('foto_siswa', 'public');
+
+            if ($request->filled('password')) {
+                $data['password'] = Hash::make($request->input('password'));
+            } else {
+                unset($data['password']);
+            }
+
+            $siswa->update($data);
+
+            return redirect()->route('admin.siswa.index')->with('success', 'Data Siswa berhasil diupdate.');
+
+        } catch (\Exception $e) {
+            return redirect()->route('admin.siswa.index')->with('error', 'Terjadi kesalahan saat mengupdate data siswa.');
         }
-
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
-        }
-
-        $siswa->update($data);
-
-        return redirect()->route('admin.siswa.index')->with('success', 'Data Siswa berhasil diupdate.');
     }
 
     public function destroy($id)

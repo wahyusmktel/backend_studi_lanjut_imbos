@@ -75,7 +75,7 @@
                                         <td>{{ $siswa->kelas->nama_kelas }}</td>
                                         <td>{{ $siswa->programBimbel->nama_program }}</td>
                                         <td class="text-nowrap">
-                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $siswa->id }}" data-nama_siswa="{{ $siswa->nama_siswa }}" data-kelas_id="{{ $siswa->kelas_id }}" data-program_bimbel_id="{{ $siswa->program_bimbel_id }}" data-tgl_lahir="{{ $siswa->tgl_lahir }}" data-tmpt_lahir="{{ $siswa->tmpt_lahir }}" data-no_hp="{{ $siswa->no_hp }}" data-nis="{{ $siswa->nis }}" data-password="{{ $siswa->password }}"> 
+                                            <a href="#" class="mr-25 edit-button" data-toggle="tooltip" data-original-title="Edit" data-id="{{ $siswa->id }}" data-nama_siswa="{{ $siswa->nama_siswa }}" data-kelas_id="{{ $siswa->kelas_id }}" data-program_bimbel_id="{{ $siswa->program_bimbel_id }}" data-tgl_lahir="{{ $siswa->tgl_lahir }}" data-tmpt_lahir="{{ $siswa->tmpt_lahir }}" data-no_hp="{{ $siswa->no_hp }}" data-nis="{{ $siswa->nis }}"> 
                                                 <i class="fa fa-pencil text-inverse m-r-10"></i> 
                                             </a> 
                                             <a href="#" class="delete-button" data-id="{{ $siswa->id }}" data-toggle="tooltip" data-original-title="Delete"> 
@@ -221,9 +221,17 @@
                         <label for="editFoto">Upload Foto</label>
                         <input type="file" class="dropify" id="editFoto" name="foto" />
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="editPassword">Password</label>
                         <input type="password" class="form-control" id="editPassword" name="password" placeholder="Password" required>
+                    </div> --}}
+                    <div class="form-group">
+                        <label for="editPassword">Password</label>
+                        <input type="password" class="form-control" id="editPassword" name="password" placeholder="Kosongkan jika tidak ingin mengubah">
+                    </div>
+                    <div class="form-group">
+                        <label for="editConfirmPassword">Konfirmasi Password</label>
+                        <input type="password" class="form-control" id="editConfirmPassword" name="password_confirmation" placeholder="Kosongkan jika tidak ingin mengubah">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -276,6 +284,21 @@
 </script>
 @endif
 
+@if(session('error'))
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            swal({
+                title: "Error!",
+                text: "{{ session('error') }}",
+                type: "error",
+                confirmButtonText: "OK"
+            });
+        }, 1000);
+    });
+</script>
+@endif
+
 <script>
     $(document).ready(function() {
 
@@ -288,7 +311,6 @@
             var tmpt_lahir = $(this).data('tmpt_lahir');
             var no_hp = $(this).data('no_hp');
             var nis = $(this).data('nis');
-            var password = $(this).data('password');
 
             $('#editForm').attr('action', '/admin/siswa/' + id);
             $('#editNamaSiswa').val(nama_siswa);
@@ -298,7 +320,6 @@
             $('#editTmptLahir').val(tmpt_lahir);
             $('#editNoHp').val(no_hp);
             $('#editNis').val(nis);
-            $('#editPassword').val(password);
             $('#editModal').modal('show');
         });
 
