@@ -169,6 +169,11 @@
                                                 </div>
                                             </div>
                                             @endforeach
+                                            @if ($absensiDetails->isEmpty())
+                                                <tr>
+                                                    <td colspan="6" class="text-center">Data tidak ditemukan</td>
+                                                </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>
