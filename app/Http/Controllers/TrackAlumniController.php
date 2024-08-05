@@ -9,11 +9,22 @@ use Illuminate\Http\Request;
 
 class TrackAlumniController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $testimonials = Testimonials::with('alumni')->get();
         $jenisPt = JenisPt::all();
-        $alumnis = Alumni::with('jenisPt')->get();
+
+        // Ambil tahun lulusan yang unik dari database untuk opsi filter
+        $tahunLulusanOptions = Alumni::select('tahun_lulusan')->distinct()->orderBy('tahun_lulusan', 'desc')->pluck('tahun_lulusan');
+
+        // $alumnis = Alumni::with('jenisPt')->get();
+
+        // Jika ada filter tahun lulusan, gunakan untuk memfilter data alumni
+        $alumnis = Alumni::with('jenisPt')
+        ->when($request->tahun_lulusan, function ($query) use ($request) {
+            return $query->where('tahun_lulusan', $request->tahun_lulusan);
+        })
+        ->get();
 
         // Data untuk grafik
         $chartData = $jenisPt->map(function ($jenis) {
@@ -23,7 +34,7 @@ class TrackAlumniController extends Controller
             ];
         });
 
-        return view('track_alumni', compact('testimonials', 'jenisPt', 'alumnis', 'chartData'));
+        return view('track_alumni', compact('testimonials', 'jenisPt', 'alumnis', 'chartData', 'tahunLulusanOptions'));
     }
 
     public function show($id)

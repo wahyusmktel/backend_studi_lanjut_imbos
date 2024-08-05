@@ -186,6 +186,26 @@
             <p>Sebaran Alumni Studi Lanjut IMBOS</p>
         </div><!-- End Section Title -->
 
+        <!-- Filter Form -->
+        <div class="container d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+            <form action="{{ route('track.alumni.index') }}" method="GET" class="d-flex justify-content-center">
+                <div class="row mb-4">
+                    <div class="col-md-10">
+                        <select name="tahun_lulusan" class="form-control w-100">
+                            <option value="">Pilih Tahun Lulusan</option>
+                            @foreach ($tahunLulusanOptions as $tahun)
+                                <option value="{{ $tahun }}" {{ request('tahun_lulusan') == $tahun ? 'selected' : '' }}>{{ $tahun }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- End Filter Form -->
+
         <div class="container">
 
             <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
