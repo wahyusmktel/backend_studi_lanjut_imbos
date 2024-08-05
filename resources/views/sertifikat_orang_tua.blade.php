@@ -7,11 +7,40 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{{ public_path('storage/' . $settingSertifikat->watermark) }}') no-repeat center center;
+            background-size: 350px 350px;
+            background-blend-mode: multiply;
+            opacity: 0.1;
+            z-index: -1;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+        }
+
+        .header .sub-header{
+            text-align: left;
+            margin-bottom: -20px;
+        }
+
+        .footer {
+            margin-top: 130px; /* Mendorong footer ke bawah */
+            padding: 10px 0; /* Tambahan padding jika diperlukan */
+            text-align: center;
         }
 
         .content {
@@ -41,15 +70,34 @@
             padding: 8px;
             text-align: center;
         }
+
+        .image-container {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .top-right {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
     </style>
 </head>
 
 <body>
+    <div class="top-right">
+        <p><strong>No :</strong> {{ $sertifikatperkembangan->no_sertifikat }}</p>
+    </div>
+    <div class="image-container">
+        <img width="350px" src="{{ public_path('storage/' . $settingSertifikat->logo_1) }}" alt="Logo 1" class="img-fluid">
+    </div>
     <div class="header">
-        <h1>Sertifikat Nilai</h1>
-        <h3>{{ $siswa->nama_siswa }}</h3>
-        <p><strong>NIS:</strong> {{ $siswa->nis }}</p>
-        <p><strong>No Sertifikat:</strong> {{ $sertifikatperkembangan->no_sertifikat }}</p>
+        <h1>Rapor Perkembangan Bimbel</h1>
+        <div class="sub-header">
+            <h3>NAMA : {{ $siswa->nama_siswa }}</h3>
+            <p><strong>NIS : </strong> {{ $siswa->nis }}</p>
+            <p><strong>KELAS : </strong> {{ $siswa->kelas->nama_kelas }}</p>
+        </div>
     </div>
     <div class="content">
         <table class="table table-hover table-bordered mb-0">
@@ -126,6 +174,9 @@
                 @endif
             </tbody>
         </table>
+    </div>
+    <div class="footer">
+        <img src="{{ public_path('storage/' . $siswa->foto_siswa) }}" alt="Foto Siswa" style="width:100px; height: 120px">
     </div>
 </body>
 

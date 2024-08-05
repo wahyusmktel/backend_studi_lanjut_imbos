@@ -84,8 +84,11 @@ class OrangTuaController extends Controller
             ['siswa_id' => $id],
             ['no_sertifikat' => strtoupper(Str::random(10)), 'status' => true]
         );
+
+        // Fetch the active setting sertifikat
+        $settingSertifikat = SettingSertifikat::where('status', true)->first();
     
-        $pdf = Pdf::loadView('sertifikat_orang_tua', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikatperkembangan', 'statusKedinasan', 'mataPelajarans'))
+        $pdf = Pdf::loadView('sertifikat_orang_tua', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikatperkembangan', 'statusKedinasan', 'mataPelajarans', 'settingSertifikat'))
                 ->setPaper('a4', 'landscape');
     
         // return $pdf->download('sertifikat.pdf');
@@ -216,5 +219,47 @@ class OrangTuaController extends Controller
         // Mengirim data yang dibutuhkan ke view
         return view('detail_absensi', compact('absensiDetails', 'siswa', 'mataPelajarans', 'request', 'hadirCount', 'tidakHadirCount', 'sakitCount'));
     }
+
+    public function showSertifikatTryout(Request $request, $id, $tryout_id)
+    {
+        $siswa = Siswa::with(['kelas', 'nilais' => function($query) use ($tryout_id) {
+            $query->where('tryout_id', $tryout_id)->with('mataPelajaran', 'tryout.tahunPelajaran');
+        }])->findOrFail($id);
+
+        // Mengambil status_kedinasan dari kelas siswa
+        $statusKedinasan = $siswa->kelas->status_kedinasan;
+
+        // Menyaring mata pelajaran berdasarkan status_kedinasan
+        if ($statusKedinasan === 1) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+        } elseif ($statusKedinasan === 0) {
+            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+        } else {
+            // Jika status_kedinasan adalah 2, ambil semua mata pelajaran
+            $mataPelajarans = MataPelajaran::all();
+        }
+
+        // Mengurutkan nilai berdasarkan nama tryout
+        $nilai = $siswa->nilais->sortBy(function($nilai) {
+            return $nilai->tryout->nama_tryout;
+        })->groupBy('tryout_id');
+
+        // Pisahkan mata pelajaran berdasarkan opsi_test_tps
+        $mataPelajaransFalse = $mataPelajarans->where('opsi_test_tps', false);
+        $mataPelajaransTrue = $mataPelajarans->where('opsi_test_tps', true);
+
+        // Check if sertifikat exists
+        $sertifikat = SertifikatTryout::firstOrCreate(
+            ['siswa_id' => $id, 'tryout_id' => $tryout_id],
+            ['no_sertifikat' => strtoupper(Str::random(10)), 'status' => true]
+        );
+
+        // Fetch the active setting sertifikat
+        $settingSertifikat = SettingSertifikat::where('status', true)->first();
+
+        // Menampilkan view tanpa mendownload PDF
+        return view('sertifikat_orang_tua_tryout', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikat', 'settingSertifikat'));
+    }
+
 
 }

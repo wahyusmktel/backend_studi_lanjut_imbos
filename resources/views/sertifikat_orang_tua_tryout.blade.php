@@ -9,9 +9,24 @@
             font-family: Arial, sans-serif;
             font-size: 12px;
             position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: url('{{ public_path('storage/' . $settingSertifikat->watermark) }}') no-repeat center center;
             background-size: 350px 350px;
             background-blend-mode: multiply;
+            opacity: 0.1;
+            z-index: -1;
         }
 
         .header {
@@ -22,12 +37,13 @@
         .content {
             margin: 0 auto;
             width: 100%;
+            flex: 1; /* Membuat content mengambil ruang yang tersisa */
         }
 
         .content table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .content table,
@@ -37,18 +53,19 @@
         }
 
         .content th {
-            padding: 8px;
+            padding: 5px;
             text-align: center;
             background-color: #f2f2f2;
         }
 
         .content td {
-            padding: 8px;
+            padding: 5px;
             text-align: left;
         }
 
         .footer {
-            margin-top: 20px;
+            margin-top: auto; /* Mendorong footer ke bawah */
+            padding: 10px 0; /* Tambahan padding jika diperlukan */
             text-align: center;
         }
 
@@ -60,24 +77,35 @@
 
         .center {
             text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .table-container {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            align-items: flex-start; /* Atur ke flex-start agar elemen berada di baris yang sama */
+            margin-bottom: 10px;
         }
 
-        .table-container .left-section {
-            width: 70%;
+        .tablek {
+            border: 1px dotted black;
+            border-collapse: collapse;
+            width: 100%;
         }
 
-        .table-container .right-section {
-            width: 25%;
+        .left-section {
+            width: 65%; /* Pastikan total lebar dari left-section dan right-section tidak lebih dari 100% */
+        }
+
+        .right-section {
+            width: 30%;
             text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        }
+
+        .right-section img {
+            max-width: 100%;
+            height: auto;
         }
 
         .barcode {
@@ -91,11 +119,11 @@
 
         .image-container {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .info-table {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -105,50 +133,45 @@
         <p><strong>No Sertifikat:</strong> {{ $sertifikat->no_sertifikat }}</p>
     </div>
     <div class="image-container">
-        <img width="25px" src="{{ public_path('storage/' . $settingSertifikat->logo_1) }}" alt="Logo 1" class="img-fluid">
+        <img width="350px" src="{{ public_path('storage/' . $settingSertifikat->logo_1) }}" alt="Logo 1" class="img-fluid">
     </div>
     <div class="center">
+        <br>
         <h1>SERTIFIKAT HASIL</h1>
-        <p>TryOut {{ $nilai->first()->first()->tryout->nama_tryout }} Tahun Pelajaran
+        <p>{{ ucwords(strtolower($nilai->first()->first()->tryout->nama_tryout)) }} Tahun Pelajaran
             {{ $nilai->first()->first()->tryout->tahunPelajaran->nama_tahun_pelajaran }} Semester
             {{ $nilai->first()->first()->tryout->tahunPelajaran->semester == 1 ? 'Ganjil' : 'Genap' }}</p>
     </div>
-    <hr>
     <div class="content">
         <div class="table-container">
-            <div class="left-section">
-                <table class="table table-bordered">
+            <div class="left-section" style="margin: 0 auto;">
+                <table class="tablek">
                     <tr>
-                        <td width="10"><strong>Nama:</strong></td>
-                        <td width="7">{{ $siswa->nama_siswa }}</td>
+                        <td rowspan="3" style="width: 60px">
+                            <img src="{{ public_path('storage/' . $siswa->foto_siswa) }}" alt="Foto Siswa" style="width:70px; height: 90px">
+                        </td>
+                        <td width="30%" style="height:10px; align-items: center;"><strong>Nama</strong></td>
+                        <td>{{ $siswa->nama_siswa }}</td>
                     </tr>
                     <tr>
-                        <td width="10"><strong>Tempat / Tanggal Lahir:</strong></td>
-                        <td>{{ $siswa->tmpt_lahir }}, {{ $siswa->tgl_lahir }}</td>
+                        <td style="height:10px"><strong>Kelas</strong></td>
+                        <td>{{ $siswa->kelas->nama_kelas }}</td>
                     </tr>
                     <tr>
-                        <td width="10"><strong>NIS:</strong></td>
+                        <td style="height:10px"><strong>NIS</strong></td>
                         <td>{{ $siswa->nis }}</td>
                     </tr>
                 </table>
             </div>
-            <div class="right-section">
-                <p>asjaksj</p>
-            </div>
         </div>
         <div class="center">
-            <p>Telah mengikuti TryOut {{ $nilai->first()->first()->tryout->nama_tryout }} pada tanggal
-                {{ \Carbon\Carbon::parse($nilai->first()->first()->tryout->tanggal)->format('d-m-Y') }} dan berlaku sebagai
-                bukti kemajuan hasil belajar bimbel studi lanjut SMAIT IMBOS Pringsewu, dengan hasil sebagai berikut:</p>
+            <p>Telah mengikuti {{ ucwords(strtolower($nilai->first()->first()->tryout->nama_tryout)) }} pada tanggal
+                {{ \Carbon\Carbon::parse($nilai->first()->first()->tryout->tanggal)->translatedFormat('d F Y') }} dan berlaku sebagai
+                bukti kemajuan hasil belajar bimbel studi lanjut SMAIT IMBOS Pringsewu, <br>dengan hasil sebagai berikut :</p>
         </div>
         <div class="table-container">
-            <div class="left-section">
-                {{-- <div class="barcode">
-                    <!-- Space for barcode -->
-                </div> --}}
-            </div>
-            <div class="right-section">
-                <table class="table">
+            <div class="left-section" style="margin: 0 auto;">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Nama Mapel</th>
@@ -159,7 +182,7 @@
                         @foreach ($mataPelajaransFalse as $mataPelajaran)
                             <tr>
                                 <td>{{ $mataPelajaran->namaMataPelajaran }}</td>
-                                <td>{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                <td align="center" style="text-align: center">{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
                             </tr>
                         @endforeach
                         @if ($mataPelajaransTrue->isNotEmpty())
@@ -169,7 +192,7 @@
                             @foreach ($mataPelajaransTrue as $mataPelajaran)
                                 <tr>
                                     <td>{{ $mataPelajaran->namaMataPelajaran }}</td>
-                                    <td>{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                    <td align="center" style="text-align: center">{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
                                 </tr>
                             @endforeach
                         @endif
@@ -177,10 +200,11 @@
                 </table>
             </div>
         </div>
+        
     </div>
-    <div class="footer">
+    {{-- <div class="footer">
         <p>&copy; 2024 SMAIT IMBOS Pringsewu</p>
-    </div>
+    </div> --}}
 </body>
 
 </html>
