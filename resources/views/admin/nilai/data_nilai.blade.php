@@ -331,7 +331,7 @@
                             $.each(data.mataPelajarans, function(index, mataPelajaran) {
                                 var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id === mataPelajaran.id);
                                 var nilai = nilaiObj ? nilaiObj.nilai : '';
-                                row += '<td><input type="number" class="form-control" name="nilai[' + siswa.id + '][' + mataPelajaran.id + ']" value="' + nilai + '" min="10" max="100"></td>';
+                                row += '<td><input type="number" class="form-control" name="nilai[' + siswa.id + '][' + mataPelajaran.id + ']" value="' + nilai + '" min="10" max="1000"></td>';
                             });
 
                             row += '</tr>';

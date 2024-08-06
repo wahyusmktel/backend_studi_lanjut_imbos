@@ -222,7 +222,7 @@ class AdminNilaiController extends Controller
         // Validasi input
         $request->validate([
             'nilai' => 'array',
-            'nilai.*.*' => 'nullable|integer|min:10|max:100',
+            'nilai.*.*' => 'nullable|integer|min:10|max:1000',
             'tryout_id' => 'required|uuid',
         ]);
 
@@ -326,7 +326,7 @@ class AdminNilaiController extends Controller
             // 'tryout_id' => 'required|uuid',
             // 'mata_pelajaran_id' => 'required|uuid',
             // 'siswa_id' => 'required|uuid',
-            'nilai' => 'required|integer|between:10,100',
+            'nilai' => 'required|integer|between:10,1000',
         ]);
 
         $nilai->update($data);
