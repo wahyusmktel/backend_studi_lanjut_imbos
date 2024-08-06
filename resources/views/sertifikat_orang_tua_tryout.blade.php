@@ -22,7 +22,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('{{ public_path('storage/' . $settingSertifikat->watermark) }}') no-repeat center center;
+            background: url('{{ url('storage/' . $settingSertifikat->watermark) }}') no-repeat center center;
             background-size: 350px 350px;
             background-blend-mode: multiply;
             opacity: 0.1;
@@ -133,7 +133,7 @@
         <p><strong>No Sertifikat:</strong> {{ $sertifikat->no_sertifikat }}</p>
     </div>
     <div class="image-container">
-        <img width="350px" src="{{ public_path('storage/' . $settingSertifikat->logo_1) }}" alt="Logo 1" class="img-fluid">
+        <img width="350px" src="{{ url('storage/' . $settingSertifikat->logo_1) }}" alt="Logo 1" class="img-fluid">
     </div>
     <div class="center">
         <br>
@@ -148,7 +148,7 @@
                 <table class="tablek">
                     <tr>
                         <td rowspan="3" style="width: 60px">
-                            <img src="{{ public_path('storage/' . $siswa->foto_siswa) }}" alt="Foto Siswa" style="width:70px; height: 90px">
+                            <img src="{{ $src }}" alt="Foto Siswa" style="width:70px; height: 90px">
                         </td>
                         <td width="30%" style="height:10px; align-items: center;"><strong>Nama</strong></td>
                         <td>{{ $siswa->nama_siswa }}</td>

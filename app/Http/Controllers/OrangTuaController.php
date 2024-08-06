@@ -141,7 +141,12 @@ class OrangTuaController extends Controller
         // Fetch the active setting sertifikat
         $settingSertifikat = SettingSertifikat::where('status', true)->first();
 
-        $pdf = Pdf::loadView('sertifikat_orang_tua_tryout', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikat', 'settingSertifikat'))
+        // Encode image to Base64
+        $imagePath = url('storage/' . $siswa->foto_siswa);
+        $imageData = base64_encode(file_get_contents($imagePath));
+        $src = 'data:image/png;base64,' . $imageData;
+
+        $pdf = Pdf::loadView('sertifikat_orang_tua_tryout', compact('siswa', 'nilai', 'mataPelajaransFalse', 'mataPelajaransTrue', 'sertifikat', 'settingSertifikat', 'src'))
                 ->setPaper('a4', 'landscape');
 
         $filename = 'Sertifikat_' . $siswa->nama_siswa . '_Tryout_' . $nilai->first()->first()->tryout->nama_tryout . '_' . date('Ymd_His') . '.pdf';
