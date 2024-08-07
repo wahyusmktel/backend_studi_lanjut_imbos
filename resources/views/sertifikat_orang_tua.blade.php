@@ -38,7 +38,7 @@
         }
 
         .footer {
-            margin-top: 130px; /* Mendorong footer ke bawah */
+            margin-top: 100px; /* Mendorong footer ke bawah */
             padding: 10px 0; /* Tambahan padding jika diperlukan */
             text-align: center;
         }
@@ -92,46 +92,46 @@
         <img width="350px" src="{{ url('storage/' . $settingSertifikat->logo_1) }}" alt="Logo 1" class="img-fluid">
     </div>
     <div class="header">
-        <h1>Rapor Perkembangan Bimbel</h1>
+        <h1>RAPOR PERKEMBANGAN BIMBEL</h1>
         <div class="sub-header">
-            <h3>NAMA : {{ $siswa->nama_siswa }}</h3>
-            <p><strong>NIS : </strong> {{ $siswa->nis }}</p>
-            <p><strong>KELAS : </strong> {{ $siswa->kelas->nama_kelas }}</p>
+            <h3>NAMA : {{ strtoupper($siswa->nama_siswa) }}</h3>
+            <p><strong>NIS : </strong> {{ strtoupper($siswa->nis) }}</p>
+            <p><strong>KELAS : </strong> {{ strtoupper($siswa->kelas->nama_kelas) }}</p>
         </div>
     </div>
     <div class="content">
         <table class="table table-hover table-bordered mb-0">
             <thead>
                 <tr>
-                    <th rowspan="2">No</th>
-                    <th rowspan="2">Try Out</th>
-                    <th rowspan="2">Tahun Pelajaran</th>
-                    <th rowspan="2">Semester</th>
+                    <th rowspan="2">NO</th>
+                    <th rowspan="2">TRY OUT</th>
+                    <th rowspan="2">TAHUN PELAJARAN</th>
+                    <th rowspan="2">SEMESTER</th>
                     <!-- Tampilkan mata pelajaran yang tidak termasuk TPS dan tidak kedinasan -->
                     @foreach ($mataPelajarans->where('opsi_test_tps', false)->where('opsi_kedinasan', false) as $mataPelajaran)
-                        <th rowspan="2">{{ $mataPelajaran->namaMataPelajaran }}</th>
+                        <th rowspan="2">{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</th>
                     @endforeach
                     <!-- Kondisi untuk menampilkan kolom "Tes Potensi Skolastik" -->
                     @if($statusKedinasan === 0 || $statusKedinasan === 2)
-                    <th colspan="{{ $mataPelajarans->where('opsi_test_tps', true)->count() }}">Tes Potensi Skolastik</th>
+                    <th colspan="{{ $mataPelajarans->where('opsi_test_tps', true)->count() }}">TES POTENSI SKOLASTIK</th>
                     @endif
         
                     <!-- Kondisi untuk menampilkan kolom "Tes Kedinasan" -->
                     @if($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() > 0)
-                        <th colspan="{{ $mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() }}">Tes Kedinasan</th>
+                        <th colspan="{{ $mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() }}">TES KEDINASAN</th>
                     @endif
                 </tr>
                 <tr>
                     <!-- Kolom untuk Tes Potensi Skolastik -->
                     @if($statusKedinasan === 0 || $statusKedinasan === 2)
                     @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
-                        <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
+                        <th>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</th>
                     @endforeach
                     @endif
         
                     <!-- Kolom untuk Tes Kedinasan -->
                     @foreach ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false) as $mataPelajaran)
-                        <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
+                        <th>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</th>
                     @endforeach
                 </tr>
             </thead>
@@ -142,9 +142,9 @@
                 @foreach ($nilai as $tryoutId => $nilaiGroup)
                     <tr>
                         <td>{{ $index }}</td>
-                        <td>{{ $nilaiGroup->first()->tryout->nama_tryout }}</td>
+                        <td>{{ strtoupper($nilaiGroup->first()->tryout->nama_tryout) }}</td>
                         <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->nama_tahun_pelajaran }}</td>
-                        <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester == 1 ? 'Ganjil' : 'Genap' }}</td>
+                        <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester == 1 ? 'GANJIL' : 'GENAP' }}</td>
                         <!-- Nilai untuk mata pelajaran tanpa TPS dan tanpa kedinasan -->
                         @foreach ($mataPelajarans->where('opsi_test_tps', false)->where('opsi_kedinasan', false) as $mataPelajaran)
                         <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>

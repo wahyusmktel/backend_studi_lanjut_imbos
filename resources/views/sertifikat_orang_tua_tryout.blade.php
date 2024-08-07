@@ -150,16 +150,16 @@
                         <td rowspan="3" style="width: 60px">
                             <img src="{{ $src }}" alt="Foto Siswa" style="width:70px; height: 90px">
                         </td>
-                        <td width="30%" style="height:10px; align-items: center;"><strong>Nama</strong></td>
-                        <td>{{ $siswa->nama_siswa }}</td>
+                        <td width="30%" style="height:10px; align-items: center;"><strong>NAMA</strong></td>
+                        <td>{{ strtoupper($siswa->nama_siswa) }}</td>
                     </tr>
                     <tr>
-                        <td style="height:10px"><strong>Kelas</strong></td>
-                        <td>{{ $siswa->kelas->nama_kelas }}</td>
+                        <td style="height:10px"><strong>KELAS</strong></td>
+                        <td>{{ strtoupper($siswa->kelas->nama_kelas) }}</td>
                     </tr>
                     <tr>
                         <td style="height:10px"><strong>NIS</strong></td>
-                        <td>{{ $siswa->nis }}</td>
+                        <td>{{ strtoupper($siswa->nis) }}</td>
                     </tr>
                 </table>
             </div>
@@ -174,24 +174,24 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Nama Mapel</th>
-                            <th>Nilai</th>
+                            <th>NAMA MAPEL</th>
+                            <th>NILAI</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($mataPelajaransFalse as $mataPelajaran)
                             <tr>
-                                <td>{{ $mataPelajaran->namaMataPelajaran }}</td>
+                                <td>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</td>
                                 <td align="center" style="text-align: center">{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
                             </tr>
                         @endforeach
                         @if ($mataPelajaransTrue->isNotEmpty())
                             <tr>
-                                <th colspan="2">Tes Potensi Skolastik</th>
+                                <th colspan="2">TES POTENSI SKOLASTIK</th>
                             </tr>
                             @foreach ($mataPelajaransTrue as $mataPelajaran)
                                 <tr>
-                                    <td>{{ $mataPelajaran->namaMataPelajaran }}</td>
+                                    <td>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</td>
                                     <td align="center" style="text-align: center">{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
                                 </tr>
                             @endforeach
