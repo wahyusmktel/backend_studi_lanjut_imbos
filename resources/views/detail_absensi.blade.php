@@ -124,11 +124,11 @@
                                         <tbody>
                                             @foreach($absensiDetails as $index => $detail)
                                             <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>{{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
-                                                <td>{{ $detail->absensi->guru->nama }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($detail->absensi->tanggal)->translatedFormat('l, d F Y') }}</td>
-                                                <td>
+                                                <td style="text-align: center">{{ $index + 1 }}</td>
+                                                <td style="text-align: center">{{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
+                                                <td style="text-align: center">{{ $detail->absensi->guru->nama }}</td>
+                                                <td style="text-align: center">{{ \Carbon\Carbon::parse($detail->absensi->tanggal)->translatedFormat('d F Y \P\k\l H:i') }}</td>
+                                                <td style="text-align: center">
                                                     @if($detail->kehadiran == 1)
                                                         Hadir
                                                     @elseif($detail->kehadiran == 0)
@@ -137,7 +137,7 @@
                                                         Sakit
                                                     @endif
                                                 </td>
-                                                <td>
+                                                <td style="text-align: center">
                                                     @if($detail->absensi->foto)
                                                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#fotoModal-{{ $index }}">
                                                             Lihat Foto

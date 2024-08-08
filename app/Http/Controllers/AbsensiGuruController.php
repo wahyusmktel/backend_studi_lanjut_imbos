@@ -25,7 +25,7 @@ class AbsensiGuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal' => 'required|date',
+            'tanggal' => 'required|date_format:Y-m-d\TH:i',
             'kelas_id' => 'required|uuid',
             'catatan' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10204',

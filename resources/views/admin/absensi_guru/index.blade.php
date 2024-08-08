@@ -103,7 +103,7 @@
                                                 <td>{{ $absensi->guru->nama }}</td>
                                                 <td>{{ $absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
                                                 <td>{{ $absensi->kelas->nama_kelas }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($absensi->tanggal)->format('d-m-Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($absensi->tanggal)->translatedFormat('d F Y \P\k\l H:i') }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.absensi-guru.show', $absensi->id) }}"
                                                         class="btn btn-info">Detail</a>

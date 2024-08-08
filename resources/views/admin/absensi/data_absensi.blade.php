@@ -133,7 +133,7 @@
                                                         <td>{{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}
                                                         </td>
                                                         <td>{{ $detail->absensi->guru->nama }}</td>
-                                                        <td>{{ $detail->absensi->tanggal }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($detail->absensi->tanggal)->translatedFormat('d F Y \P\k\l H:i') }}</td>
                                                         <td>
                                                             @if ($detail->kehadiran == 1)
                                                                 Hadir

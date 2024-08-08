@@ -70,7 +70,7 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
                                         <td>{{ $detail->absensi->guru->nama }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($detail->absensi->tanggal)->format('d-m-Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($detail->absensi->tanggal)->translatedFormat('d F Y \P\k\l H:i') }}</td>
                                         <td>
                                             @if($detail->kehadiran == 1)
                                                 Hadir

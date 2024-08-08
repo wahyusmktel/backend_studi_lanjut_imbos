@@ -159,7 +159,7 @@
                                     <div class="col-lg-6 mt-3">
                                         <label>
                                             <span class="label-text">Tanggal</span>
-                                            <input type="date" name="tanggal" placeholder="Pilih Tanggal..."
+                                            <input type="datetime-local" name="tanggal" placeholder="Pilih Tanggal..."
                                                 class="form-control" required>
                                         </label>
                                         <label>
