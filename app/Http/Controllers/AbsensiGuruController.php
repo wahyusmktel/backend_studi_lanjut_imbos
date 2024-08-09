@@ -25,7 +25,9 @@ class AbsensiGuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal' => 'required|date_format:Y-m-d\TH:i',
+            // 'tanggal' => 'required|date_format:Y-m-d\TH:i',
+            'tanggal' => 'required|date',
+            'waktu' => 'required|string',
             'kelas_id' => 'required|uuid',
             'catatan' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10204',
@@ -39,6 +41,7 @@ class AbsensiGuruController extends Controller
             'guru_id' => $guru->id,
             'kelas_id' => $request->kelas_id,
             'tanggal' => $request->tanggal,
+            'waktu' => $request->waktu,
             'catatan' => $request->catatan,
             'foto' => $request->hasFile('foto') ? $request->file('foto')->store('foto_absensi', 'public') : null,
         ]);

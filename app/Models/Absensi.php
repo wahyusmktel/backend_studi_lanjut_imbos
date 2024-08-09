@@ -11,7 +11,7 @@ class Absensi extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'guru_id', 'kelas_id', 'tanggal', 'materi', 'catatan', 'foto'
+        'guru_id', 'kelas_id', 'tanggal', 'waktu', 'materi', 'catatan', 'foto'
     ];
 
     public function guru()

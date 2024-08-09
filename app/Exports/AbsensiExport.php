@@ -74,7 +74,7 @@ class AbsensiExport implements FromCollection, WithHeadings, WithStyles, WithEve
                 'Kelas' => $detail->absensi->kelas->nama_kelas,
                 'Mata Pelajaran' => $detail->absensi->guru->mataPelajaran->namaMataPelajaran,
                 'Guru' => $detail->absensi->guru->nama,
-                'Tanggal' => \Carbon\Carbon::parse($detail->absensi->tanggal)->translatedFormat('d F Y \P\k\l H:i'),
+                'Tanggal' => \Carbon\Carbon::parse($detail->absensi->tanggal)->format('d-m-Y'),
                 'Kehadiran' => $detail->kehadiran == 1 ? 'Hadir' : ($detail->kehadiran == 0 ? 'Tidak Hadir' : 'Sakit'),
             ];
         });

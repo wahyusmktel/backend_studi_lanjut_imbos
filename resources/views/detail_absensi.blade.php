@@ -117,6 +117,7 @@
                                                 <th>Mata Pelajaran</th>
                                                 <th>Guru</th>
                                                 <th>Tanggal</th>
+                                                <th>Waktu</th>
                                                 <th>Kehadiran</th>
                                                 <th>Foto</th>
                                             </tr>
@@ -127,7 +128,8 @@
                                                 <td style="text-align: center">{{ $index + 1 }}</td>
                                                 <td style="text-align: center">{{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
                                                 <td style="text-align: center">{{ $detail->absensi->guru->nama }}</td>
-                                                <td style="text-align: center">{{ \Carbon\Carbon::parse($detail->absensi->tanggal)->translatedFormat('d F Y \P\k\l H:i') }}</td>
+                                                <td style="text-align: center">{{ \Carbon\Carbon::parse($detail->absensi->tanggal)->format('d-m-Y') }}</td>
+                                                <td style="text-align: center">{{ $detail->absensi->waktu }}</td>
                                                 <td style="text-align: center">
                                                     @if($detail->kehadiran == 1)
                                                         Hadir

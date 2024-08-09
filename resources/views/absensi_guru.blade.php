@@ -159,8 +159,17 @@
                                     <div class="col-lg-6 mt-3">
                                         <label>
                                             <span class="label-text">Tanggal</span>
-                                            <input type="datetime-local" name="tanggal" placeholder="Pilih Tanggal..."
+                                            <input type="date" name="tanggal" placeholder="Pilih Tanggal..."
                                                 class="form-control" required>
+                                        </label>
+                                        <label>
+                                            <span class="label-text">Waktu</span>
+                                            <label for="waktu"></label>
+                                            <select name="waktu" id="waktu" class="form-control" required>
+                                                <option value="">--Pilih Salah Satu--</option>
+                                                <option value="13.15 - 14.30">13.15 - 14.30</option>
+                                                <option value="15.45 - 17.00">15.45 - 17.00</option>
+                                            </select>
                                         </label>
                                         <label>
                                             <span class="label-text">Nama Guru</span>
