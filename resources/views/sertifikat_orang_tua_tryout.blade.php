@@ -174,7 +174,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>NAMA MAPEL</th>
+                            <th>TES LITERASI</th>
                             <th>NILAI</th>
                         </tr>
                     </thead>
