@@ -23,7 +23,7 @@
                         Negara-Negara Timur Tengah lainnya.</p>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-1 hero-img" data-aos="zoom-out">
-                    <img src="{{ asset('halaman_umum/assets/img/hero-img-putri.png') }}" class="img-fluid animated"
+                    <img src="{{ asset('halaman_umum/assets/img/hero-img-putri-home-2.png') }}" class="img-fluid animated"
                         alt="">
                 </div>
             </div>

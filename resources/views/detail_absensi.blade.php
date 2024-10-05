@@ -46,18 +46,23 @@
                                         <label for="filter">Filter Absensi Siswa {{ $siswa->nama_siswa }}</label><br>
                                         <div class="input-group mb-15">
                                             <!-- Filter berdasarkan tanggal -->
-                                            <input type="date" id="start_date" name="start_date" class="form-control" value="{{ $request->start_date }}">
-                                            <input type="date" id="end_date" name="end_date" class="form-control" value="{{ $request->end_date }}">
+                                            <input type="date" id="start_date" name="start_date" class="form-control"
+                                                value="{{ $request->start_date }}">
+                                            <input type="date" id="end_date" name="end_date" class="form-control"
+                                                value="{{ $request->end_date }}">
                                             <!-- Filter berdasarkan mata pelajaran -->
                                             <select name="mata_pelajaran_id" class="form-control">
                                                 <option value="">Pilih Mata Pelajaran</option>
-                                                @foreach($mataPelajarans as $mp)
-                                                    <option value="{{ $mp->id }}" {{ $request->mata_pelajaran_id == $mp->id ? 'selected' : '' }}>{{ $mp->namaMataPelajaran }}</option>
+                                                @foreach ($mataPelajarans as $mp)
+                                                    <option value="{{ $mp->id }}"
+                                                        {{ $request->mata_pelajaran_id == $mp->id ? 'selected' : '' }}>
+                                                        {{ $mp->namaMataPelajaran }}</option>
                                                 @endforeach
                                             </select>
-                                            
-                                            <button type="submit" class="btn btn-secondary"><i class="icon-magnifier"></i><span class="btn-text">Cari</span></button>
-                                            
+
+                                            <button type="submit" class="btn btn-secondary"><i
+                                                    class="icon-magnifier"></i><span class="btn-text">Cari</span></button>
+
                                         </div>
                                     </div>
                                 </form>
@@ -75,7 +80,7 @@
                                     <div class="panel-body">
                                         <div class="text-center">
                                             <h4 class="txt-dark">Jumlah Kehadiran</h4>
-                                            <h2>{{ $absensiDetails->where('kehadiran', 1)->count() }}</h2>
+                                            <h2>{{ $hadirCount }}</h2>
                                         </div>
                                     </div>
                                 </div>
@@ -85,7 +90,7 @@
                                     <div class="panel-body">
                                         <div class="text-center">
                                             <h4 class="txt-dark">Jumlah Ketidakhadiran</h4>
-                                            <h2>{{ $absensiDetails->where('kehadiran', 0)->count() }}</h2>
+                                            <h2>{{ $tidakHadirCount }}</h2>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +100,7 @@
                                     <div class="panel-body">
                                         <div class="text-center">
                                             <h4 class="txt-dark">Jumlah Sakit</h4>
-                                            <h2>{{ $absensiDetails->where('kehadiran', 2)->count() }}</h2>
+                                            <h2>{{ $sakitCount }}</h2>
                                         </div>
                                     </div>
                                 </div>
@@ -123,53 +128,65 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($absensiDetails as $index => $detail)
-                                            <tr>
-                                                <td style="text-align: center">{{ $index + 1 }}</td>
-                                                <td style="text-align: center">{{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
-                                                <td style="text-align: center">{{ $detail->absensi->guru->nama }}</td>
-                                                <td style="text-align: center">{{ \Carbon\Carbon::parse($detail->absensi->tanggal)->format('d-m-Y') }}</td>
-                                                <td style="text-align: center">{{ $detail->absensi->waktu }}</td>
-                                                <td style="text-align: center">
-                                                    @if($detail->kehadiran == 1)
-                                                        Hadir
-                                                    @elseif($detail->kehadiran == 0)
-                                                        Tidak Hadir
-                                                    @elseif($detail->kehadiran == 2)
-                                                        Sakit
-                                                    @endif
-                                                </td>
-                                                <td style="text-align: center">
-                                                    @if($detail->absensi->foto)
-                                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#fotoModal-{{ $index }}">
-                                                            Lihat Foto
-                                                        </button>
-                                                    @else
-                                                        Tidak ada foto
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="fotoModal-{{ $index }}" tabindex="-1" role="dialog" aria-labelledby="fotoModalLabel-{{ $index }}" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="fotoModalLabel-{{ $index }}">Foto Kehadiran</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body text-center">
-                                                            @if($detail->absensi->foto)
-                                                                <img src="{{ asset('storage/' . $detail->absensi->foto) }}" alt="Foto Kehadiran" class="img-fluid">
-                                                            @else
-                                                                <p>Foto tidak tersedia.</p>
-                                                            @endif
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                            @foreach ($absensiDetails as $index => $detail)
+                                                <tr>
+                                                    <td style="text-align: center">{{ ($absensiDetails->currentPage() - 1) * $absensiDetails->perPage() + $loop->iteration }}</td>
+                                                    <td style="text-align: center">
+                                                        {{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
+                                                    <td style="text-align: center">{{ $detail->absensi->guru->nama }}</td>
+                                                    <td style="text-align: center">
+                                                        {{ \Carbon\Carbon::parse($detail->absensi->tanggal)->format('d-m-Y') }}
+                                                    </td>
+                                                    <td style="text-align: center">{{ $detail->absensi->waktu }}</td>
+                                                    <td style="text-align: center">
+                                                        @if ($detail->kehadiran == 1)
+                                                            Hadir
+                                                        @elseif($detail->kehadiran == 0)
+                                                            Tidak Hadir
+                                                        @elseif($detail->kehadiran == 2)
+                                                            Sakit
+                                                        @endif
+                                                    </td>
+                                                    <td style="text-align: center">
+                                                        @if ($detail->absensi->foto)
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#fotoModal-{{ $index }}">
+                                                                Lihat Foto
+                                                            </button>
+                                                        @else
+                                                            Tidak ada foto
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="fotoModal-{{ $index }}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="fotoModalLabel-{{ $index }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="fotoModalLabel-{{ $index }}">Foto Kehadiran
+                                                                </h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-center">
+                                                                @if ($detail->absensi->foto)
+                                                                    <img src="{{ asset('storage/' . $detail->absensi->foto) }}"
+                                                                        alt="Foto Kehadiran" class="img-fluid">
+                                                                @else
+                                                                    <p>Foto tidak tersedia.</p>
+                                                                @endif
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Tutup</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             @endforeach
                                             @if ($absensiDetails->isEmpty())
                                                 <tr>
@@ -179,6 +196,16 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Pagination -->
+                                {{-- {{ $absensiDetails->links() }} --}}
+                                <nav class="pagination-wrap d-inline-block" aria-label="Page navigation example">
+                                    {{ $absensiDetails->appends(request()->query())->links('vendor.pagination.custom') }}
+                                </nav>
                             </div>
                         </div>
                         <hr>
@@ -192,14 +219,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <!-- Pagination -->
-                                {{ $absensiDetails->links() }}
-                            </div>
-                        </div>
-                    </div>
+                    {{-- <div class="panel-footer">
+                    </div> --}}
                 </div>
 
             </div>
@@ -252,24 +273,23 @@
             type: 'bar', // Jenis grafik yang digunakan adalah bar
             data: {
                 labels: ['Grafik Absensi Siswa'], // Label sumbu X
-                datasets: [
-                    {
+                datasets: [{
                         label: 'Hadir', // Label dataset untuk hadir
-                        data: [{{ $absensiDetails->where('kehadiran', 1)->count() }}], // Jumlah hadir
+                        data: [{{ $hadirCount }}], // Jumlah hadir
                         backgroundColor: 'rgba(75, 192, 192, 0.2)', // Warna background bar untuk hadir
                         borderColor: 'rgba(75, 192, 192, 1)', // Warna border bar untuk hadir
                         borderWidth: 1 // Ketebalan border bar
                     },
                     {
                         label: 'Tidak Hadir', // Label dataset untuk tidak hadir
-                        data: [{{ $absensiDetails->where('kehadiran', 0)->count() }}], // Jumlah tidak hadir
+                        data: [{{ $tidakHadirCount }}], // Jumlah tidak hadir
                         backgroundColor: 'rgba(255, 99, 132, 0.2)', // Warna background bar untuk tidak hadir
                         borderColor: 'rgba(255, 99, 132, 1)', // Warna border bar untuk tidak hadir
                         borderWidth: 1 // Ketebalan border bar
                     },
                     {
                         label: 'Sakit', // Label dataset untuk sakit
-                        data: [{{ $absensiDetails->where('kehadiran', 2)->count() }}], // Jumlah sakit
+                        data: [{{ $sakitCount }}], // Jumlah sakit
                         backgroundColor: 'rgba(255, 206, 86, 0.2)', // Warna background bar untuk sakit
                         borderColor: 'rgba(255, 206, 86, 1)', // Warna border bar untuk sakit
                         borderWidth: 1 // Ketebalan border bar

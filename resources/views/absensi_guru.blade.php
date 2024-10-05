@@ -196,7 +196,7 @@
                                         </label>
                                         <label>
                                             <span class="label-text">Kirim Foto</span>
-                                            <input type="file" name="foto" class="form-control" required>
+                                            <input type="file" name="foto" class="form-control" >
                                         </label>
                                         <div class="col-lg-12 mt-3">
                                             <button type="submit" class="btn btn-imbos">SIMPAN</button>
