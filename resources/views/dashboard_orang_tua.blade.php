@@ -119,7 +119,7 @@
                                             <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->nama_tahun_pelajaran }}</td>
                                             <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester }}</td>
                                             @foreach ($mataPelajarans as $mataPelajaran)
-                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first() ? number_format($nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai, 2) : '-' }}</td>
                                             @endforeach
                                         </tr>
                                         @php
@@ -186,19 +186,19 @@
                             
                                             <!-- Nilai untuk mata pelajaran tanpa TPS dan tanpa kedinasan -->
                                             @foreach ($mataPelajarans->where('opsi_test_tps', false)->where('opsi_kedinasan', false) as $mataPelajaran)
-                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first() ? number_format($nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai, 2) : '-' }}</td>
                                             @endforeach
                             
                                             <!-- Nilai untuk Tes Potensi Skolastik -->
                                             @if($statusKedinasan === 0 || $statusKedinasan === 2)
                                                 @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
-                                                    <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                                    <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first() ? number_format($nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai, 2) : '-' }}</td>
                                                 @endforeach
                                             @endif
                             
                                             <!-- Nilai untuk Tes Kedinasan -->
                                             @foreach ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false) as $mataPelajaran)
-                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first() ? number_format($nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai, 2) : '-' }}</td>
                                             @endforeach
                             
                                             <td>

@@ -26,6 +26,10 @@ class Nilai extends Model
         });
     }
 
+    protected $casts = [
+        'nilai' => 'float',
+    ];
+
     public function tryout()
     {
         return $this->belongsTo(Tryout::class);

@@ -127,7 +127,7 @@
                                                 <td>{{ $nilai->tryout->nama_tryout }}</td>
                                                 <td>{{ $nilai->tryout->tahunPelajaran->nama_tahun_pelajaran ?? '' }}</td>
                                                 <td>{{ $nilai->tryout->tahunPelajaran->semester ?? '' }}</td>
-                                                <td>{{ $nilai->nilai }}</td>
+                                                <td>{{ number_format($nilai->nilai, 2) }}</td>
                                                 <td>
                                                     <button class="btn btn-warning edit-button" data-id="{{ $nilai->id }}" data-nilai="{{ $nilai->nilai }}"><i class="fa fa-pencil"></i> Edit</button>
                                                     <button class="btn btn-danger delete-button" data-id="{{ $nilai->id }}"><i class="fa fa-trash"></i> Hapus</button>

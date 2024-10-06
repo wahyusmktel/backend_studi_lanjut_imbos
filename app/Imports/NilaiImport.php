@@ -61,7 +61,8 @@ class NilaiImport implements ToCollection, WithHeadingRow
                                     'tryout_id' => $tryout->id,
                                 ],
                                 [
-                                    'nilai' => $value,
+                                    // 'nilai' => $value,
+                                    'nilai' => str_replace(',', '.', $value),
                                     'status' => true,
                                 ]
                             );
