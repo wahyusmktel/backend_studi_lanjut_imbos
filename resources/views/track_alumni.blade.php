@@ -42,11 +42,11 @@
                             Perguruan Tinggi Swasta (PTS). Berikut ini adalah sebaran alumni Bimbel Lanjut IMBOS.
                         </p>
                         <!-- <div class="text-center text-lg-start">
-                <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
-                    <span>Read More</span>
-                    <i class="bi bi-arrow-right"></i>
-                </a>
-                </div> -->
+                                                        <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
+                                                            <span>Read More</span>
+                                                            <i class="bi bi-arrow-right"></i>
+                                                        </a>
+                                                        </div> -->
                     </div>
                 </div>
 
@@ -157,10 +157,12 @@
                                 </div>
                                 <p>{{ $testimonial->isi_testimonial }}</p>
                                 <div class="profile mt-auto">
-                                    @if($testimonial->alumni->foto)
-                                        <img src="{{ asset('storage/' . $testimonial->alumni->foto) }}" class="testimonial-img" alt="">
+                                    @if ($testimonial->alumni->foto)
+                                        <img src="{{ asset('storage/' . $testimonial->alumni->foto) }}"
+                                            class="testimonial-img" alt="">
                                     @else
-                                        <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" class="testimonial-img" alt="No Image">
+                                        <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}"
+                                            class="testimonial-img" alt="No Image">
                                     @endif
                                     <h3>{{ $testimonial->alumni->nama_alumni }}</h3>
                                     <h4>{{ $testimonial->alumni->nama_universitas }}</h4>
@@ -194,7 +196,8 @@
                         <select name="tahun_lulusan" class="form-control w-100">
                             <option value="">Pilih Tahun Lulusan</option>
                             @foreach ($tahunLulusanOptions as $tahun)
-                                <option value="{{ $tahun }}" {{ request('tahun_lulusan') == $tahun ? 'selected' : '' }}>{{ $tahun }}</option>
+                                <option value="{{ $tahun }}"
+                                    {{ request('tahun_lulusan') == $tahun ? 'selected' : '' }}>{{ $tahun }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -223,20 +226,23 @@
                             class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}">
                             <div class="portfolio-content h-100">
                                 {{-- <img src="{{ asset('storage/' . $alumni->foto) }}" class="img-fluid" alt=""> --}}
-                                @if($alumni->foto)
+                                @if ($alumni->foto)
                                     <img src="{{ asset('storage/' . $alumni->foto) }}" class="img-fluid" alt="Foto Alumni">
                                 @else
-                                    <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" class="img-fluid" alt="No Image">
+                                    <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}"
+                                        class="img-fluid" alt="No Image">
                                 @endif
                                 <div class="portfolio-info">
                                     <h4>{{ $alumni->nama_alumni }} - Alumni {{ $alumni->tahun_lulusan }}</h4>
                                     <p>{{ $alumni->nama_universitas }}</p>
-                                    @if($alumni->foto)
-                                        <a href="{{ asset('storage/' . $alumni->foto) }}" title="{{ $alumni->nama_alumni }}"
+                                    @if ($alumni->foto)
+                                        <a href="{{ asset('storage/' . $alumni->foto) }}"
+                                            title="{{ $alumni->nama_alumni }}"
                                             data-gallery="portfolio-gallery-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}"
                                             class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                                     @else
-                                        <a href="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" title="{{ $alumni->nama_alumni }}"
+                                        <a href="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}"
+                                            title="{{ $alumni->nama_alumni }}"
                                             data-gallery="portfolio-gallery-{{ Str::slug($alumni->jenisPt->nama_jenis_pt) }}"
                                             class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                                     @endif
@@ -248,6 +254,15 @@
                         </div><!-- End Portfolio Item -->
                     @endforeach
                 </div><!-- End Portfolio Container -->
+                <hr>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- Pagination -->
+                        <nav class="pagination-wrap d-flex justify-content-center" aria-label="Page navigation example">
+                            {{ $alumnis->appends(request()->query())->links('vendor.pagination.custom') }}
+                        </nav>
+                    </div>
+                </div>
 
             </div>
 

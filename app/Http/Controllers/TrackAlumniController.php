@@ -24,7 +24,8 @@ class TrackAlumniController extends Controller
         ->when($request->tahun_lulusan, function ($query) use ($request) {
             return $query->where('tahun_lulusan', $request->tahun_lulusan);
         })
-        ->get();
+        // ->get();
+        ->paginate(9);
 
         // Data untuk grafik
         $chartData = $jenisPt->map(function ($jenis) {
