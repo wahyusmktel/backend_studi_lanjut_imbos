@@ -21,7 +21,7 @@ class SiswaController extends Controller
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where('nama_siswa', 'like', '%' . $search . '%')
-                  ->orWhere('nis', 'like', '%' . $search . '%');
+                ->orWhere('nis', 'like', '%' . $search . '%');
         }
 
         $siswas = $query->paginate(10);
@@ -31,31 +31,87 @@ class SiswaController extends Controller
         return view('admin.siswa.index', compact('siswas', 'kelas', 'programBimbels'));
     }
 
+    // public function store(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'kelas_id' => 'required|uuid',
+    //         'program_bimbel_id' => 'required|uuid',
+    //         'nama_siswa' => 'required|string|max:255',
+    //         'tgl_lahir' => 'nullable|date',
+    //         'tmpt_lahir' => 'nullable|string|max:255',
+    //         'no_hp' => 'nullable|string|max:15',
+    //         'nis' => 'required|integer|unique:siswas,nis',
+    //         'password' => 'required|string|max:255',
+    //         'foto' => 'nullable|image|max:2048',
+    //     ]);
+
+    //     if ($request->hasFile('foto')) {
+    //         $data['foto_siswa'] = $request->file('foto')->store('foto_siswa', 'public');
+    //     }
+
+    //     $data['id'] = Str::uuid();
+    //     $data['password'] = Hash::make($data['password']);
+    //     $data['status'] = true;
+
+    //     Siswa::create($data);
+
+    //     return redirect()->route('admin.siswa.index')->with('success', 'Data Siswa berhasil ditambahkan.');
+    // }
+
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'kelas_id' => 'required|uuid',
-            'program_bimbel_id' => 'required|uuid',
-            'nama_siswa' => 'required|string|max:255',
-            'tgl_lahir' => 'nullable|date',
-            'tmpt_lahir' => 'nullable|string|max:255',
-            'no_hp' => 'nullable|string|max:15',
-            'nis' => 'required|integer|unique:siswas,nis',
-            'password' => 'required|string|max:255',
-            'foto' => 'nullable|image|max:2048',
-        ]);
+        try {
+            // Validasi data
+            $data = $request->validate([
+                'kelas_id' => 'required|uuid',
+                'program_bimbel_id' => 'required|uuid',
+                'nama_siswa' => 'required|string|max:255',
+                'tgl_lahir' => 'nullable|date',
+                'tmpt_lahir' => 'nullable|string|max:255',
+                'no_hp' => 'nullable|string|max:15',
+                'nis' => 'required|integer|unique:siswas,nis',
+                'password' => 'required|string|max:255',
+                'foto' => 'nullable|image|max:2048',
+            ], [
+                'kelas_id.required' => 'Kelas harus dipilih.',
+                'kelas_id.uuid' => 'Format ID kelas tidak valid.',
+                'program_bimbel_id.required' => 'Program bimbel harus dipilih.',
+                'program_bimbel_id.uuid' => 'Format ID program bimbel tidak valid.',
+                'nama_siswa.required' => 'Nama siswa wajib diisi.',
+                'nama_siswa.string' => 'Nama siswa harus berupa teks.',
+                'nama_siswa.max' => 'Nama siswa maksimal 255 karakter.',
+                'tgl_lahir.date' => 'Tanggal lahir harus berupa tanggal yang valid.',
+                'tmpt_lahir.max' => 'Tempat lahir maksimal 255 karakter.',
+                'no_hp.max' => 'Nomor HP maksimal 15 karakter.',
+                'nis.required' => 'NIS wajib diisi.',
+                'nis.integer' => 'NIS harus berupa angka.',
+                'nis.unique' => 'NIS sudah terdaftar.',
+                'password.required' => 'Password wajib diisi.',
+                'password.string' => 'Password harus berupa teks.',
+                'password.max' => 'Password maksimal 255 karakter.',
+                'foto.image' => 'Foto harus berupa file gambar.',
+                'foto.max' => 'Ukuran foto maksimal 2MB.',
+            ]);
 
-        if ($request->hasFile('foto')) {
-            $data['foto_siswa'] = $request->file('foto')->store('foto_siswa', 'public');
+            // Cek apakah ada file foto yang diupload
+            if ($request->hasFile('foto')) {
+                $data['foto_siswa'] = $request->file('foto')->store('foto_siswa', 'public');
+            }
+
+            // Generate UUID untuk id dan enkripsi password
+            $data['id'] = Str::uuid();
+            $data['password'] = Hash::make($data['password']);
+            $data['status'] = true;
+
+            // Simpan data siswa
+            Siswa::create($data);
+
+            // Redirect jika berhasil
+            return redirect()->route('admin.siswa.index')->with('success', 'Data Siswa berhasil ditambahkan.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Kembalikan ke halaman sebelumnya dengan error message
+            return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data siswa. ' . $e->getMessage());
         }
-
-        $data['id'] = Str::uuid();
-        $data['password'] = Hash::make($data['password']);
-        $data['status'] = true;
-
-        Siswa::create($data);
-
-        return redirect()->route('admin.siswa.index')->with('success', 'Data Siswa berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -91,7 +147,6 @@ class SiswaController extends Controller
             $siswa->update($data);
 
             return redirect()->route('admin.siswa.index')->with('success', 'Data Siswa berhasil diupdate.');
-
         } catch (\Exception $e) {
             return redirect()->route('admin.siswa.index')->with('error', 'Terjadi kesalahan saat mengupdate data siswa.');
         }
@@ -108,7 +163,7 @@ class SiswaController extends Controller
 
     public function import(Request $request)
     {
-        
+
         $request->validate([
             'file' => 'required|mimes:xls,xlsx'
         ]);
