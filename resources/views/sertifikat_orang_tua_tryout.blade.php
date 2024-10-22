@@ -37,7 +37,8 @@
         .content {
             margin: 0 auto;
             width: 100%;
-            flex: 1; /* Membuat content mengambil ruang yang tersisa */
+            flex: 1;
+            /* Membuat content mengambil ruang yang tersisa */
         }
 
         .content table {
@@ -64,8 +65,10 @@
         }
 
         .footer {
-            margin-top: auto; /* Mendorong footer ke bawah */
-            padding: 10px 0; /* Tambahan padding jika diperlukan */
+            margin-top: auto;
+            /* Mendorong footer ke bawah */
+            padding: 10px 0;
+            /* Tambahan padding jika diperlukan */
             text-align: center;
         }
 
@@ -84,7 +87,8 @@
         .table-container {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start; /* Atur ke flex-start agar elemen berada di baris yang sama */
+            align-items: flex-start;
+            /* Atur ke flex-start agar elemen berada di baris yang sama */
             margin-bottom: 10px;
         }
 
@@ -95,7 +99,8 @@
         }
 
         .left-section {
-            width: 65%; /* Pastikan total lebar dari left-section dan right-section tidak lebih dari 100% */
+            width: 65%;
+            /* Pastikan total lebar dari left-section dan right-section tidak lebih dari 100% */
         }
 
         .right-section {
@@ -166,8 +171,10 @@
         </div>
         <div class="center">
             <p>Telah mengikuti {{ ucwords(strtolower($nilai->first()->first()->tryout->nama_tryout)) }} pada tanggal
-                {{ \Carbon\Carbon::parse($nilai->first()->first()->tryout->tanggal)->translatedFormat('d F Y') }} dan berlaku sebagai
-                bukti kemajuan hasil belajar bimbel studi lanjut SMAIT IMBOS Pringsewu, <br>dengan hasil sebagai berikut :</p>
+                {{ \Carbon\Carbon::parse($nilai->first()->first()->tryout->tanggal)->translatedFormat('d F Y') }} dan
+                berlaku sebagai
+                bukti kemajuan hasil belajar bimbel studi lanjut SMAIT IMBOS Pringsewu, <br>dengan hasil sebagai berikut
+                :</p>
         </div>
         <div class="table-container">
             <div class="left-section" style="margin: 0 auto;">
@@ -182,7 +189,10 @@
                         @foreach ($mataPelajaransFalse as $mataPelajaran)
                             <tr>
                                 <td>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</td>
-                                <td align="center" style="text-align: center">{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                <td align="center" style="text-align: center">
+                                    {{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()? number_format($nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai,2): '-' }}
+                                </td>
+                                {{-- <td align="center" style="text-align: center">{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td> --}}
                             </tr>
                         @endforeach
                         @if ($mataPelajaransTrue->isNotEmpty())
@@ -192,7 +202,10 @@
                             @foreach ($mataPelajaransTrue as $mataPelajaran)
                                 <tr>
                                     <td>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</td>
-                                    <td align="center" style="text-align: center">{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                    <td align="center" style="text-align: center">
+                                        {{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()? number_format($nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai,2): '-' }}
+                                    </td>
+                                    {{-- <td align="center" style="text-align: center">{{ $nilai->first()->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td> --}}
                                 </tr>
                             @endforeach
                         @endif
@@ -200,7 +213,7 @@
                 </table>
             </div>
         </div>
-        
+
     </div>
     {{-- <div class="footer">
         <p>&copy; 2024 SMAIT IMBOS Pringsewu</p>

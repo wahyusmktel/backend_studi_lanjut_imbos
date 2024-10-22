@@ -32,14 +32,16 @@
             text-align: center;
         }
 
-        .header .sub-header{
+        .header .sub-header {
             text-align: left;
             margin-bottom: -20px;
         }
 
         .footer {
-            margin-top: 100px; /* Mendorong footer ke bawah */
-            padding: 10px 0; /* Tambahan padding jika diperlukan */
+            margin-top: 100px;
+            /* Mendorong footer ke bawah */
+            padding: 10px 0;
+            /* Tambahan padding jika diperlukan */
             text-align: center;
         }
 
@@ -112,23 +114,26 @@
                         <th rowspan="2">{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</th>
                     @endforeach
                     <!-- Kondisi untuk menampilkan kolom "Tes Potensi Skolastik" -->
-                    @if($statusKedinasan === 0 || $statusKedinasan === 2)
-                    <th colspan="{{ $mataPelajarans->where('opsi_test_tps', true)->count() }}">TES POTENSI SKOLASTIK</th>
+                    @if ($statusKedinasan === 0 || $statusKedinasan === 2)
+                        <th colspan="{{ $mataPelajarans->where('opsi_test_tps', true)->count() }}">TES POTENSI SKOLASTIK
+                        </th>
                     @endif
-        
+
                     <!-- Kondisi untuk menampilkan kolom "Tes Kedinasan" -->
-                    @if($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() > 0)
-                        <th colspan="{{ $mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() }}">TES KEDINASAN</th>
+                    @if ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() > 0)
+                        <th
+                            colspan="{{ $mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false)->count() }}">
+                            TES KEDINASAN</th>
                     @endif
                 </tr>
                 <tr>
                     <!-- Kolom untuk Tes Potensi Skolastik -->
-                    @if($statusKedinasan === 0 || $statusKedinasan === 2)
-                    @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
-                        <th>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</th>
-                    @endforeach
+                    @if ($statusKedinasan === 0 || $statusKedinasan === 2)
+                        @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
+                            <th>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</th>
+                        @endforeach
                     @endif
-        
+
                     <!-- Kolom untuk Tes Kedinasan -->
                     @foreach ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false) as $mataPelajaran)
                         <th>{{ strtoupper($mataPelajaran->namaMataPelajaran) }}</th>
@@ -147,19 +152,28 @@
                         <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester == 1 ? 'GANJIL' : 'GENAP' }}</td>
                         <!-- Nilai untuk mata pelajaran tanpa TPS dan tanpa kedinasan -->
                         @foreach ($mataPelajarans->where('opsi_test_tps', false)->where('opsi_kedinasan', false) as $mataPelajaran)
-                        <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                            {{-- <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td> --}}
+                            <td>
+                                {{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first() ? number_format($nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai, 2) : '-' }}
+                            </td>
                         @endforeach
-        
+
                         <!-- Nilai untuk Tes Potensi Skolastik -->
-                        @if($statusKedinasan === 0 || $statusKedinasan === 2)
+                        @if ($statusKedinasan === 0 || $statusKedinasan === 2)
                             @foreach ($mataPelajarans->where('opsi_test_tps', true) as $mataPelajaran)
-                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                                {{-- <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td> --}}
+                                <td>
+                                    {{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first() ? number_format($nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai, 2) : '-' }}
+                                </td>
                             @endforeach
                         @endif
-        
+
                         <!-- Nilai untuk Tes Kedinasan -->
                         @foreach ($mataPelajarans->where('opsi_kedinasan', true)->where('opsi_test_tps', false) as $mataPelajaran)
-                            <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td>
+                            {{-- <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai ?? '-' }}</td> --}}
+                            <td>
+                                {{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first() ? number_format($nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai, 2) : '-' }}
+                            </td>
                         @endforeach
                     </tr>
                     @php

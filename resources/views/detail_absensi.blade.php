@@ -47,9 +47,9 @@
                                         <div class="input-group mb-15">
                                             <!-- Filter berdasarkan tanggal -->
                                             <input type="date" id="start_date" name="start_date" class="form-control"
-                                                value="{{ $request->start_date }}">
+                                                value="{{ $request->start_date }}" required>
                                             <input type="date" id="end_date" name="end_date" class="form-control"
-                                                value="{{ $request->end_date }}">
+                                                value="{{ $request->end_date }}" required>
                                             <!-- Filter berdasarkan mata pelajaran -->
                                             <select name="mata_pelajaran_id" class="form-control">
                                                 <option value="">Pilih Mata Pelajaran</option>
@@ -130,7 +130,9 @@
                                         <tbody>
                                             @foreach ($absensiDetails as $index => $detail)
                                                 <tr>
-                                                    <td style="text-align: center">{{ ($absensiDetails->currentPage() - 1) * $absensiDetails->perPage() + $loop->iteration }}</td>
+                                                    <td style="text-align: center">
+                                                        {{ ($absensiDetails->currentPage() - 1) * $absensiDetails->perPage() + $loop->iteration }}
+                                                    </td>
                                                     <td style="text-align: center">
                                                         {{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
                                                     <td style="text-align: center">{{ $detail->absensi->guru->nama }}</td>
