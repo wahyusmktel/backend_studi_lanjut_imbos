@@ -417,4 +417,21 @@ class AdminNilaiController extends Controller
     
         return redirect()->back()->with('success', 'Nilai berhasil diimport.');
     }
+
+    public function hapusSemua(Request $request)
+    {
+        $tahunPelajaranId = $request->input('tahun_pelajaran_id');
+        $tryoutId = $request->input('tryout_id');
+        $kelasId = $request->input('kelas_id');
+
+        // Menghapus data nilai berdasarkan filter yang diterima
+        $nilais = Nilai::where('tryout_id', $tryoutId)
+                    ->whereHas('siswa', function($query) use ($kelasId) {
+                        $query->where('kelas_id', $kelasId);
+                    });
+
+        $jumlahDihapus = $nilais->delete(); // Menghapus
+
+        return response()->json(['success' => "$jumlahDihapus data nilai berhasil dihapus."]);
+    }
 }

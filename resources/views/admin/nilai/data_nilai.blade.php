@@ -99,8 +99,38 @@
                                         </tbody>
                                     </table>
                                     <div class="text-right mt-15">
+                                        <button type="button" class="btn btn-danger" id="hapusSemuaNilai"><i class="fa fa-trash"></i> Hapus Semua Nilai</button>
                                         <button type="submit" class="btn btn-orange"><i class="fa fa-save"></i> Simpan
                                             Semua Nilai</button>
+                                            <script>
+                                                $(document).ready(function() {
+                                                    $('#hapusSemuaNilai').on('click', function() {
+                                                        var tahunPelajaranId = $('#tahun_pelajaran_filter').val();
+                                                        var tryoutId = $('#tryout_filter').val();
+                                                        var kelasId = $('#kelas_filter').val();
+                                                
+                                                        if(confirm('Anda yakin ingin menghapus semua data nilai?')) {
+                                                            $.ajax({
+                                                                url: '{{ route('admin.nilai.hapusSemua') }}', // Pastikan route ini ditambahkan di web.php
+                                                                type: 'DELETE',
+                                                                data: {
+                                                                    tahun_pelajaran_id: tahunPelajaranId,
+                                                                    tryout_id: tryoutId,
+                                                                    kelas_id: kelasId,
+                                                                    _token: '{{ csrf_token() }}',
+                                                                },
+                                                                success: function(result) {
+                                                                    alert(result.success);
+                                                                    location.reload(); //Reload halaman setelah penghapusan
+                                                                },
+                                                                error: function() {
+                                                                    alert('Terjadi kesalahan saat menghapus data nilai.');
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                });
+                                            </script>
                                     </div>
                                 </form>
                             </div>

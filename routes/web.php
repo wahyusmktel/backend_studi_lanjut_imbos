@@ -155,6 +155,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/nilai-siswa', [AdminNilaiController::class, 'nilaiSiswaIndex'])->name('admin.nilai-siswa.index');
         Route::get('/nilai-siswa/{id}', [AdminNilaiController::class, 'detail'])->name('admin.nilai.detail');
         Route::get('/nilai-siswa/{id}/download-sertifikat', [AdminNilaiController::class, 'downloadSertifikat'])->name('admin.nilai.downloadSertifikat');
+        Route::delete('/admin/nilai/hapus-semua', [AdminNilaiController::class, 'hapusSemua'])->name('admin.nilai.hapusSemua');
         // Route untuk mengunduh template import nilai
         Route::get('/nilai/download-template', [AdminNilaiController::class, 'downloadTemplate'])->name('admin.nilai.downloadTemplate');
         Route::post('/admin/nilai/import', [AdminNilaiController::class, 'import'])->name('admin.nilai.import');
