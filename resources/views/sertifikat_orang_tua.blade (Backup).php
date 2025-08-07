@@ -38,7 +38,7 @@
         }
 
         .footer {
-            margin-top: 80px;
+            margin-top: 100px;
             /* Mendorong footer ke bawah */
             padding: 10px 0;
             /* Tambahan padding jika diperlukan */
@@ -102,7 +102,7 @@
         </div>
     </div>
     <div class="content">
-        <table class="table table-hover table-bordered mb-0" style="font-size: 10px;">
+        <table class="table table-hover table-bordered mb-0">
             <thead>
                 <tr>
                     <th rowspan="2">NO</th>
