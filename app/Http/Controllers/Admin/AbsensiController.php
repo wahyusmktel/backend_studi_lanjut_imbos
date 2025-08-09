@@ -19,7 +19,7 @@ class AbsensiController extends Controller
         $query = AbsensiDetail::with('siswa', 'absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran');
 
         if ($request->has('start_date') && $request->has('end_date')) {
-            $query->whereHas('absensi', function($q) use ($request) {
+            $query->whereHas('absensi', function ($q) use ($request) {
                 $q->whereBetween('tanggal', [$request->start_date, $request->end_date]);
             });
         }
@@ -65,10 +65,10 @@ class AbsensiController extends Controller
     public function detail(Request $request, $siswa_id)
     {
         $query = AbsensiDetail::with('absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran')
-                            ->where('siswa_id', $siswa_id);
+            ->where('siswa_id', $siswa_id);
 
         if ($request->has('start_date') && $request->has('end_date')) {
-            $query->whereHas('absensi', function($q) use ($request) {
+            $query->whereHas('absensi', function ($q) use ($request) {
                 $q->whereBetween('tanggal', [$request->start_date, $request->end_date]);
             });
         }
@@ -92,6 +92,4 @@ class AbsensiController extends Controller
     {
         return Excel::download(new AbsensiDetailExport($id, $request->start_date, $request->end_date, $request->mata_pelajaran_id), 'absensi_detail.xlsx');
     }
-
-
 }
