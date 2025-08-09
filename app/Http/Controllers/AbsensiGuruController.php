@@ -8,7 +8,9 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Absensi;
 use App\Models\AbsensiDetail;
+use App\Models\TahunPelajaran;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AbsensiGuruController extends Controller
 {
@@ -35,16 +37,28 @@ class AbsensiGuruController extends Controller
             'kehadiran' => 'required|array',
         ]);
 
+        // --- MULAI PERUBAHAN ---
+        // 1. Cari Tahun Pelajaran yang aktif
+        $tahunAktif = TahunPelajaran::where('status', 1)->first();
+
+        // 2. Jika tidak ada yang aktif, kembalikan dengan pesan error
+        if (!$tahunAktif) {
+            return redirect()->back()->with('error', 'Gagal menyimpan. Tidak ada Tahun Pelajaran yang aktif.');
+        }
+
         $guru = Auth::guard('guru')->user();
 
-        $absensi = Absensi::create([
+        $dataToCreate = Absensi::create([
             'guru_id' => $guru->id,
             'kelas_id' => $request->kelas_id,
             'tanggal' => $request->tanggal,
             'waktu' => $request->waktu,
             'catatan' => $request->catatan,
             'foto' => $request->hasFile('foto') ? $request->file('foto')->store('foto_absensi', 'public') : null,
+            'tahun_pelajaran_id' => $tahunAktif->id,
         ]);
+
+        $absensi = Absensi::create($dataToCreate);
 
         foreach ($request->siswa_id as $siswa_id) {
             AbsensiDetail::create([
