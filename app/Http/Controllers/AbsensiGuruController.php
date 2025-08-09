@@ -48,23 +48,21 @@ class AbsensiGuruController extends Controller
 
         $guru = Auth::guard('guru')->user();
 
-        $dataToCreate = Absensi::create([
+        $absensi = Absensi::create([
             'guru_id' => $guru->id,
             'kelas_id' => $request->kelas_id,
             'tanggal' => $request->tanggal,
             'waktu' => $request->waktu,
             'catatan' => $request->catatan,
             'foto' => $request->hasFile('foto') ? $request->file('foto')->store('foto_absensi', 'public') : null,
-            'tahun_pelajaran_id' => $tahunAktif->id,
+            'tahun_pelajaran_id' => $tahunAktif->id, // Kolom baru sudah disertakan
         ]);
-
-        $absensi = Absensi::create($dataToCreate);
 
         foreach ($request->siswa_id as $siswa_id) {
             AbsensiDetail::create([
-                'absensi_id' => $absensi->id,
+                'absensi_id' => $absensi->id, // Menggunakan $absensi dari langkah sebelumnya
                 'siswa_id' => $siswa_id,
-                'kehadiran' => $request->kehadiran[$siswa_id], // Gunakan siswa_id sebagai kunci
+                'kehadiran' => $request->kehadiran[$siswa_id],
             ]);
         }
 
