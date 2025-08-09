@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
+use App\Models\TahunPelajaran;
 
 class AdminKelasController extends Controller
 {
@@ -31,7 +32,21 @@ class AdminKelasController extends Controller
             'status_kedinasan' => 'required',
         ]);
 
-        Kelas::create($request->all());
+        // --- MULAI PERUBAHAN ---
+        // 1. Cari Tahun Pelajaran yang aktif
+        $tahunAktif = TahunPelajaran::where('status', 1)->first();
+
+        // 2. Jika tidak ada yang aktif, kembalikan dengan pesan error
+        if (!$tahunAktif) {
+            return redirect()->route('admin.kelas.index')->with('error', 'Gagal menambah kelas. Tidak ada Tahun Pelajaran yang aktif.');
+        }
+
+        // 3. Gabungkan request dengan tahun_pelajaran_id
+        $data = array_merge($request->all(), [
+            'tahun_pelajaran_id' => $tahunAktif->id
+        ]);
+
+        Kelas::create($data);
 
         return redirect()->route('admin.kelas.index')->with('success', 'Data Kelas berhasil ditambahkan.');
     }

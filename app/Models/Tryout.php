@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\TahunPelajaranScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -11,7 +12,10 @@ class Tryout extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'tahun_pelajaran_id', 'nama_tryout', 'status'
+        'id',
+        'tahun_pelajaran_id',
+        'nama_tryout',
+        'status'
     ];
 
     protected $keyType = 'uuid';
@@ -20,6 +24,8 @@ class Tryout extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::addGlobalScope(new TahunPelajaranScope);
 
         static::creating(function ($model) {
             $model->id = (string) Str::uuid();

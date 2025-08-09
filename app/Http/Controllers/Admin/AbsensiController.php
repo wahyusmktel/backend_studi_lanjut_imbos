@@ -16,7 +16,7 @@ class AbsensiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = AbsensiDetail::with('siswa', 'absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran');
+        $query = AbsensiDetail::with('siswa', 'absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran')->whereHas('absensi');
 
         if ($request->has('start_date') && $request->has('end_date')) {
             $query->whereHas('absensi', function ($q) use ($request) {
@@ -65,7 +65,8 @@ class AbsensiController extends Controller
     public function detail(Request $request, $siswa_id)
     {
         $query = AbsensiDetail::with('absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran')
-            ->where('siswa_id', $siswa_id);
+            ->where('siswa_id', $siswa_id)
+            ->whereHas('absensi');
 
         if ($request->has('start_date') && $request->has('end_date')) {
             $query->whereHas('absensi', function ($q) use ($request) {

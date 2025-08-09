@@ -22,20 +22,27 @@ class AdminTryoutController extends Controller
         $query->orderBy('nama_tryout', 'asc');
 
         $tryouts = $query->paginate(10)->appends(['search' => $request->input('search')]);
-        $tahunPelajarans = TahunPelajaran::all();
+        $tahunAktif = TahunPelajaran::where('status', 1)->first();
 
-        return view('admin.tryout.data_tryout', compact('tryouts', 'tahunPelajarans'));
+        return view('admin.tryout.data_tryout', compact('tryouts', 'tahunAktif'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'tahun_pelajaran_id' => 'required|uuid',
+            // 'tahun_pelajaran_id' => 'required|uuid',
             'nama_tryout' => 'required|string|max:255',
         ]);
 
+        $tahunAktif = TahunPelajaran::where('status', 1)->first();
+
+        if (!$tahunAktif) {
+            return redirect()->route('admin.tryout.index')->with('error', 'Gagal membuat tryout. Tidak ada Tahun Pelajaran yang aktif.');
+        }
+
         $data['id'] = (string) \Illuminate\Support\Str::uuid();
         $data['status'] = true;
+        $data['tahun_pelajaran_id'] = $tahunAktif->id;
 
         Tryout::create($data);
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\TahunPelajaranScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -15,11 +16,14 @@ class Kelas extends Model
         'tingkat_kelas',
         'status_kedinasan',
         'status',
+        'tahun_pelajaran_id'
     ];
 
     public static function boot()
     {
         parent::boot();
+
+        static::addGlobalScope(new TahunPelajaranScope);
 
         static::creating(function ($model) {
             $model->id = Str::uuid()->toString();
@@ -37,5 +41,10 @@ class Kelas extends Model
     public function siswa()
     {
         return $this->hasMany(Siswa::class);
+    }
+
+    public function tahunPelajaran()
+    {
+        return $this->belongsTo(TahunPelajaran::class);
     }
 }

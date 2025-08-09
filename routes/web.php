@@ -141,7 +141,7 @@ Route::prefix('admin')->group(function () {
         // Try Out
         Route::get('/tryout', [AdminTryoutController::class, 'index'])->name('admin.tryout.index');
         Route::post('/tryout', [AdminTryoutController::class, 'store'])->name('admin.tryout.store');
-        Route::post('/tryout/{id}', [AdminTryoutController::class, 'update'])->name('admin.tryout.update');
+        Route::put('/tryout/{id}', [AdminTryoutController::class, 'update'])->name('admin.tryout.update');
         Route::delete('/tryout/{id}', [AdminTryoutController::class, 'destroy'])->name('admin.tryout.destroy');
 
         // Nilai
@@ -224,6 +224,5 @@ Route::prefix('admin')->group(function () {
         //Profile Admin
         Route::get('/profile', [AdminProfileController::class, 'editProfile'])->name('admin.profile.edit');
         Route::post('/profile', [AdminProfileController::class, 'updateProfile'])->name('admin.profile.update');
-
     });
 });
