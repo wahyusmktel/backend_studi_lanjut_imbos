@@ -47,8 +47,6 @@
                                 <div class="row">
                                     <div class="col-md-4 mt-2">
                                         <div class="img-profile">
-                                            {{-- <img src="https://placehold.co/400x600/png" alt="Profile">
-                                            <img src="{{ asset('storage/' . $siswa->foto_siswa) }}" alt="Profile"> --}}
                                             @if ($siswa->foto_siswa)
                                                 <img src="{{ asset('storage/' . $siswa->foto_siswa) }}" alt="Profile">
                                             @else
@@ -61,17 +59,17 @@
                                             <tr>
                                                 <th style="text-align: left;">Nama</th>
                                                 <td>{{ $siswa->nama_siswa }}</td>
-                                                <script>
-                                                    console.log("ID Siswa: {{ $siswa->id }}");
-                                                </script>
                                             </tr>
                                             <tr>
                                                 <th style="text-align: left;">Kelompok</th>
-                                                <td>{{ $siswa->kelas->nama_kelas }}</td>
+                                                {{-- PERBAIKAN: Gunakan nullsafe operator (?->) dan null coalescing (??) untuk mencegah error jika kelas tidak ada --}}
+                                                <td>{{ $siswa->kelas?->nama_kelas ?? 'Kelas tidak ditemukan' }}</td>
                                             </tr>
                                             <tr>
                                                 <th style="text-align: left;">Program Bimbel</th>
-                                                <td>{{ $siswa->programBimbel->nama_program }}</td>
+                                                {{-- PERBAIKAN: Lakukan hal yang sama untuk program bimbel --}}
+                                                <td>{{ $siswa->programBimbel?->nama_program ?? 'Program tidak ditemukan' }}
+                                                </td>
                                             </tr>
                                         </table>
                                         <a href="/orang-tua/absensi/detail" class="btn btn-warning btn-sm"
@@ -80,16 +78,16 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <canvas id="nilaiChart"></canvas>
+                                {{-- PERBAIKAN: Hanya tampilkan chart jika ada data nilai --}}
+                                @if (!$nilai->isEmpty())
+                                    <canvas id="nilaiChart"></canvas>
+                                @else
+                                    <div class="text-center" style="padding-top: 50px;">
+                                        <p>Grafik akan muncul setelah nilai Try Out diinput.</p>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-12">
-                                <div class="alert alert-info">
-                                    <h2>Klik tombol berikut untuk melihat Aktifitas Absensi Siswa</h2>
-                                </div>
-                            </div>
-                        </div> --}}
                         <hr>
                         <div class="content-title-custom-1">
                             <p>Tabel Perkembangan Nilai TryOut Siswa</p>
@@ -97,44 +95,6 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    {{-- <table class="table table-hover table-bordered mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Try Out</th>
-                                        <th>Tahun Pelajaran</th>
-                                        <th>Semester</th>
-                                        @foreach ($mataPelajarans as $mataPelajaran)
-                                            <th>{{ $mataPelajaran->namaMataPelajaran }}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $index = 1;
-                                    @endphp
-                                    @foreach ($nilai as $tryoutId => $nilaiGroup)
-                                        <tr>
-                                            <td>{{ $index }}</td>
-                                            <td>{{ $nilaiGroup->first()->tryout->nama_tryout }}</td>
-                                            <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->nama_tahun_pelajaran }}</td>
-                                            <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester }}</td>
-                                            @foreach ($mataPelajarans as $mataPelajaran)
-                                                <td>{{ $nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first() ? number_format($nilaiGroup->where('mata_pelajaran_id', $mataPelajaran->id)->first()->nilai, 2) : '-' }}</td>
-                                            @endforeach
-                                        </tr>
-                                        @php
-                                            $index++;
-                                        @endphp
-                                    @endforeach
-                                    @if ($nilai->isEmpty())
-                                        <tr>
-                                            <td colspan="{{ 4 + $mataPelajarans->count() }}" class="text-center">Data tidak ditemukan</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table> --}}
-
                                     <table class="table table-hover table-bordered mb-0">
                                         <thead>
                                             <tr>
@@ -179,16 +139,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                                $index = 1;
-                                            @endphp
-                                            @foreach ($nilai as $tryoutId => $nilaiGroup)
+                                            {{-- PERBAIKAN: Gunakan @forelse untuk menangani kasus jika tidak ada nilai --}}
+                                            @forelse ($nilai as $tryoutId => $nilaiGroup)
                                                 <tr>
-                                                    <td>{{ $index }}</td>
-                                                    <td>{{ $nilaiGroup->first()->tryout->nama_tryout }}</td>
-                                                    <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->nama_tahun_pelajaran }}
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    {{-- PERBAIKAN: Tambahkan nullsafe operator untuk keamanan --}}
+                                                    <td>{{ $nilaiGroup->first()->tryout?->nama_tryout }}</td>
+                                                    <td>{{ $nilaiGroup->first()->tryout?->tahunPelajaran?->nama_tahun_pelajaran }}
                                                     </td>
-                                                    <td>{{ $nilaiGroup->first()->tryout->tahunPelajaran->semester == 1 ? 'Ganjil' : 'Genap' }}
+                                                    <td>{{ $nilaiGroup->first()->tryout?->tahunPelajaran?->semester == 1 ? 'Ganjil' : 'Genap' }}
                                                     </td>
 
                                                     <!-- Nilai untuk mata pelajaran tanpa TPS dan tanpa kedinasan -->
@@ -216,20 +175,15 @@
                                                             class="btn btn-primary">Download Sertifikat</a>
                                                     </td>
                                                 </tr>
-                                                @php
-                                                    $index++;
-                                                @endphp
-                                            @endforeach
-                                            @if ($nilai->isEmpty())
+                                            @empty
                                                 <tr>
-                                                    <td colspan="{{ 4 + $mataPelajarans->count() }}" class="text-center">
-                                                        Data tidak ditemukan</td>
+                                                    {{-- PERBAIKAN: Hitung colspan secara dinamis dan aman --}}
+                                                    <td colspan="{{ 5 + $mataPelajarans->count() }}" class="text-center">
+                                                        Data nilai untuk tahun pelajaran aktif tidak ditemukan.</td>
                                                 </tr>
-                                            @endif
+                                            @endforelse
                                         </tbody>
                                     </table>
-
-
                                 </div>
                             </div>
                         </div>
@@ -245,78 +199,78 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </section><!-- /About Section -->
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('nilaiChart').getContext('2d');
-            const labels = {!! json_encode($nilai->map(fn($group) => $group->first()->tryout->nama_tryout)->values()) !!};
-            const datasets = {!! $mataPelajarans->map(function ($mp) use ($nilai) {
-                    return [
-                        'label' => $mp->namaMataPelajaran,
-                        'data' => $nilai->map(fn($group) => $group->where('mata_pelajaran_id', $mp->id)->first()->nilai ?? 0)->values(),
-                        'borderColor' => 'randomColor()',
-                        'backgroundColor' => 'rgba(0, 0, 0, 0)',
-                        'pointStyle' => 'circle',
-                        'pointRadius' => 5,
-                        'pointHoverRadius' => 7,
-                    ];
-                })->values()->toJson() !!};
+    {{-- PERBAIKAN: Bungkus script Chart.js dalam @if untuk mencegah error jika $nilai kosong --}}
+    @if (!$nilai->isEmpty())
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const ctx = document.getElementById('nilaiChart').getContext('2d');
+                const labels = {!! json_encode($nilai->map(fn($group) => $group->first()->tryout?->nama_tryout)->values()) !!};
+                const datasets = {!! $mataPelajarans->map(function ($mp) use ($nilai) {
+                        return [
+                            'label' => $mp->namaMataPelajaran,
+                            'data' => $nilai->map(fn($group) => $group->where('mata_pelajaran_id', $mp->id)->first()->nilai ?? 0)->values(),
+                            'borderColor' => 'randomColor()',
+                            'backgroundColor' => 'rgba(0, 0, 0, 0)',
+                            'pointStyle' => 'circle',
+                            'pointRadius' => 5,
+                            'pointHoverRadius' => 7,
+                        ];
+                    })->values()->toJson() !!};
 
-            datasets.forEach(dataset => {
-                dataset.borderColor = randomColor();
-            });
+                datasets.forEach(dataset => {
+                    dataset.borderColor = randomColor();
+                });
 
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Nilai'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Try Out'
-                            }
-                        }
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
                     },
-                    plugins: {
-                        legend: {
-                            position: 'top',
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Nilai'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Try Out'
+                                }
+                            }
                         },
-                        title: {
-                            display: true,
-                            text: 'Grafik Perkembangan Nilai Siswa'
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Grafik Perkembangan Nilai Siswa'
+                            }
                         }
                     }
+                });
+
+                function randomColor() {
+                    const letters = '0123456789ABCDEF';
+                    let color = '#';
+                    for (let i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
                 }
             });
-
-            function randomColor() {
-                const letters = '0123456789ABCDEF';
-                let color = '#';
-                for (let i = 0; i < 6; i++) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-                return color;
-            }
-        });
-    </script>
-
+        </script>
+    @endif
 
 @endsection
