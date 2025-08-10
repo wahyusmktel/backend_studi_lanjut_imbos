@@ -5,7 +5,7 @@
 @section('content')
     <!-- Hero Section -->
     <section id="hero" class="hero section">
-        
+
         @include('includes.menu_mobile_app')
 
         <div class="container">
