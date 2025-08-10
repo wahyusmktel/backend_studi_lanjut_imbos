@@ -7,6 +7,7 @@ use App\Imports\SiswaImport;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\ProgramBimbel;
+use App\Models\TahunPelajaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -14,21 +15,64 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     $query = Siswa::query();
+
+    //     if ($request->has('search')) {
+    //         $search = $request->input('search');
+    //         $query->where('nama_siswa', 'like', '%' . $search . '%')
+    //             ->orWhere('nis', 'like', '%' . $search . '%');
+    //     }
+
+    //     $siswas = $query->paginate(10);
+    //     $kelas = Kelas::all();
+    //     $programBimbels = ProgramBimbel::all();
+
+    //     return view('admin.siswa.index', compact('siswas', 'kelas', 'programBimbels'));
+    // }
+
     public function index(Request $request)
     {
-        $query = Siswa::query();
+        // --- PERUBAHAN DIMULAI DI SINI ---
 
-        if ($request->has('search')) {
+        // 2. Dapatkan tahun pelajaran yang statusnya aktif
+        $tahunPelajaranAktif = TahunPelajaran::where('status', true)->first();
+
+        // 3. Siapkan query builder untuk Siswa dan eager load relasi untuk optimasi
+        $query = Siswa::query()->with(['kelas', 'programBimbel']);
+
+        $kelas = collect(); // Inisialisasi sebagai koleksi kosong
+
+        if ($tahunPelajaranAktif) {
+            // 4. Dapatkan ID semua kelas yang termasuk dalam tahun pelajaran aktif
+            $kelasAktifIds = Kelas::where('tahun_pelajaran_id', $tahunPelajaranAktif->id)->pluck('id');
+
+            // 5. Filter siswa berdasarkan kelas_id yang aktif saja
+            $query->whereIn('kelas_id', $kelasAktifIds);
+
+            // 6. Ambil data kelas yang aktif saja untuk dropdown di form tambah/edit
+            $kelas = Kelas::where('tahun_pelajaran_id', $tahunPelajaranAktif->id)->orderBy('nama_kelas', 'asc')->get();
+        } else {
+            // Jika tidak ada tahun pelajaran aktif, jangan tampilkan siswa sama sekali untuk mencegah error
+            $query->whereRaw('1 = 0');
+        }
+
+        // Logika pencarian tetap ada
+        if ($request->has('search') && !empty($request->input('search'))) {
             $search = $request->input('search');
-            $query->where('nama_siswa', 'like', '%' . $search . '%')
-                ->orWhere('nis', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_siswa', 'like', '%' . $search . '%')
+                    ->orWhere('nis', 'like', '%' . $search . '%');
+            });
         }
 
         $siswas = $query->paginate(10);
-        $kelas = Kelas::all();
         $programBimbels = ProgramBimbel::all();
 
-        return view('admin.siswa.index', compact('siswas', 'kelas', 'programBimbels'));
+        // --- PERUBAHAN SELESAI ---
+
+        return view('admin.siswa.index', compact('siswas', 'kelas', 'programBimbels', 'tahunPelajaranAktif'));
     }
 
     // public function store(Request $request)

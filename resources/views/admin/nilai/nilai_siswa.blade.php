@@ -74,12 +74,15 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $siswa->nama_siswa }}</td>
-                                                <td>{{ $siswa->kelas ? $siswa->kelas->nama_kelas : 'Kelas Tidak Ditemukan' }}</td>
+                                                <td>{{ $siswa->kelas ? $siswa->kelas->nama_kelas : 'Kelas Tidak Ditemukan' }}
+                                                </td>
                                                 <td>
                                                     <a href="{{ route('admin.nilai.detail', $siswa->id) }}"
                                                         class="btn btn-info btn-sm"><i class="fa fa-info-circle"></i>
                                                         Detail</a>
-                                                    <a href="#" class="delete-button btn btn-danger btn-sm" data-id="{{ $siswa->id }}"><i class="fa fa-trash-o"></i> Hapus</a>
+                                                    <a href="#" class="delete-button btn btn-danger btn-sm"
+                                                        data-id="{{ $siswa->id }}"><i class="fa fa-trash-o"></i>
+                                                        Hapus</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -99,7 +102,7 @@
 
     <script>
         $(document).ready(function() {
-        // SweetAlert for Delete
+            // SweetAlert for Delete
             $('.delete-button').on('click', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');

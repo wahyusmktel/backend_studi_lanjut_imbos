@@ -35,18 +35,19 @@
                                         <li><a href="#" data-toggle="modal" data-target="#importModal"><i
                                                     class="fa fa-upload"></i> Import Data</a></li>
                                         <li class="divider"></li>
-                                        {{-- <li><a href="#"><i class="fa fa-download"></i> Download Data</a></li> --}}
-                                        <li><a href="#" data-toggle="modal" data-target="#downloadTemplateModal"><i class="fa fa-download"></i> Download Template</a></li>
+                                        <li><a href="#" data-toggle="modal" data-target="#downloadTemplateModal"><i
+                                                    class="fa fa-download"></i> Download Template</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-6 text-right">
+                            {{-- Form Pencarian --}}
                             <form method="GET" action="{{ route('admin.nilai.index') }}">
                                 <div class="form-group">
                                     <div class="input-group mb-15">
                                         <input type="text" id="search" name="search" class="form-control"
-                                            placeholder="Cari Data..." value="{{ $search }}">
+                                            placeholder="Cari Siswa..." value="{{ request('search') }}">
                                         <span class="input-group-btn">
                                             <button type="submit" class="btn btn-orange btn-anim"><i
                                                     class="icon-magnifier"></i><span class="btn-text">Cari</span></button>
@@ -61,89 +62,81 @@
                 <div class="panel-wrapper collapse in">
                     <div class="panel-body">
                         <div class="table-wrap">
-                            <div class="form-group">
-                                <label for="tahun_pelajaran_filter">Tahun Pelajaran</label>
-                                <select class="form-control" id="tahun_pelajaran_filter" name="tahun_pelajaran_id">
-                                    <option value="">Pilih Tahun Pelajaran</option>
-                                    @foreach ($tahunPelajarans as $tp)
-                                        <option value="{{ $tp->id }}">{{ $tp->nama_tahun_pelajaran }} -
-                                            {{ $tp->semester }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="tryout_filter">Try Out</label>
-                                <select class="form-control" id="tryout_filter" name="tryout_id">
-                                    <option value="">Pilih Try Out</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="kelas_filter">Kelompok</label>
-                                <select class="form-control" id="kelas_filter" name="kelas_id">
-                                    <option value="">Pilih Kelompok</option>
-                                    @foreach ($kelas as $k)
-                                        <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            {{-- Form Filter Utama --}}
+                            <form id="filterForm" method="GET" action="{{ route('admin.nilai.index') }}">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tahun Pelajaran (Aktif)</label>
+                                            <input type="text" class="form-control"
+                                                value="{{ $tahunAktif ? $tahunAktif->nama_tahun_pelajaran . ' - ' . $tahunAktif->semester : 'Tidak ada tahun pelajaran aktif!' }}"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="tryout_filter">Try Out</label>
+                                            <select class="form-control" name="tryout_id" id="tryout_filter">
+                                                <option value="">Pilih Tryout</option>
+                                                @foreach ($tryouts as $tryout)
+                                                    <option value="{{ $tryout->id }}"
+                                                        @if ($tryout->id == request('tryout_id')) selected @endif>
+                                                        {{ $tryout->nama_tryout }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="kelas_filter">Kelompok</label>
+                                            <select class="form-control" id="kelas_filter" name="kelas_id">
+                                                <option value="">Pilih Kelompok</option>
+                                                @foreach ($kelas as $k)
+                                                    <option value="{{ $k->id }}"
+                                                        @if ($k->id == request('kelas_id')) selected @endif>
+                                                        {{ $k->nama_kelas }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr>
+                            {{-- Form Input Nilai --}}
                             <div class="table-responsive">
                                 <form id="nilaiForm" action="{{ route('admin.nilai.store') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="tryout_id" value="{{ $tryoutId }}" id="tryout_hidden">
+                                    <input type="hidden" name="tryout_id" value="{{ request('tryout_id') }}"
+                                        id="tryout_hidden">
                                     <table class="table table-hover table-bordered mb-0">
                                         <thead>
-                                            <tr id="tableHeader"></tr>
+                                            <tr id="tableHeader">
+                                                {{-- Header akan diisi oleh JavaScript --}}
+                                            </tr>
                                         </thead>
                                         <tbody id="siswa_nilai_body">
-                                            <!-- Data siswa dan nilai akan diisi oleh JavaScript -->
+                                            {{-- Data siswa dan nilai akan diisi oleh JavaScript --}}
+                                            @if (!request('tryout_id') || !request('kelas_id'))
+                                                <tr>
+                                                    <td colspan="100%" class="text-center">Silakan pilih Try Out dan
+                                                        Kelompok untuk menampilkan data siswa.</td>
+                                                </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                     <div class="text-right mt-15">
-                                        <button type="button" class="btn btn-danger" id="hapusSemuaNilai"><i class="fa fa-trash"></i> Hapus Semua Nilai</button>
+                                        <button type="button" class="btn btn-danger" id="hapusSemuaNilai"><i
+                                                class="fa fa-trash"></i> Hapus Semua Nilai</button>
                                         <button type="submit" class="btn btn-orange"><i class="fa fa-save"></i> Simpan
                                             Semua Nilai</button>
-                                            <script>
-                                                $(document).ready(function() {
-                                                    $('#hapusSemuaNilai').on('click', function() {
-                                                        var tahunPelajaranId = $('#tahun_pelajaran_filter').val();
-                                                        var tryoutId = $('#tryout_filter').val();
-                                                        var kelasId = $('#kelas_filter').val();
-                                                
-                                                        if(confirm('Anda yakin ingin menghapus semua data nilai?')) {
-                                                            $.ajax({
-                                                                url: '{{ route('admin.nilai.hapusSemua') }}', // Pastikan route ini ditambahkan di web.php
-                                                                type: 'DELETE',
-                                                                data: {
-                                                                    tahun_pelajaran_id: tahunPelajaranId,
-                                                                    tryout_id: tryoutId,
-                                                                    kelas_id: kelasId,
-                                                                    _token: '{{ csrf_token() }}',
-                                                                },
-                                                                success: function(result) {
-                                                                    alert(result.success);
-                                                                    location.reload(); //Reload halaman setelah penghapusan
-                                                                },
-                                                                error: function() {
-                                                                    alert('Terjadi kesalahan saat menghapus data nilai.');
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                });
-                                            </script>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <nav class="pagination-wrap d-inline-block" aria-label="Page navigation example">
-                                    {{ $nilais->appends(request()->query())->links('vendor.pagination.custom') }}
-                                </nav>
-                            </div>
-                        </div>
+                        {{-- Pagination (jika diperlukan di masa depan) --}}
                     </div>
                 </div>
             </div>
@@ -152,7 +145,8 @@
     <!-- /Row -->
 
     <!-- Modal Download Template -->
-    <div class="modal fade" id="downloadTemplateModal" tabindex="-1" role="dialog" aria-labelledby="downloadTemplateModalLabel" aria-hidden="true">
+    <div class="modal fade" id="downloadTemplateModal" tabindex="-1" role="dialog"
+        aria-labelledby="downloadTemplateModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form action="{{ route('admin.nilai.downloadTemplate') }}" method="GET">
@@ -163,10 +157,13 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="download_tahun_pelajaran_filter">Tahun Pelajaran</label>
-                            <select class="form-control" id="download_tahun_pelajaran_filter" name="tahun_pelajaran_id" required>
+                            <select class="form-control" id="download_tahun_pelajaran_filter" name="tahun_pelajaran_id"
+                                required>
                                 <option value="">Pilih Tahun Pelajaran</option>
+                                {{-- KODE INI SEKARANG AMAN KARENA CONTROLLER MENGIRIMKAN $tahunPelajarans --}}
                                 @foreach ($tahunPelajarans as $tp)
-                                    <option value="{{ $tp->id }}">{{ $tp->nama_tahun_pelajaran }} - {{ $tp->semester }}</option>
+                                    <option value="{{ $tp->id }}">{{ $tp->nama_tahun_pelajaran }} -
+                                        {{ $tp->semester }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -196,7 +193,8 @@
     </div>
 
     <!-- Modal Import Data -->
-    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -217,9 +215,7 @@
         </div>
     </div>
 
-
-    <script src="../vendors/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../vendors/bower_components/jsgrid/dist/jsgrid.min.js"></script>
+    <script src="{{ asset('vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
 
     @if (session('success'))
         <script>
@@ -239,102 +235,25 @@
     <script>
         $(document).ready(function() {
 
-            $('#download_tahun_pelajaran_filter').on('change', function() {
-                var tahunPelajaranId = $(this).val();
-                $.ajax({
-                    url: '{{ route('admin.nilai.getTryouts') }}',
-                    type: 'GET',
-                    data: {
-                        tahun_pelajaran_id: tahunPelajaranId
-                    },
-                    success: function(data) {
-                        $('#download_tryout_filter').empty();
-                        $('#download_tryout_filter').append('<option value="">Pilih Try Out</option>');
-                        $.each(data, function(key, value) {
-                            $('#download_tryout_filter').append('<option value="' + key + '">' + value + '</option>');
-                        });
-                    }
-                });
-            });
-
-            $('#tryout_filter').on('change', function() {
-                var tryoutId = $(this).val();
-                $('#tryout_hidden').val(tryoutId);
-            });
-
-            $('#tahun_pelajaran_filter').on('change', function() {
-                var tahunPelajaranId = $(this).val();
-                $.ajax({
-                    url: '{{ route('admin.nilai.getTryouts') }}',
-                    type: 'GET',
-                    data: {
-                        tahun_pelajaran_id: tahunPelajaranId
-                    },
-                    success: function(data) {
-                        $('#tryout_filter').empty();
-                        $('#tryout_filter').append('<option value="">Pilih Try Out</option>');
-                        $.each(data, function(key, value) {
-                            $('#tryout_filter').append('<option value="' + key + '">' +
-                                value + '</option>');
-                        });
-                    }
-                });
-            });
-
-            $('#kelas_filter').on('change', function() {
-                var kelasId = $(this).val();
-                var tryoutId = $('#tryout_filter').val();
-                if (tryoutId) {
-                    loadSiswas(kelasId, tryoutId);
-                }
-            });
-
-            // function loadSiswas(kelasId, tryoutId) {
-            //     $.ajax({
-            //         url: '{{ route('admin.nilai.getSiswas') }}',
-            //         type: 'GET',
-            //         data: {
-            //             kelas_id: kelasId,
-            //             tryout_id: tryoutId
-            //         },
-            //         success: function(data) {
-            //             var tableBody = $('#siswa_nilai_body');
-            //             tableBody.empty();
-            //             var isKedinasan = data.length > 0 && data[0].kelas.status_kedinasan; // Cek status_kedinasan
-            //             $.each(data, function(index, siswa) {
-            //                 var row = '<tr>' +
-            //                     '<td>' + (index + 1) + '</td>' +
-            //                     '<td>' + siswa.nama_siswa + '</td>';
-            //                 @foreach ($mataPelajarans as $mataPelajaran)
-            //                     // var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id ===
-            //                     //     '{{ $mataPelajaran->id }}');
-            //                     // var nilai = nilaiObj ? nilaiObj.nilai : '';
-            //                     // row +=
-            //                     //     '<td><input type="number" class="form-control" name="nilai[' +
-            //                     //     siswa.id + '][{{ $mataPelajaran->id }}]" value="' + nilai +
-            //                     //     '" min="10" max="100"></td>';
-            //                     // Tampilkan mata pelajaran berdasarkan status_kedinasan
-            //                     if (!isKedinasan || (isKedinasan && '{{ $mataPelajaran->opsi_kedinasan }}' === '1')) {
-            //                         var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id === '{{ $mataPelajaran->id }}');
-            //                         var nilai = nilaiObj ? nilaiObj.nilai : '';
-            //                         row += '<td><input type="number" class="form-control" name="nilai[' + siswa.id + '][{{ $mataPelajaran->id }}]" value="' + nilai + '" min="10" max="100"></td>';
-            //                     }
-            //                 @endforeach
-            //                 row += '</tr>';
-            //                 tableBody.append(row);
-            //             });
-            //         }
-            //     });
-            // }
-
-            // Berhasil
+            // =================================================================================
+            // FUNGSI UTAMA UNTUK MEMUAT DATA SISWA DAN NILAI VIA AJAX
+            // =================================================================================
             function loadSiswas(kelasId, tryoutId) {
+                if (!kelasId || !tryoutId) {
+                    $('#siswa_nilai_body').html(
+                        '<tr><td colspan="100%" class="text-center">Silakan pilih Try Out dan Kelompok untuk menampilkan data siswa.</td></tr>'
+                    );
+                    $('#tableHeader').empty();
+                    return;
+                }
+
                 $.ajax({
                     url: '{{ route('admin.nilai.getSiswas') }}',
                     type: 'GET',
                     data: {
                         kelas_id: kelasId,
-                        tryout_id: tryoutId
+                        tryout_id: tryoutId,
+                        search: "{{ request('search') }}" // Kirim parameter search
                     },
                     success: function(data) {
                         var tableBody = $('#siswa_nilai_body');
@@ -342,79 +261,144 @@
                         tableBody.empty();
                         tableHeaderRow.empty();
 
+                        if (data.siswas.length === 0) {
+                            tableBody.html(
+                                '<tr><td colspan="100%" class="text-center">Tidak ada siswa ditemukan di kelompok ini.</td></tr>'
+                            );
+                            return;
+                        }
+
                         // Tambahkan kolom header "No" dan "Nama Siswa"
                         tableHeaderRow.append('<th>No</th>');
                         tableHeaderRow.append('<th>Nama Siswa</th>');
 
                         // Tambahkan kolom header dinamis untuk mata pelajaran
                         $.each(data.mataPelajarans, function(index, mataPelajaran) {
-                            tableHeaderRow.append('<th>' + mataPelajaran.namaMataPelajaran + '</th>');
+                            tableHeaderRow.append('<th>' + mataPelajaran.namaMataPelajaran +
+                                '</th>');
                         });
 
                         // Tambahkan baris data siswa
                         $.each(data.siswas, function(index, siswa) {
                             var row = '<tr>' +
-                                '<td>' + (index + 1) + '</td>' + // Kolom "No"
-                                '<td>' + siswa.nama_siswa + '</td>'; // Kolom "Nama Siswa"
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + siswa.nama_siswa + '</td>';
 
                             // Tambahkan input nilai untuk setiap mata pelajaran
                             $.each(data.mataPelajarans, function(index, mataPelajaran) {
-                                var nilaiObj = siswa.nilais.find(n => n.mata_pelajaran_id === mataPelajaran.id);
+                                var nilaiObj = siswa.nilais.find(n => n
+                                    .mata_pelajaran_id === mataPelajaran.id);
                                 var nilai = nilaiObj ? nilaiObj.nilai : '';
-                                row += '<td><input type="number" class="form-control" name="nilai[' + siswa.id + '][' + mataPelajaran.id + ']" value="' + nilai + '" min="10" max="1000"></td>';
+                                row +=
+                                    '<td><input type="number" class="form-control" name="nilai[' +
+                                    siswa.id + '][' + mataPelajaran.id + ']" value="' +
+                                    nilai + '" min="10" max="1000" step="0.01"></td>';
                             });
 
                             row += '</tr>';
                             tableBody.append(row);
                         });
+                    },
+                    error: function() {
+                        alert('Gagal memuat data siswa. Silakan coba lagi.');
                     }
                 });
             }
 
-            // SweetAlert for Delete
-            $('.delete-button').on('click', function(e) {
-                e.preventDefault();
-                var id = $(this).data('id');
+            // =================================================================================
+            // EVENT HANDLER UNTUK FILTER
+            // =================================================================================
+            $('#tryout_filter, #kelas_filter').on('change', function() {
+                // Ketika filter diubah, submit form filter untuk reload halaman dengan parameter baru
+                $('#filterForm').submit();
+            });
+
+            // =================================================================================
+            // LOGIKA PEMUATAN DATA SAAT HALAMAN DIBUKA
+            // =================================================================================
+            var initialTryoutId = $('#tryout_filter').val();
+            var initialKelasId = $('#kelas_filter').val();
+
+            if (initialTryoutId && initialKelasId) {
+                loadSiswas(initialKelasId, initialTryoutId);
+            }
+
+            // =================================================================================
+            // SCRIPT UNTUK MODAL DOWNLOAD TEMPLATE
+            // =================================================================================
+            $('#download_tahun_pelajaran_filter').on('change', function() {
+                var tahunPelajaranId = $(this).val();
+                if (tahunPelajaranId) {
+                    $.ajax({
+                        url: '{{ route('admin.nilai.getTryouts') }}',
+                        type: 'GET',
+                        data: {
+                            tahun_pelajaran_id: tahunPelajaranId
+                        },
+                        success: function(data) {
+                            var tryoutSelect = $('#download_tryout_filter');
+                            tryoutSelect.empty();
+                            tryoutSelect.append('<option value="">Pilih Try Out</option>');
+                            $.each(data, function(key, value) {
+                                tryoutSelect.append('<option value="' +
+                                    key + '">' + value + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#download_tryout_filter').empty().append('<option value="">Pilih Try Out</option>');
+                }
+            });
+
+            // =================================================================================
+            // SCRIPT UNTUK TOMBOL HAPUS SEMUA NILAI
+            // =================================================================================
+            $('#hapusSemuaNilai').on('click', function() {
+                var tryoutId = $('#tryout_filter').val();
+                var kelasId = $('#kelas_filter').val();
+
+                if (!tryoutId || !kelasId) {
+                    swal("Peringatan!", "Silakan pilih Try Out dan Kelompok terlebih dahulu.", "warning");
+                    return;
+                }
+
                 swal({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this data!",
+                    title: "Anda yakin?",
+                    text: "Semua nilai untuk Try Out dan Kelompok yang dipilih akan dihapus permanen!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#f83f37",
-                    confirmButtonText: "Yes, delete it!",
-                    cancelButtonText: "No, cancel plx!",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
+                    confirmButtonText: "Ya, hapus semua!",
+                    cancelButtonText: "Batal",
+                    closeOnConfirm: false
                 }, function(isConfirm) {
                     if (isConfirm) {
                         $.ajax({
-                            url: '/admin/nilai/' + id,
+                            url: '{{ route('admin.nilai.hapusSemua') }}',
                             type: 'DELETE',
                             data: {
-                                _token: '{{ csrf_token() }}',
+                                tryout_id: tryoutId,
+                                kelas_id: kelasId,
+                                _token: '{{ csrf_token() }}'
                             },
                             success: function(result) {
                                 swal({
-                                    title: "Deleted!",
+                                    title: "Berhasil!",
                                     text: result.success,
-                                    type: "success",
-                                    confirmButtonText: "OK"
+                                    type: "success"
                                 }, function() {
                                     location.reload();
                                 });
                             },
                             error: function() {
-                                swal("Error!", "There was an error deleting the data.",
+                                swal("Error!", "Terjadi kesalahan saat menghapus data.",
                                     "error");
                             }
                         });
-                    } else {
-                        swal("Cancelled", "Your data is safe :)", "error");
                     }
                 });
             });
+
         });
     </script>
-
-
 @endsection

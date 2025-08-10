@@ -20,58 +20,88 @@ class AdminNilaiController extends Controller
 {
     public function index(Request $request)
     {
-        $tahunPelajaranId = $request->input('tahun_pelajaran_id');
-        $tryoutId = $request->input('tryout_id');
-        $kelasId = $request->input('kelas_id');
-        $search = $request->input('search');
+        // --- MULAI PERUBAHAN LOGIKA ---
 
-        $query = Nilai::query();
+        // 1. Selalu mulai dengan Tahun Pelajaran yang aktif
+        $tahunAktif = TahunPelajaran::where('status', 1)->first();
 
-        if ($search) {
-            $query->whereHas('siswa', function($q) use ($search) {
-                $q->where('nama_siswa', 'like', '%' . $search . '%');
+        $tahunPelajarans = TahunPelajaran::orderBy('nama_tahun_pelajaran', 'desc')->get();
+
+        // 2. Siapkan variabel untuk dikirim ke view
+        $tryouts = collect();
+        $nilais = collect();
+
+        // 3. Hanya jalankan query jika ada tahun pelajaran yang aktif
+        if ($tahunAktif) {
+            // Ambil SEMUA tryout yang termasuk dalam tahun pelajaran aktif
+            $tryouts = Tryout::where('tahun_pelajaran_id', $tahunAktif->id)->get();
+
+            // Ambil filter dari request
+            $tryoutId = $request->input('tryout_id');
+            $kelasId = $request->input('kelas_id');
+            $search = $request->input('search');
+
+            // 4. Bangun query utama dari Nilai, pastikan terhubung dengan Tryout yang valid
+            $query = Nilai::query()->whereHas('tryout', function ($q) use ($tahunAktif) {
+                $q->where('tahun_pelajaran_id', $tahunAktif->id);
             });
-        }
 
-        if ($tryoutId) {
-            $query->where('tryout_id', $tryoutId);
-        }
-
-        $nilais = $query->paginate(10)->appends($request->all());
-
-        $tahunPelajarans = TahunPelajaran::where('status', true)->get();
-        $tryouts = $tahunPelajaranId ? Tryout::where('tahun_pelajaran_id', $tahunPelajaranId)->get() : collect();
-        $mataPelajarans = MataPelajaran::all();
-
-        // Check if the selected class has kedinasan status
-        $isKedinasan = false;
-        if ($kelasId) {
-            $selectedKelas = Kelas::find($kelasId);
-            if ($selectedKelas && $selectedKelas->status_kedinasan) {
-                $isKedinasan = true;
-                // Filter mata pelajaran based on opsi_kedinasan
-                $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+            // Terapkan filter tambahan jika ada
+            if ($search) {
+                $query->whereHas('siswa', function ($q) use ($search) {
+                    $q->where('nama_siswa', 'like', '%' . $search . '%');
+                });
             }
+
+            if ($tryoutId) {
+                $query->where('tryout_id', $tryoutId);
+            }
+
+            if ($kelasId) {
+                $query->whereHas('siswa', function ($q) use ($kelasId) {
+                    $q->where('kelas_id', $kelasId);
+                });
+            }
+
+            $nilais = $query->with(['siswa.kelas', 'tryout', 'mataPelajaran'])->paginate(10)->appends($request->all());
         }
 
-        $siswas = $kelasId ? Siswa::where('kelas_id', $kelasId)->get() : collect();
-        $kelas = Kelas::all();
+        // Ambil semua kelas untuk filter dropdown
+        $kelas = Kelas::all(); // Ini sudah otomatis terfilter oleh scope yang kita pasang sebelumnya
 
-        $existingNilai = Nilai::where('tryout_id', $tryoutId)
-                            ->whereIn('siswa_id', $siswas->pluck('id'))
-                            ->get()
-                            ->groupBy('siswa_id')
-                            ->map(function ($items) {
-                                return $items->keyBy('mata_pelajaran_id');
-                            });
+        // Ambil data nilai yang sudah ada untuk form (logika ini bisa disederhanakan nanti jika perlu)
+        $siswas = $request->input('kelas_id') ? Siswa::where('kelas_id', $request->input('kelas_id'))->get() : collect();
+        $existingNilai = Nilai::where('tryout_id', $request->input('tryout_id'))
+            ->whereIn('siswa_id', $siswas->pluck('id'))
+            ->get()
+            ->groupBy('siswa_id')
+            ->map(function ($items) {
+                return $items->keyBy('mata_pelajaran_id');
+            });
 
-        return view('admin.nilai.data_nilai', compact('nilais', 'tahunPelajarans', 'mataPelajarans', 'siswas', 'tryouts', 'tahunPelajaranId', 'tryoutId', 'kelas', 'search', 'kelasId', 'existingNilai', 'isKedinasan'));
+        // Kirim semua data yang dibutuhkan ke view
+        return view('admin.nilai.data_nilai', [
+            'nilais' => $nilais,
+            'tahunAktif' => $tahunAktif, // Kirim objek tahun aktif
+            'tahunPelajarans' => $tahunPelajarans,
+            'tryouts' => $tryouts,
+            'kelas' => $kelas,
+            'siswas' => $siswas,
+            'existingNilai' => $existingNilai,
+            // Kirim kembali nilai filter untuk ditampilkan di form
+            'tryoutId' => $request->input('tryout_id'),
+            'kelasId' => $request->input('kelas_id'),
+            'search' => $request->input('search'),
+            // Variabel lain jika masih dibutuhkan oleh view
+            'mataPelajarans' => MataPelajaran::all(),
+            'isKedinasan' => $request->input('kelas_id') ? (Kelas::find($request->input('kelas_id'))->status_kedinasan ?? false) : false
+        ]);
     }
 
     public function getTryouts(Request $request)
     {
         $tryouts = Tryout::where('tahun_pelajaran_id', $request->tahun_pelajaran_id)->pluck('nama_tryout', 'id');
-        
+
         return response()->json($tryouts);
     }
 
@@ -90,7 +120,7 @@ class AdminNilaiController extends Controller
     // {
     //     try {
     //         // \Log::info('Fetching siswas for kelas_id: ' . $request->kelas_id . ' and tryout_id: ' . $request->tryout_id);
-            
+
     //         // Mengambil siswa dengan nilai yang sesuai dengan tryout yang dipilih
     //         $siswas = Siswa::with(['nilais' => function($query) use ($request) {
     //             $query->where('tryout_id', $request->tryout_id);
@@ -161,7 +191,7 @@ class AdminNilaiController extends Controller
     {
         try {
             // Mengambil siswa dengan nilai yang sesuai dengan tryout yang dipilih
-            $siswas = Siswa::with(['nilais' => function($query) use ($request) {
+            $siswas = Siswa::with(['nilais' => function ($query) use ($request) {
                 $query->where('tryout_id', $request->tryout_id);
             }])->where('kelas_id', $request->kelas_id)->get();
 
@@ -252,15 +282,35 @@ class AdminNilaiController extends Controller
 
     public function nilaiSiswaIndex(Request $request)
     {
+        // --- PERUBAHAN DIMULAI DI SINI ---
         $search = $request->input('search');
 
+        // 1. Dapatkan tahun pelajaran yang statusnya aktif
+        $tahunPelajaranAktif = TahunPelajaran::where('status', true)->first();
+
+        // 2. Siapkan query builder untuk Siswa
         $query = Siswa::with('kelas');
 
+        // 3. Filter siswa berdasarkan tahun pelajaran aktif
+        if ($tahunPelajaranAktif) {
+            // Dapatkan ID semua kelas yang termasuk dalam tahun pelajaran aktif
+            $kelasAktifIds = Kelas::where('tahun_pelajaran_id', $tahunPelajaranAktif->id)->pluck('id');
+
+            // Filter siswa yang ada di dalam kelas-kelas aktif tersebut
+            $query->whereIn('kelas_id', $kelasAktifIds);
+        } else {
+            // Jika tidak ada tahun pelajaran yang aktif, jangan tampilkan siswa sama sekali
+            // untuk mencegah error data lama.
+            $query->whereRaw('1 = 0');
+        }
+
+        // 4. Terapkan filter pencarian jika ada
         if ($search) {
             $query->where('nama_siswa', 'like', '%' . $search . '%');
         }
 
         $siswas = $query->paginate(10);
+        // --- PERUBAHAN SELESAI ---
 
         return view('admin.nilai.nilai_siswa', compact('siswas', 'search'));
     }
@@ -278,7 +328,7 @@ class AdminNilaiController extends Controller
         $siswa = Siswa::with(['kelas', 'nilais.mataPelajaran', 'nilais.tryout.tahunPelajaran'])->findOrFail($id);
 
         if ($tahunPelajaranId) {
-            $siswa->nilais = $siswa->nilais->filter(function($nilai) use ($tahunPelajaranId) {
+            $siswa->nilais = $siswa->nilais->filter(function ($nilai) use ($tahunPelajaranId) {
                 return $nilai->tryout->tahun_pelajaran_id == $tahunPelajaranId;
             });
             // \Log::info('Filtered nilais by tahun_pelajaran_id: ' . $siswa->nilais->toJson());
@@ -305,7 +355,7 @@ class AdminNilaiController extends Controller
         $siswa = Siswa::with(['kelas', 'nilais.mataPelajaran', 'nilais.tryout.tahunPelajaran'])->findOrFail($id);
 
         if ($tahunPelajaranId) {
-            $siswa->nilais = $siswa->nilais->filter(function($nilai) use ($tahunPelajaranId) {
+            $siswa->nilais = $siswa->nilais->filter(function ($nilai) use ($tahunPelajaranId) {
                 return $nilai->tryout->tahun_pelajaran_id == $tahunPelajaranId;
             });
         }
@@ -412,9 +462,9 @@ class AdminNilaiController extends Controller
         $request->validate([
             'file' => 'required|mimes:xls,xlsx'
         ]);
-    
+
         Excel::import(new NilaiImport, $request->file('file'));
-    
+
         return redirect()->back()->with('success', 'Nilai berhasil diimport.');
     }
 
@@ -426,9 +476,9 @@ class AdminNilaiController extends Controller
 
         // Menghapus data nilai berdasarkan filter yang diterima
         $nilais = Nilai::where('tryout_id', $tryoutId)
-                    ->whereHas('siswa', function($query) use ($kelasId) {
-                        $query->where('kelas_id', $kelasId);
-                    });
+            ->whereHas('siswa', function ($query) use ($kelasId) {
+                $query->where('kelas_id', $kelasId);
+            });
 
         $jumlahDihapus = $nilais->delete(); // Menghapus
 

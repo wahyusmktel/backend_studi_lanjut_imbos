@@ -30,7 +30,8 @@
                         <div class="col-md-4 col-xs-6 text-right">
                             {{-- <a href="{{ route('admin.nilai.downloadSertifikat', ['id' => $siswa->id, 'tahun_pelajaran_id' => $tahunPelajaranId, 'tryout_id' => $tryoutId]) }}"
                                 class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Download Sertifikat</a> --}}
-                            <a href="#" id="downloadSertifikat" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Download Sertifikat</a>
+                            <a href="#" id="downloadSertifikat" class="btn btn-primary"><i
+                                    class="fa fa-file-pdf-o"></i> Download Sertifikat</a>
                             <a href="{{ route('admin.nilai-siswa.index') }}" class="btn btn-default"><i
                                     class="fa fa-arrow-left"></i> Kembali</a>
                         </div>
@@ -123,14 +124,19 @@
                                         @foreach ($siswa->nilais as $index => $nilai)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $nilai->mataPelajaran->namaMataPelajaran }}</td>
-                                                <td>{{ $nilai->tryout->nama_tryout }}</td>
-                                                <td>{{ $nilai->tryout->tahunPelajaran->nama_tahun_pelajaran ?? '' }}</td>
-                                                <td>{{ $nilai->tryout->tahunPelajaran->semester ?? '' }}</td>
+                                                <td>{{ $nilai->mataPelajaran?->namaMataPelajaran ?? 'Mapel Dihapus' }}</td>
+                                                <td>{{ $nilai->tryout?->nama_tryout ?? 'Tryout Dihapus' }}</td>
+                                                <td>{{ $nilai->tryout?->tahunPelajaran?->nama_tahun_pelajaran ?? 'N/A' }}
+                                                </td>
+                                                <td>{{ $nilai->tryout?->tahunPelajaran?->semester ?? 'N/A' }}</td>
                                                 <td>{{ number_format($nilai->nilai, 2) }}</td>
                                                 <td>
-                                                    <button class="btn btn-warning edit-button" data-id="{{ $nilai->id }}" data-nilai="{{ $nilai->nilai }}"><i class="fa fa-pencil"></i> Edit</button>
-                                                    <button class="btn btn-danger delete-button" data-id="{{ $nilai->id }}"><i class="fa fa-trash"></i> Hapus</button>
+                                                    <button class="btn btn-warning edit-button"
+                                                        data-id="{{ $nilai->id }}" data-nilai="{{ $nilai->nilai }}"><i
+                                                            class="fa fa-pencil"></i> Edit</button>
+                                                    <button class="btn btn-danger delete-button"
+                                                        data-id="{{ $nilai->id }}"><i class="fa fa-trash"></i>
+                                                        Hapus</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -151,7 +157,8 @@
     <!-- /Row -->
 
     <!-- Modal Edit Data -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -164,7 +171,8 @@
                         @method('POST')
                         <div class="form-group">
                             <label for="editNilai">Nilai</label>
-                            <input type="text" class="form-control" id="editNilai" name="nilai" placeholder="Nilai" required>
+                            <input type="text" class="form-control" id="editNilai" name="nilai" placeholder="Nilai"
+                                required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -194,7 +202,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            var filterApplied = new URLSearchParams(window.location.search).has('tahun_pelajaran_id') && new URLSearchParams(window.location.search).has('tryout_id');
+            var filterApplied = new URLSearchParams(window.location.search).has('tahun_pelajaran_id') &&
+                new URLSearchParams(window.location.search).has('tryout_id');
             $('#tahun_pelajaran_id').change(function() {
                 var tahunPelajaranId = $(this).val();
                 if (tahunPelajaranId) {
@@ -230,8 +239,10 @@
                     e.preventDefault();
                     alert('Silakan klik tombol Filter terlebih dahulu.');
                 } else {
-                    var url = "{{ route('admin.nilai.downloadSertifikat', ['id' => $siswa->id, 'tahun_pelajaran_id' => '__tahun_pelajaran_id__', 'tryout_id' => '__tryout_id__']) }}";
-                    url = url.replace('__tahun_pelajaran_id__', tahunPelajaranId).replace('__tryout_id__', tryoutId);
+                    var url =
+                        "{{ route('admin.nilai.downloadSertifikat', ['id' => $siswa->id, 'tahun_pelajaran_id' => '__tahun_pelajaran_id__', 'tryout_id' => '__tryout_id__']) }}";
+                    url = url.replace('__tahun_pelajaran_id__', tahunPelajaranId).replace('__tryout_id__',
+                        tryoutId);
                     window.location.href = url;
                 }
             });

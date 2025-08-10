@@ -12,6 +12,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SertifikatTryout;
 use App\Models\SettingSertifikat;
 use App\Models\AbsensiDetail;
+use App\Models\TahunPelajaran;
+use App\Models\Kelas;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 
@@ -20,33 +22,97 @@ class OrangTuaController extends Controller
     public function index()
     {
         $siswa = Auth::guard('parent')->user();
+        $mataPelajarans = collect();
+        $statusKedinasan = null;
 
-        // Ambil nilai status_kedinasan dari kelas siswa
-        $statusKedinasan = $siswa->kelas->status_kedinasan;
+        // --- PERUBAHAN DIMULAI DI SINI ---
 
-        // Menyaring mata pelajaran berdasarkan status_kedinasan
-        if ($statusKedinasan === 1) {
-            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
-        } elseif ($statusKedinasan === 0) {
-            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
-        } else {
-            // Jika status_kedinasan adalah 2, ambil semua mata pelajaran
-            $mataPelajarans = MataPelajaran::all();
+        // Cek dulu apakah siswa punya relasi kelas yang valid
+        if ($siswa && $siswa->kelas) {
+            $statusKedinasan = $siswa->kelas->status_kedinasan;
+
+            // Menyaring mata pelajaran berdasarkan status kedinasan
+            if ($statusKedinasan === 1) {
+                $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+            } elseif ($statusKedinasan === 0) {
+                $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+            } else {
+                $mataPelajarans = MataPelajaran::all();
+            }
         }
 
-        $nilai = Nilai::where('siswa_id', $siswa->id)
-            ->with(['tryout.tahunPelajaran', 'mataPelajaran'])
-            ->get()
-            ->sortBy(function ($nilai) {
-                return $nilai->tryout->nama_tryout;
-            })
-            ->groupBy('tryout_id');
-        // $mataPelajarans = MataPelajaran::all(); // Pastikan ini dikirim ke view
+        // 2. Dapatkan tahun pelajaran yang aktif
+        $tahunPelajaranAktif = TahunPelajaran::where('status', true)->first();
 
-        $statusKedinasan = $siswa->kelas->status_kedinasan;
+        // 3. Siapkan query untuk Nilai
+        $nilaiQuery = Nilai::where('siswa_id', $siswa->id)
+            ->with(['tryout.tahunPelajaran', 'mataPelajaran']);
+
+        // 4. Filter nilai berdasarkan tahun pelajaran aktif
+        if ($tahunPelajaranAktif) {
+            $nilaiQuery->whereHas('tryout', function ($q) use ($tahunPelajaranAktif) {
+                $q->where('tahun_pelajaran_id', $tahunPelajaranAktif->id);
+            });
+        } else {
+            // Jika tidak ada tahun aktif, jangan tampilkan nilai apa pun
+            $nilaiQuery->whereRaw('1 = 0');
+        }
+
+        $nilaiCollection = $nilaiQuery->get();
+
+        // Filter lagi untuk memastikan tidak ada tryout yang null (pengaman tambahan)
+        $nilai = $nilaiCollection->filter(function ($n) {
+            return $n->tryout !== null;
+        })->sortBy(function ($n) {
+            return $n->tryout?->nama_tryout;
+        })->groupBy('tryout_id');
+
+        // --- PERUBAHAN SELESAI ---
 
         return view('dashboard_orang_tua', compact('siswa', 'nilai', 'mataPelajarans', 'statusKedinasan'));
     }
+    // public function index()
+    // {
+    //     $siswa = Auth::guard('parent')->user();
+
+    //     // Ambil nilai status_kedinasan dari kelas siswa
+    //     $statusKedinasan = $siswa->kelas->status_kedinasan;
+
+    //     // Menyaring mata pelajaran berdasarkan status_kedinasan
+    //     if ($statusKedinasan === 1) {
+    //         $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+    //     } elseif ($statusKedinasan === 0) {
+    //         $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+    //     } else {
+    //         // Jika status_kedinasan adalah 2, ambil semua mata pelajaran
+    //         $mataPelajarans = MataPelajaran::all();
+    //     }
+
+    //     // $nilai = Nilai::where('siswa_id', $siswa->id)
+    //     //     ->with(['tryout.tahunPelajaran', 'mataPelajaran'])
+    //     //     ->get()
+    //     //     ->sortBy(function ($nilai) {
+    //     //         return $nilai->tryout->nama_tryout;
+    //     //     })
+    //     //     ->groupBy('tryout_id');
+    //     // Ambil koleksi nilai terlebih dahulu
+    //     $nilaiCollection = Nilai::where('siswa_id', $siswa->id)
+    //         ->with(['tryout.tahunPelajaran', 'mataPelajaran'])
+    //         ->get();
+
+    //     // Filter nilai yang relasi tryout-nya tidak null (tidak terhapus)
+    //     $nilai = $nilaiCollection->filter(function ($nilai) {
+    //         return $nilai->tryout !== null;
+    //     })->sortBy(function ($nilai) {
+    //         // Gunakan nullsafe operator untuk keamanan ekstra
+    //         return $nilai->tryout?->nama_tryout;
+    //     })->groupBy('tryout_id');
+    //     // $mataPelajarans = MataPelajaran::all(); // Pastikan ini dikirim ke view
+
+    //     $statusKedinasan = $siswa->kelas->status_kedinasan;
+
+    //     return view('dashboard_orang_tua', compact('siswa', 'nilai', 'mataPelajarans', 'statusKedinasan'));
+    // }
 
     public function downloadSertifikat(Request $request, $id)
     {
@@ -71,8 +137,14 @@ class OrangTuaController extends Controller
         // $nilai = $siswa->nilais->groupBy('tryout_id');
 
         // Mengurutkan nilai berdasarkan nama tryout
-        $nilai = $siswa->nilais->sortBy(function ($nilai) {
-            return $nilai->tryout->nama_tryout;
+        // $nilai = $siswa->nilais->sortBy(function ($nilai) {
+        //     return $nilai->tryout->nama_tryout;
+        // })->groupBy('tryout_id');
+        // Filter nilai yang relasi tryout-nya tidak null sebelum diurutkan
+        $nilai = $siswa->nilais->filter(function ($n) {
+            return $n->tryout !== null;
+        })->sortBy(function ($nilai) {
+            return $nilai->tryout?->nama_tryout;
         })->groupBy('tryout_id');
 
         // Pisahkan mata pelajaran berdasarkan opsi_test_tps
@@ -120,8 +192,14 @@ class OrangTuaController extends Controller
         }
 
         // Mengurutkan nilai berdasarkan nama tryout
-        $nilai = $siswa->nilais->sortBy(function ($nilai) {
-            return $nilai->tryout->nama_tryout;
+        // $nilai = $siswa->nilais->sortBy(function ($nilai) {
+        //     return $nilai->tryout->nama_tryout;
+        // })->groupBy('tryout_id');
+        // Filter nilai yang relasi tryout-nya tidak null sebelum diurutkan
+        $nilai = $siswa->nilais->filter(function ($n) {
+            return $n->tryout !== null;
+        })->sortBy(function ($nilai) {
+            return $nilai->tryout?->nama_tryout;
         })->groupBy('tryout_id');
 
         // Pisahkan mata pelajaran berdasarkan opsi_test_tps
@@ -181,56 +259,109 @@ class OrangTuaController extends Controller
 
     public function detailAbsensi(Request $request)
     {
-        // Ambil data siswa yang sedang login
         $siswa = Auth::guard('parent')->user();
 
-        // Membuat query untuk mengambil data absensi siswa berdasarkan filter yang diberikan
+        // --- PERUBAHAN DIMULAI DI SINI ---
+        $tahunPelajaranAktif = TahunPelajaran::where('status', true)->first();
+
         $query = AbsensiDetail::with('absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran')
             ->where('siswa_id', $siswa->id);
 
-        // Filter berdasarkan tanggal mulai dan akhir jika tersedia
+        // Filter absensi berdasarkan tahun pelajaran aktif
+        if ($tahunPelajaranAktif) {
+            $query->whereHas('absensi.kelas', function ($q) use ($tahunPelajaranAktif) {
+                $q->where('tahun_pelajaran_id', $tahunPelajaranAktif->id);
+            });
+        } else {
+            $query->whereRaw('1 = 0'); // Tidak menampilkan data jika tidak ada tahun aktif
+        }
+        // --- PERUBAHAN SELESAI ---
+
         if ($request->has('start_date') && $request->has('end_date')) {
             $query->whereHas('absensi', function ($q) use ($request) {
                 $q->whereBetween('tanggal', [$request->start_date, $request->end_date]);
             });
         }
 
-        // Filter berdasarkan mata pelajaran yang diikuti oleh siswa
         if ($request->has('mata_pelajaran_id') && $request->mata_pelajaran_id != '') {
             $query->whereHas('absensi.guru.mataPelajaran', function ($q) use ($request) {
                 $q->where('id', $request->mata_pelajaran_id);
             });
         }
 
-        // Clone query untuk perhitungan total data tanpa paginasi
         $totalQuery = clone $query;
-
-        // Hitung jumlah kehadiran untuk setiap kategori dari seluruh data (tanpa paginasi)
-        // Clone query untuk menghitung jumlah kehadiran yang hadir
         $hadirCount = (clone $totalQuery)->where('kehadiran', 1)->count();
-
-        // Clone query untuk menghitung jumlah yang tidak hadir
         $tidakHadirCount = (clone $totalQuery)->where('kehadiran', 0)->count();
-
-        // Clone query untuk menghitung jumlah yang sakit
         $sakitCount = (clone $totalQuery)->where('kehadiran', 2)->count();
-
-        // Kembalikan query utama untuk paginasi
         $absensiDetails = $query->paginate(10);
 
-        // Filter mata pelajaran berdasarkan status kedinasan siswa
-        $statusKedinasan = $siswa->kelas->status_kedinasan;
-        if ($statusKedinasan === 1) {
-            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
-        } elseif ($statusKedinasan === 0) {
-            $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
-        } else {
-            $mataPelajarans = MataPelajaran::all();
+        $mataPelajarans = collect();
+        if ($siswa && $siswa->kelas) {
+            $statusKedinasan = $siswa->kelas->status_kedinasan;
+            if ($statusKedinasan === 1) {
+                $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+            } elseif ($statusKedinasan === 0) {
+                $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+            } else {
+                $mataPelajarans = MataPelajaran::all();
+            }
         }
 
-        // Mengirim data yang dibutuhkan ke view
         return view('detail_absensi', compact('absensiDetails', 'siswa', 'mataPelajarans', 'request', 'hadirCount', 'tidakHadirCount', 'sakitCount'));
     }
+
+    // public function detailAbsensi(Request $request)
+    // {
+    //     // Ambil data siswa yang sedang login
+    //     $siswa = Auth::guard('parent')->user();
+
+    //     // Membuat query untuk mengambil data absensi siswa berdasarkan filter yang diberikan
+    //     $query = AbsensiDetail::with('absensi.guru', 'absensi.kelas', 'absensi.guru.mataPelajaran')
+    //         ->where('siswa_id', $siswa->id);
+
+    //     // Filter berdasarkan tanggal mulai dan akhir jika tersedia
+    //     if ($request->has('start_date') && $request->has('end_date')) {
+    //         $query->whereHas('absensi', function ($q) use ($request) {
+    //             $q->whereBetween('tanggal', [$request->start_date, $request->end_date]);
+    //         });
+    //     }
+
+    //     // Filter berdasarkan mata pelajaran yang diikuti oleh siswa
+    //     if ($request->has('mata_pelajaran_id') && $request->mata_pelajaran_id != '') {
+    //         $query->whereHas('absensi.guru.mataPelajaran', function ($q) use ($request) {
+    //             $q->where('id', $request->mata_pelajaran_id);
+    //         });
+    //     }
+
+    //     // Clone query untuk perhitungan total data tanpa paginasi
+    //     $totalQuery = clone $query;
+
+    //     // Hitung jumlah kehadiran untuk setiap kategori dari seluruh data (tanpa paginasi)
+    //     // Clone query untuk menghitung jumlah kehadiran yang hadir
+    //     $hadirCount = (clone $totalQuery)->where('kehadiran', 1)->count();
+
+    //     // Clone query untuk menghitung jumlah yang tidak hadir
+    //     $tidakHadirCount = (clone $totalQuery)->where('kehadiran', 0)->count();
+
+    //     // Clone query untuk menghitung jumlah yang sakit
+    //     $sakitCount = (clone $totalQuery)->where('kehadiran', 2)->count();
+
+    //     // Kembalikan query utama untuk paginasi
+    //     $absensiDetails = $query->paginate(10);
+
+    //     // Filter mata pelajaran berdasarkan status kedinasan siswa
+    //     $statusKedinasan = $siswa->kelas->status_kedinasan;
+    //     if ($statusKedinasan === 1) {
+    //         $mataPelajarans = MataPelajaran::where('opsi_kedinasan', true)->get();
+    //     } elseif ($statusKedinasan === 0) {
+    //         $mataPelajarans = MataPelajaran::where('opsi_kedinasan', false)->get();
+    //     } else {
+    //         $mataPelajarans = MataPelajaran::all();
+    //     }
+
+    //     // Mengirim data yang dibutuhkan ke view
+    //     return view('detail_absensi', compact('absensiDetails', 'siswa', 'mataPelajarans', 'request', 'hadirCount', 'tidakHadirCount', 'sakitCount'));
+    // }
 
     public function showSertifikatTryout(Request $request, $id, $tryout_id)
     {
@@ -252,8 +383,13 @@ class OrangTuaController extends Controller
         }
 
         // Mengurutkan nilai berdasarkan nama tryout
-        $nilai = $siswa->nilais->sortBy(function ($nilai) {
-            return $nilai->tryout->nama_tryout;
+        // $nilai = $siswa->nilais->sortBy(function ($nilai) {
+        //     return $nilai->tryout->nama_tryout;
+        // })->groupBy('tryout_id');
+        $nilai = $siswa->nilais->filter(function ($n) {
+            return $n->tryout !== null;
+        })->sortBy(function ($nilai) {
+            return $nilai->tryout?->nama_tryout;
         })->groupBy('tryout_id');
 
         // Pisahkan mata pelajaran berdasarkan opsi_test_tps
