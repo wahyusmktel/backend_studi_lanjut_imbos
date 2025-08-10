@@ -2,33 +2,65 @@
 
 namespace App\Imports;
 
-use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\ProgramBimbel;
+use App\Models\Siswa;
+use App\Models\TahunPelajaran;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class SiswaImport implements ToModel, WithHeadingRow
 {
+    private $tahunPelajaranAktif;
+
+    public function __construct()
+    {
+        // Mengambil tahun pelajaran yang aktif saat proses import dimulai
+        $this->tahunPelajaranAktif = TahunPelajaran::where('status', true)->first();
+    }
+
+    /**
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
-        // Gunakan header yang benar
-        $kelas = Kelas::where('nama_kelas', $row['kelompok'])->first();
-        $programBimbel = ProgramBimbel::where('nama_program', $row['nama_program'])->first();
-
-        if (!$kelas || !$programBimbel) {
-            throw new \Exception('Kelas atau Program Bimbel tidak ditemukan untuk baris ini');
+        // Jika tidak ada tahun pelajaran aktif, hentikan proses import
+        if (!$this->tahunPelajaranAktif) {
+            throw new \Exception('Tidak ada tahun pelajaran yang aktif. Silakan atur terlebih dahulu.');
         }
 
-        // Konversi tanggal dari format Excel jika perlu
-        $tgl_lahir = is_numeric($row['tgl_lahir'])
-            ? Date::excelToDateTimeObject($row['tgl_lahir'])->format('Y-m-d')
-            : $row['tgl_lahir'];
+        // --- PERUBAHAN DI SINI ---
+        // Mencari kelas berdasarkan nama DAN ID tahun pelajaran yang aktif
+        $kelas = Kelas::where('nama_kelas', $row['kelompok'])
+            ->where('tahun_pelajaran_id', $this->tahunPelajaranAktif->id)
+            ->first();
 
-        // Periksa apakah siswa sudah ada berdasarkan NIS
+        $programBimbel = ProgramBimbel::where('nama_program', $row['nama_program'])->first();
+
+        // Jika kelas untuk tahun ajaran aktif tidak ditemukan, atau program bimbel tidak ada, lemparkan error
+        if (!$kelas) {
+            throw new \Exception("Kelas '{$row['kelompok']}' untuk tahun pelajaran aktif tidak ditemukan. Pastikan nama kelas dan tahun pelajarannya sesuai.");
+        }
+        if (!$programBimbel) {
+            throw new \Exception("Program Bimbel '{$row['nama_program']}' tidak ditemukan.");
+        }
+        // --- AKHIR PERUBAHAN ---
+
+        // Konversi tanggal dari format Excel jika perlu
+        $tgl_lahir = null;
+        if (!empty($row['tgl_lahir'])) {
+            $tgl_lahir = is_numeric($row['tgl_lahir'])
+                ? Date::excelToDateTimeObject($row['tgl_lahir'])->format('Y-m-d')
+                : \Carbon\Carbon::parse($row['tgl_lahir'])->format('Y-m-d');
+        }
+
+
+        // Periksa apakah siswa sudah ada berdasarkan NIS, lalu update atau create
         $siswa = Siswa::where('nis', $row['nis'])->first();
 
         if ($siswa) {
@@ -44,6 +76,7 @@ class SiswaImport implements ToModel, WithHeadingRow
                 'password' => Hash::make($row['password']),
                 'status' => true,
             ]);
+            return null; // Tidak return model karena sudah di-update
         } else {
             // Jika siswa belum ada, buat data baru
             return new Siswa([
