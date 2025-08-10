@@ -187,16 +187,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12 mt-3">
-                                <div class="text-center">
-                                    <a href="{{ route('parent.downloadSertifikat', $siswa->id) }}" class="btn btn-warning">
-                                        <span>Download Rapor Perkembangan Bimbel</span>
-                                        <i class="bi bi-download"></i>
-                                    </a>
+                        @if (!$nilai->isEmpty())
+                            <div class="row">
+                                <div class="col-md-12 mt-3">
+                                    <div class="text-center">
+                                        <a href="{{ route('parent.downloadSertifikat', $siswa->id) }}"
+                                            class="btn btn-warning">
+                                            <span>Download Rapor Perkembangan Bimbel</span>
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
