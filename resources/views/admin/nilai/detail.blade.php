@@ -42,7 +42,7 @@
                     <div class="panel-body">
                         <form method="GET" action="{{ route('admin.nilai.detail', $siswa->id) }}">
                             <div class="row">
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="tahun_pelajaran_id">Tahun Pelajaran</label>
                                         <select class="form-control" id="tahun_pelajaran_id" name="tahun_pelajaran_id">
@@ -53,6 +53,17 @@
                                                     {{ $tp->nama_tahun_pelajaran }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div> --}}
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="tahun_pelajaran_id">Tahun Pelajaran (Aktif)</label>
+                                        <input type="text" class="form-control"
+                                            value="{{ $tahunPelajaranAktif->nama_tahun_pelajaran }} (Semester {{ $tahunPelajaranAktif->semester == 1 ? 'Ganjil' : 'Genap' }})"
+                                            readonly>
+                                        {{-- Input tersembunyi untuk tetap mengirim ID saat filter --}}
+                                        <input type="hidden" id="tahun_pelajaran_id" name="tahun_pelajaran_id"
+                                            value="{{ $tahunPelajaranAktif->id }}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">

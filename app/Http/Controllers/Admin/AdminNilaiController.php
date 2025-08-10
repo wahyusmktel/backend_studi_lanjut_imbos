@@ -315,37 +315,72 @@ class AdminNilaiController extends Controller
         return view('admin.nilai.nilai_siswa', compact('siswas', 'search'));
     }
 
-
     public function detail(Request $request, $id)
     {
-        $tahunPelajaranId = $request->input('tahun_pelajaran_id');
+        // --- PERUBAHAN DIMULAI DI SINI ---
+
+        // 1. Dapatkan tahun pelajaran yang aktif secara otomatis.
+        $tahunPelajaranAktif = TahunPelajaran::where('status', true)->first();
         $tryoutId = $request->input('tryout_id');
 
-        // \Log::info('Fetching details for siswa_id: ' . $id);
-        // \Log::info('tahun_pelajaran_id: ' . $tahunPelajaranId);
-        // \Log::info('tryout_id: ' . $tryoutId);
-
-        $siswa = Siswa::with(['kelas', 'nilais.mataPelajaran', 'nilais.tryout.tahunPelajaran'])->findOrFail($id);
-
-        if ($tahunPelajaranId) {
-            $siswa->nilais = $siswa->nilais->filter(function ($nilai) use ($tahunPelajaranId) {
-                return $nilai->tryout->tahun_pelajaran_id == $tahunPelajaranId;
-            });
-            // \Log::info('Filtered nilais by tahun_pelajaran_id: ' . $siswa->nilais->toJson());
+        // Jika tidak ada tahun pelajaran aktif, kembalikan dengan pesan.
+        if (!$tahunPelajaranAktif) {
+            return redirect()->route('admin.nilai-siswa.index')->with('error', 'Tidak ada tahun pelajaran yang aktif. Silakan atur terlebih dahulu.');
         }
 
+        // 2. Ambil data siswa dengan nilai yang sudah difilter di level query.
+        // Ini lebih efisien daripada memuat semua nilai lalu memfilternya di PHP.
+        $siswa = Siswa::with(['kelas', 'nilais' => function ($query) use ($tahunPelajaranAktif) {
+            $query->whereHas('tryout', function ($subQuery) use ($tahunPelajaranAktif) {
+                $subQuery->where('tahun_pelajaran_id', $tahunPelajaranAktif->id);
+            })->with(['mataPelajaran', 'tryout.tahunPelajaran']);
+        }])->findOrFail($id);
+
+        // 3. Filter lebih lanjut berdasarkan tryout jika dipilih.
         if ($tryoutId) {
             $siswa->nilais = $siswa->nilais->where('tryout_id', $tryoutId);
-            // \Log::info('Filtered nilais by tryout_id: ' . $siswa->nilais->toJson());
         }
 
-        $tahunPelajarans = TahunPelajaran::all();
-        $tryouts = $tahunPelajaranId ? Tryout::where('tahun_pelajaran_id', $tahunPelajaranId)->get() : collect();
+        // 4. Ambil daftar tryout hanya dari tahun pelajaran yang aktif.
+        $tryouts = Tryout::where('tahun_pelajaran_id', $tahunPelajaranAktif->id)->get();
 
-        // \Log::info('Returning view with siswa: ' . $siswa->toJson());
+        // 5. Kirim data tahun pelajaran aktif ke view.
+        return view('admin.nilai.detail', compact('siswa', 'tahunPelajaranAktif', 'tryouts', 'tryoutId'));
 
-        return view('admin.nilai.detail', compact('siswa', 'tahunPelajarans', 'tryouts', 'tahunPelajaranId', 'tryoutId'));
+        // --- AKHIR PERUBAHAN ---
     }
+
+
+    // public function detail(Request $request, $id)
+    // {
+    //     $tahunPelajaranId = $request->input('tahun_pelajaran_id');
+    //     $tryoutId = $request->input('tryout_id');
+
+    //     // \Log::info('Fetching details for siswa_id: ' . $id);
+    //     // \Log::info('tahun_pelajaran_id: ' . $tahunPelajaranId);
+    //     // \Log::info('tryout_id: ' . $tryoutId);
+
+    //     $siswa = Siswa::with(['kelas', 'nilais.mataPelajaran', 'nilais.tryout.tahunPelajaran'])->findOrFail($id);
+
+    //     if ($tahunPelajaranId) {
+    //         $siswa->nilais = $siswa->nilais->filter(function ($nilai) use ($tahunPelajaranId) {
+    //             return $nilai->tryout->tahun_pelajaran_id == $tahunPelajaranId;
+    //         });
+    //         // \Log::info('Filtered nilais by tahun_pelajaran_id: ' . $siswa->nilais->toJson());
+    //     }
+
+    //     if ($tryoutId) {
+    //         $siswa->nilais = $siswa->nilais->where('tryout_id', $tryoutId);
+    //         // \Log::info('Filtered nilais by tryout_id: ' . $siswa->nilais->toJson());
+    //     }
+
+    //     $tahunPelajarans = TahunPelajaran::all();
+    //     $tryouts = $tahunPelajaranId ? Tryout::where('tahun_pelajaran_id', $tahunPelajaranId)->get() : collect();
+
+    //     // \Log::info('Returning view with siswa: ' . $siswa->toJson());
+
+    //     return view('admin.nilai.detail', compact('siswa', 'tahunPelajarans', 'tryouts', 'tahunPelajaranId', 'tryoutId'));
+    // }
 
     public function downloadSertifikat(Request $request, $id)
     {
