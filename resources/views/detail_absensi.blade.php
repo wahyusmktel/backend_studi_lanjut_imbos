@@ -31,7 +31,8 @@
     <section id="features" class="features section">
         <!-- Section Title -->
         <div class="container section-title-white" data-aos="fade-up">
-            <h2>Detail Absensi - {{ $siswa->nama_siswa }} - {{ $siswa->kelas->nama_kelas }}</h2>
+            {{-- PERBAIKAN: Gunakan nullsafe operator (?->) dan null coalescing (??) untuk mencegah error --}}
+            <h2>Detail Absensi - {{ $siswa->nama_siswa }} - {{ $siswa->kelas?->nama_kelas ?? 'Kelas Tidak Aktif' }}</h2>
             <p>Absensi Perkembangan Siswa</p>
         </div><!-- End Section Title -->
 
@@ -47,9 +48,9 @@
                                         <div class="input-group mb-15">
                                             <!-- Filter berdasarkan tanggal -->
                                             <input type="date" id="start_date" name="start_date" class="form-control"
-                                                value="{{ $request->start_date }}" required>
+                                                value="{{ $request->start_date }}">
                                             <input type="date" id="end_date" name="end_date" class="form-control"
-                                                value="{{ $request->end_date }}" required>
+                                                value="{{ $request->end_date }}">
                                             <!-- Filter berdasarkan mata pelajaran -->
                                             <select name="mata_pelajaran_id" class="form-control">
                                                 <option value="">Pilih Mata Pelajaran</option>
@@ -128,18 +129,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($absensiDetails as $index => $detail)
+                                            {{-- PERBAIKAN: Gunakan @forelse untuk menangani jika data kosong --}}
+                                            @forelse ($absensiDetails as $detail)
                                                 <tr>
                                                     <td style="text-align: center">
                                                         {{ ($absensiDetails->currentPage() - 1) * $absensiDetails->perPage() + $loop->iteration }}
                                                     </td>
                                                     <td style="text-align: center">
-                                                        {{ $detail->absensi->guru->mataPelajaran->namaMataPelajaran }}</td>
-                                                    <td style="text-align: center">{{ $detail->absensi->guru->nama }}</td>
-                                                    <td style="text-align: center">
-                                                        {{ \Carbon\Carbon::parse($detail->absensi->tanggal)->format('d-m-Y') }}
+                                                        {{-- PERBAIKAN: Tambahkan nullsafe operator untuk keamanan --}}
+                                                        {{ $detail->absensi?->guru?->mataPelajaran?->namaMataPelajaran ?? 'N/A' }}
                                                     </td>
-                                                    <td style="text-align: center">{{ $detail->absensi->waktu }}</td>
+                                                    <td style="text-align: center">
+                                                        {{ $detail->absensi?->guru?->nama ?? 'N/A' }}</td>
+                                                    <td style="text-align: center">
+                                                        {{ \Carbon\Carbon::parse($detail->absensi?->tanggal)->format('d-m-Y') }}
+                                                    </td>
+                                                    <td style="text-align: center">{{ $detail->absensi?->waktu }}</td>
                                                     <td style="text-align: center">
                                                         @if ($detail->kehadiran == 1)
                                                             Hadir
@@ -150,10 +155,10 @@
                                                         @endif
                                                     </td>
                                                     <td style="text-align: center">
-                                                        @if ($detail->absensi->foto)
+                                                        @if ($detail->absensi?->foto)
                                                             <button type="button" class="btn btn-info btn-sm"
                                                                 data-bs-toggle="modal"
-                                                                data-bs-target="#fotoModal-{{ $index }}">
+                                                                data-bs-target="#fotoModal-{{ $loop->index }}">
                                                                 Lihat Foto
                                                             </button>
                                                         @else
@@ -162,20 +167,20 @@
                                                     </td>
                                                 </tr>
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="fotoModal-{{ $index }}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="fotoModalLabel-{{ $index }}"
+                                                <div class="modal fade" id="fotoModal-{{ $loop->index }}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="fotoModalLabel-{{ $loop->index }}"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
-                                                                    id="fotoModalLabel-{{ $index }}">Foto Kehadiran
+                                                                    id="fotoModalLabel-{{ $loop->index }}">Foto Kehadiran
                                                                 </h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body text-center">
-                                                                @if ($detail->absensi->foto)
+                                                                @if ($detail->absensi?->foto)
                                                                     <img src="{{ asset('storage/' . $detail->absensi->foto) }}"
                                                                         alt="Foto Kehadiran" class="img-fluid">
                                                                 @else
@@ -189,12 +194,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endforeach
-                                            @if ($absensiDetails->isEmpty())
+                                            @empty
                                                 <tr>
-                                                    <td colspan="6" class="text-center">Data tidak ditemukan</td>
+                                                    <td colspan="7" class="text-center">Data tidak ditemukan</td>
                                                 </tr>
-                                            @endif
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
@@ -204,7 +208,6 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <!-- Pagination -->
-                                {{-- {{ $absensiDetails->links() }} --}}
                                 <nav class="pagination-wrap d-inline-block" aria-label="Page navigation example">
                                     {{ $absensiDetails->appends(request()->query())->links('vendor.pagination.custom') }}
                                 </nav>
@@ -221,52 +224,10 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="panel-footer">
-                    </div> --}}
                 </div>
-
             </div>
         </div>
-
     </section><!-- /About Section -->
-
-    <!-- Script untuk menampilkan grafik menggunakan Chart.js -->
-    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const ctx = document.getElementById('attendanceChart').getContext('2d');
-        const attendanceChart = new Chart(ctx, {
-            type: 'bar', // Jenis grafik yang digunakan adalah bar
-            data: {
-                labels: ['Hadir', 'Tidak Hadir', 'Sakit'], // Label sumbu X
-                datasets: [{
-                    label: 'Jumlah Kehadiran', // Label dataset
-                    data: [
-                        {{ $absensiDetails->where('kehadiran', 1)->count() }},
-                        {{ $absensiDetails->where('kehadiran', 0)->count() }},
-                        {{ $absensiDetails->where('kehadiran', 2)->count() }}
-                    ],
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.2)', // Warna background bar untuk hadir
-                        'rgba(255, 99, 132, 0.2)', // Warna background bar untuk tidak hadir
-                        'rgba(255, 206, 86, 0.2)' // Warna background bar untuk sakit
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)', // Warna border bar untuk hadir
-                        'rgba(255, 99, 132, 1)', // Warna border bar untuk tidak hadir
-                        'rgba(255, 206, 86, 1)' // Warna border bar untuk sakit
-                    ],
-                    borderWidth: 1 // Ketebalan border bar
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true // Mulai sumbu Y dari 0
-                    }
-                }
-            }
-        });
-    </script> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -301,7 +262,10 @@
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true // Mulai sumbu Y dari 0
+                        beginAtZero: true, // Mulai sumbu Y dari 0
+                        ticks: {
+                            stepSize: 1 // Pastikan skala y adalah bilangan bulat
+                        }
                     }
                 },
                 plugins: {
@@ -313,7 +277,8 @@
                             const meta = ci.getDatasetMeta(index);
 
                             // Menyembunyikan/memunculkan dataset saat label diklik
-                            meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+                            meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden :
+                                null;
                             ci.update();
                         }
                     }
