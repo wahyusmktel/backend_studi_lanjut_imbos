@@ -34,6 +34,12 @@
             {{-- PERBAIKAN: Gunakan nullsafe operator (?->) dan null coalescing (??) untuk mencegah error --}}
             <h2>Detail Absensi - {{ $siswa->nama_siswa }} - {{ $siswa->kelas?->nama_kelas ?? 'Kelas Tidak Aktif' }}</h2>
             <p>Absensi Perkembangan Siswa</p>
+            @if ($tahunPelajaranAktif)
+                <h2>Tahun Pelajaran Aktif: {{ $tahunPelajaranAktif->nama_tahun_pelajaran }} (Semester
+                    {{ $tahunPelajaranAktif->semester == 1 ? 'Ganjil' : 'Genap' }})</h2>
+            @else
+                <h2>Tahun Pelajaran Aktif: Tidak Ditemukan</h2>
+            @endif
         </div><!-- End Section Title -->
 
         <div class="container" data-aos="fade-up">

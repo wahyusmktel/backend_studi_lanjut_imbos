@@ -70,7 +70,7 @@ class OrangTuaController extends Controller
 
         // --- PERUBAHAN SELESAI ---
 
-        return view('dashboard_orang_tua', compact('siswa', 'nilai', 'mataPelajarans', 'statusKedinasan'));
+        return view('dashboard_orang_tua', compact('siswa', 'nilai', 'mataPelajarans', 'statusKedinasan', 'tahunPelajaranAktif'));
     }
     // public function index()
     // {
@@ -424,7 +424,7 @@ class OrangTuaController extends Controller
             }
         }
 
-        return view('detail_absensi', compact('absensiDetails', 'siswa', 'mataPelajarans', 'request', 'hadirCount', 'tidakHadirCount', 'sakitCount'));
+        return view('detail_absensi', compact('absensiDetails', 'siswa', 'mataPelajarans', 'request', 'hadirCount', 'tidakHadirCount', 'sakitCount', 'tahunPelajaranAktif'));
     }
 
     // public function detailAbsensi(Request $request)

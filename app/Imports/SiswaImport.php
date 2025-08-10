@@ -24,7 +24,7 @@ class SiswaImport implements ToModel, WithHeadingRow
         }
 
         // Konversi tanggal dari format Excel jika perlu
-        $tgl_lahir = is_numeric($row['tgl_lahir']) 
+        $tgl_lahir = is_numeric($row['tgl_lahir'])
             ? Date::excelToDateTimeObject($row['tgl_lahir'])->format('Y-m-d')
             : $row['tgl_lahir'];
 
@@ -44,7 +44,7 @@ class SiswaImport implements ToModel, WithHeadingRow
                 'password' => Hash::make($row['password']),
                 'status' => true,
             ]);
-        } else { 
+        } else {
             // Jika siswa belum ada, buat data baru
             return new Siswa([
                 'id' => Str::uuid(),

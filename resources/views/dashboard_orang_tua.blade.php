@@ -33,6 +33,14 @@
         <div class="container section-title-white" data-aos="fade-up">
             <h2>Dashboard</h2>
             <p>Perkembangan Studi Lanjut Siswa IMBOS</p>
+
+            @if ($tahunPelajaranAktif)
+                <h2>Tahun Pelajaran Aktif: {{ $tahunPelajaranAktif->nama_tahun_pelajaran }} (Semester
+                    {{ $tahunPelajaranAktif->semester == 1 ? 'Ganjil' : 'Genap' }})</h2>
+            @else
+                <h2>Tahun Pelajaran Aktif: Tidak Ditemukan</h2>
+            @endif
+
         </div><!-- End Section Title -->
 
         <div class="container" data-aos="fade-up">
