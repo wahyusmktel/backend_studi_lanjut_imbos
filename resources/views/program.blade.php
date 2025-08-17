@@ -42,18 +42,19 @@
 
                 <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
                     <div class="pricing-tem d-flex flex-column">
-                        <h3 style="color: #20c997;">BIMBEL UTBK</h3>
+                        <h3 style="color: #20c997;">BIMBEL SNBT / UTBK</h3>
                         <div class="icon">
                             <i class="bi bi-box" style="color: #20c997;"></i>
                         </div>
                         <ul class="flex-grow-1">
                             <li>Khusus untuk Kelas 12</li>
                             <li>Latihan Soal UTBK Terupdate</li>
-                            <li>Try out Intensif</li>
+                            <li>Try Out Intensif</li>
                             <li>Pembahasan dan Trik Jitu</li>
                             <li>Intensif Belajar 1 Tahun</li>
                         </ul>
-                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
+                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank"
+                            class="btn-buy mt-auto">DAFTAR SEKARANG</a>
                     </div>
                 </div><!-- End Pricing Item -->
 
@@ -66,11 +67,12 @@
                         <ul class="flex-grow-1">
                             <li>Khusus untuk Kelas 10 dan 11</li>
                             <li>Latihan Soal UTBK Terupdate</li>
-                            <li>Try out Intensif</li>
+                            <li>Try Out Intensif</li>
                             <li>Pembahasan dan Trik Jitu</li>
                             <li>Intensif Belajar 1 Tahun</li>
                         </ul>
-                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
+                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank"
+                            class="btn-buy mt-auto">DAFTAR SEKARANG</a>
                     </div>
                 </div><!-- End Pricing Item -->
 
@@ -83,12 +85,13 @@
                         <ul class="flex-grow-1">
                             <li>Khusus untuk Kelas 12</li>
                             <li>Latihan Soal Kedinasan Terupdate</li>
-                            <li>Latihan Fisik</li>
-                            <li>Try out Intensif</li>
+                            <li>Kesamaptaan</li>
+                            <li>Try Out Intensif</li>
                             <li>Pembahasan dan Trik Jitu</li>
                             <li>Intensif Belajar 1 Tahun</li>
                         </ul>
-                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank" class="btn-buy mt-auto">DAFTAR SEKARANG</a>
+                        <a href="https://wa.me/6285609276949?text=Assalamualaikum." target="_blank"
+                            class="btn-buy mt-auto">DAFTAR SEKARANG</a>
                     </div>
                 </div><!-- End Pricing Item -->
 
@@ -122,15 +125,17 @@
                         <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
                             <div class="feature-box d-flex align-items-center">
                                 <!-- <i class="bi bi-check"></i>
-                            <h3>Bimbel UTBK Intensif 4 Kali/Pekan selama 11 Bulan dan Study Plus</h3> -->
+                                                            <h3>Bimbel UTBK Intensif 4 Kali/Pekan selama 11 Bulan dan Study Plus</h3> -->
                                 <ul>
                                     <li><i class="bi bi-check"></i>Bimbel UTBK Intensif 4 Kali/Pekan selama 11 Bulan dan
                                         Study Plus</li>
-                                    <li><i class="bi bi-check"></i>SAMT CAMP (spiritual, Achievement, Motivation, Training
+                                    <li><i class="bi bi-check"></i>SAMT CAMP (Spiritual, Achievement, Motivation, Training
                                         Camp)</li>
-                                    <li><i class="bi bi-check"></i>Try Out Internal (6 Kali), Eksternal (1 Kali)</li>
+                                    <li><i class="bi bi-check"></i>Try Out Internal (6 Kali), Try Out Eksternal (1 Kali)
+                                    </li>
                                     <li><i class="bi bi-check"></i>Konsultasi Jurusan dan Kampus sejak awal bimbel</li>
-                                    <li><i class="bi bi-check"></i>Pendaftaran SNBP, SNBT, SPAN, PMDP dll, dan Pembuatan
+                                    <li><i class="bi bi-check"></i>Penampingan Pendaftaran SNBP, SNBT, SPAN, PMDP dll, dan
+                                        Pembuatan
                                         Portofolio</li>
                                     <li><i class="bi bi-check"></i>Modul, Latihan soal, Buku Panduan Studi Lanjut</li>
                                     <li><i class="bi bi-check"></i>Roadshow dan Sosialisasi Kampus Bersama Mahasiswa dan
@@ -151,16 +156,17 @@
                         <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
                             <div class="feature-box d-flex align-items-center">
                                 <!-- <i class="bi bi-check"></i>
-                            <h3>Bimbel UTBK Intensif 4 Kali/Pekan selama 11 Bulan dan Study Plus</h3> -->
+                                                            <h3>Bimbel UTBK Intensif 4 Kali/Pekan selama 11 Bulan dan Study Plus</h3> -->
                                 <ul>
-                                    <li><i class="bi bi-check"></i>Bimbel Intensif SKD (TIU, TWK, TKP) selama 9 Bulan</li>
+                                    <li><i class="bi bi-check"></i>Bimbel Intensif Seleksi Kemampuan Dasar (TIU, TWK, TKP)
+                                        selama 9 Bulan</li>
                                     <li><i class="bi bi-check"></i>Latihan Fisik dan Kesamaptaan dengan Pelatih Profesional
                                     </li>
-                                    <li><i class="bi bi-check"></i>SAMT CAMP (spiritual, Achievement, Motivation, Training
+                                    <li><i class="bi bi-check"></i>SAMT CAMP (Spiritual, Achievement, Motivation, Training
                                         Camp)</li>
-                                    <li><i class="bi bi-check"></i>Try Out Internal (6 Kali), Eksternal (1 Kali)</li>
-                                    <li><i class="bi bi-check"></i>Konsultasi Jurusan dan Kampus Kedinasan sejak awal
-                                        bimbel</li>
+                                    <li><i class="bi bi-check"></i>Try Out Internal (6 Kali), Try Out Eksternal (1 Kali)
+                                    </li>
+                                    <li><i class="bi bi-check"></i>Konsultasi Jurusan dan Kampus Kedinasan</li>
                                     <li><i class="bi bi-check"></i>Modul, Latihan soal SKD Kedinasan, Buku Panduan Studi
                                         Lanjut</li>
                                     <li><i class="bi bi-check"></i>Roadshow dan Sosialisasi Kampus Bersama Mahasiswa dan
@@ -244,11 +250,11 @@
                         </div><!-- End Feature Item -->
 
                         <!-- <div class="col-md-6 icon-box">
-                          <i class="bi bi-patch-check"></i>
-                          <div>
-                            <h4>Explicabo consectetur</h4>
-                          </div>
-                        </div> -->
+                                                          <i class="bi bi-patch-check"></i>
+                                                          <div>
+                                                            <h4>Explicabo consectetur</h4>
+                                                          </div>
+                                                        </div> -->
                         <!-- End Feature Item -->
 
                     </div>

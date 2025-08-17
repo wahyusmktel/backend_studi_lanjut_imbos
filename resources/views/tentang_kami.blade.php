@@ -37,18 +37,18 @@
                     <div class="content">
                         <h2>Selamat Datang Di Bimbel Studi Lanjut SMAIT IMBOS Pringsewu</h2>
                         <p>
-                            Bimbel Studi Lanjut SMAIT IMBOS Pringsewu merupakan pusat bimbingan belajar yang mendedikasikan
+                            Bimbel Studi Lanjut SMAIT IMBOS Pringsewu merupakan bimbingan belajar yang mendedikasikan
                             untuk membantu para santri mencapai hasil terbaik dalam persiapan SNBP, SNBT-UTBK, Ujian
-                            Mandiri, dan Persiapan seleksi masuk perguruan tinggi Kedinasan (PTK). Kami berkomitmen untuk
+                            Mandiri, dan Persiapan seleksi masuk Perguruan Tinggi Kedinasan (PTK). Kami berkomitmen untuk
                             menyediakan lingkungan belajar yang efektif, inovatif, terarah, dan memberikan tips serta trik
                             jitu dalam mengerjakan soal.
                         </p>
                         <!-- <div class="text-center text-lg-start">
-                                <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
-                                  <span>Read More</span>
-                                  <i class="bi bi-arrow-right"></i>
-                                </a>
-                              </div> -->
+                                                                        <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
+                                                                          <span>Read More</span>
+                                                                          <i class="bi bi-arrow-right"></i>
+                                                                        </a>
+                                                                      </div> -->
                     </div>
                 </div>
 
@@ -113,19 +113,18 @@
                         </div><!-- End Feature Item -->
 
                         <!-- <div class="col-md-6 icon-box">
-                              <i class="bi bi-patch-check"></i>
-                              <div>
-                                <h4>Explicabo consectetur</h4>
-                              </div>
-                            </div> -->
+                                                                      <i class="bi bi-patch-check"></i>
+                                                                      <div>
+                                                                        <h4>Explicabo consectetur</h4>
+                                                                      </div>
+                                                                    </div> -->
                         <!-- End Feature Item -->
 
                     </div>
 
                 </div>
 
-                <div class="col-xl-5 d-flex align-items-center order-1 order-xl-2" data-aos="fade-up"
-                    data-aos-delay="100">
+                <div class="col-xl-5 d-flex align-items-center order-1 order-xl-2" data-aos="fade-up" data-aos-delay="100">
                     <img src="{{ asset('halaman_umum/assets/img/model-tentang-kami.png') }}" class="img-fluid"
                         alt="">
                 </div>
@@ -153,10 +152,12 @@
                     <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
                         <div class="team-member">
                             <div class="member-img">
-                                @if($guru->foto)
-                                    <img src="{{ asset('storage/' . $guru->foto) }}" class="img-fluid" alt="{{ $guru->nama }}">
+                                @if ($guru->foto)
+                                    <img src="{{ asset('storage/' . $guru->foto) }}" class="img-fluid"
+                                        alt="{{ $guru->nama }}">
                                 @else
-                                    <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" class="img-fluid" alt="{{ $guru->nama }}">
+                                    <img src="{{ asset('halaman_umum/assets/img/no-image-alumni.png') }}" class="img-fluid"
+                                        alt="{{ $guru->nama }}">
                                 @endif
                             </div>
                             <div class="member-info">
